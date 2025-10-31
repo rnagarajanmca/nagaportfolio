@@ -1,6 +1,6 @@
 <div align="center">
 
-  # Alex Taylor · Portfolio
+  # Nagarajan Ravikumar · Portfolio
 
   A personal portfolio built with Next.js App Router, Tailwind CSS v4 tokens, and structured content files.
 

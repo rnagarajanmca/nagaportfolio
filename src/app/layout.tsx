@@ -17,31 +17,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Taylor · Portfolio",
+  title: "Nagarajan Ravikumar · Portfolio",
   description:
-    "Design-minded frontend engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
+    "Product-focused full-stack engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
   metadataBase: new URL("https://example.com"),
   openGraph: {
-    title: "Alex Taylor · Portfolio",
+    title: "Nagarajan Ravikumar · Portfolio",
     description:
-      "Design-minded frontend engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
+      "Product-focused full-stack engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
     url: "https://example.com",
-    siteName: "Alex Taylor Portfolio",
+    siteName: "Nagarajan Ravikumar Portfolio",
     type: "website",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Alex Taylor Portfolio preview",
+        alt: "Nagarajan Ravikumar Portfolio preview",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alex Taylor · Portfolio",
+    title: "Nagarajan Ravikumar · Portfolio",
     description:
-      "Design-minded frontend engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
+      "Product-focused full-stack engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
     images: ["/opengraph-image"],
   },
   icons: {
