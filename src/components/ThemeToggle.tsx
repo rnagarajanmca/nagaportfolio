@@ -27,13 +27,7 @@ function resolveInitialTheme(): ThemeMode {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeMode>("light");
-
-  useEffect(() => {
-    const initial = resolveInitialTheme();
-    setTheme(initial);
-    applyTheme(initial);
-  }, []);
+  const [theme, setTheme] = useState<ThemeMode>(() => resolveInitialTheme());
 
   useEffect(() => {
     if (typeof window === "undefined") {

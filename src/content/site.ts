@@ -116,35 +116,28 @@ export const siteContent: SiteContent = {
   ],
   projects: [
     {
-      name: "Aurora Design System",
+      name: "Wayfair Warehouse Modernization",
       description:
-        "A modular component library supporting light and dark themes with automated accessibility checks and Storybook documentation.",
-      technologies: ["React", "Next.js", "Tailwind", "Storybook", "Chromatic"],
-      links: [
-        { label: "Case Study", href: "https://example.com/aurora" },
-        { label: "GitHub", href: "https://github.com/example/aurora" },
-      ],
-      year: "2024",
+        "Led the rollout of an Android framework powering 55+ supply-chain workflows as Wayfair migrated from RF scanners to Zebra devices.",
+      technologies: ["Android", "Kotlin", "Jetpack", "Zebra Devices"],
+      links: [{ label: "Experience", href: "https://nagarajanr.com/#experience" }],
+      year: "2019—Present",
     },
     {
-      name: "Lattice Analytics",
+      name: "7-Eleven Checkout Pilot",
       description:
-        "Interactive dashboards for SaaS revenue teams, featuring real-time segmentation, cohort analysis, and guided onboarding flows.",
-      technologies: ["Next.js", "TypeScript", "D3", "tRPC", "Vercel"],
-      links: [
-        { label: "Live Demo", href: "https://example.com/lattice" },
-      ],
-      year: "2023",
+        "Partnered with store operations to prototype self-checkout stations and integrate iBeacon-driven proximity detection in the Android app.",
+      technologies: ["Android", "Java", "iBeacon", "Retail Tech"],
+      links: [{ label: "Experience", href: "https://nagarajanr.com/#experience" }],
+      year: "2017—2019",
     },
     {
-      name: "Atlas Developer Portal",
+      name: "TrackX Mobile Asset Platform",
       description:
-        "Developer-focused knowledge base with MDX-driven content, role-based access, and Algolia-powered search.",
-      technologies: ["Next.js", "MDX", "Algolia", "Contentlayer"],
-      links: [
-        { label: "GitHub", href: "https://github.com/example/atlas" },
-      ],
-      year: "2022",
+        "Architected Bluetooth, RFID, and GPS integrations to streamline enterprise asset tracking via the TrackX GAME® platform.",
+      technologies: ["Android", "RFID", "Bluetooth", "GPS"],
+      links: [{ label: "Experience", href: "https://nagarajanr.com/#experience" }],
+      year: "2014—2017",
     },
   ],
   contact: {

@@ -33,6 +33,7 @@ export interface ExperienceItem {
   startDate: string;
   endDate: string;
   description: string[];
+  badges?: string[];
 }
 
 export interface EducationItem {

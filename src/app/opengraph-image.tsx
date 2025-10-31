@@ -52,7 +52,7 @@ export default async function OpenGraphImage() {
               fontWeight: 600,
             }}
           >
-            Building resilient, human-centered product experiences.
+            Engineering resilient Android experiences at scale.
           </h1>
           <p
             style={{
@@ -62,7 +62,7 @@ export default async function OpenGraphImage() {
               color: "rgba(241, 245, 249, 0.75)",
             }}
           >
-            Product-focused full-stack engineer crafting design systems, DX tooling, and measurable outcomes.
+            Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.
           </p>
         </div>
         <div
