@@ -2,115 +2,121 @@
 
   # Nagarajan Ravikumar · Portfolio
 
-  A personal portfolio built with Next.js App Router, Tailwind CSS v4 tokens, and structured content files.
+  Modern personal portfolio built with the Next.js App Router, Tailwind CSS v4 design tokens, and structured TypeScript content.
 
-  [![CI](https://github.com/nagarajanr/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/nagarajanr/portfolio/actions/workflows/ci.yml)
+  [![CI](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml)
 
 </div>
 
-## ✨ Features
+## Table of Contents
 
-- Fully structured content sourced from `src/content` TypeScript modules.
-- Responsive layout with reusable section components and timeline cards.
-- Sticky navigation that updates based on scroll position.
-- Theme tokens powered by Tailwind CSS v4 with a developer-facing light/dark toggle persisted in `localStorage`.
-- Accessible call-to-action components with primary/secondary variants.
+1. [Overview](#overview)
+2. [Tech Stack](#tech-stack)
+3. [Key Features](#key-features)
+4. [Getting Started](#getting-started)
+5. [Available Scripts](#available-scripts)
+6. [Architecture](#architecture)
+7. [Styling & Theming](#styling--theming)
+8. [Testing & Quality](#testing--quality)
+9. [Deployment](#deployment)
+10. [Project Structure](#project-structure)
+11. [Resources](#resources)
 
-## 🚀 Getting Started
+## Overview
 
-Install dependencies and launch the dev server:
+This repo powers Nagarajan Ravikumar’s portfolio. Content is strictly typed, UI components are reusable, and runtime quality gates (linting, testing, CI) keep the site production-ready.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router, Turbopack)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 preview tokens + custom CSS variables
+- **Testing:** Jest + React Testing Library
+- **Analytics:** Plausible (optional)
+- **Email:** Resend (API integration)
+
+## Key Features
+
+- Structured content in `src/content` with schema validation
+- Responsive sections (hero, experience timeline, projects, contact)
+- Sticky nav with active-section highlighting
+- Accessible CTAs and contact form with Resend-backed API route
+- Light/dark themes persisted in `localStorage`
+- Automated CI (lint + tests) via GitHub Actions
+
+## Getting Started
 
 ```bash
 npm install
 npm run dev
 ```
 
-The app runs at [http://localhost:3000](http://localhost:3000). Updates hot-reload as you edit files in `src/`.
+- Local dev server: http://localhost:3000
+- Update content in `src/content/site.ts` and components in `src/components`
 
-### Useful Scripts
+## Available Scripts
 
-| Command            | Description                     |
-| ------------------ | ------------------------------- |
-| `npm run dev`      | Start local development server. |
-| `npm run build`    | Create a production build.      |
-| `npm run start`    | Serve the production build.      |
-| `npm run lint`     | Lint source files.              |
-| `npm run type-check` | Run TypeScript type checking. |
-| `npm test`         | Run test suite.                 |
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Generate a production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Run ESLint across the codebase |
+| `npm run type-check` | Execute TypeScript in `--noEmit` mode |
+| `npm test` | Execute unit/integration tests |
+| `npm test -- --watch` | Watch mode for tests |
 
-## 🗂 Content Management Workflow
+## Architecture
 
-Structured data lives under `src/content`:
+- `src/content/schema.ts` – Type definitions for every portfolio section
+- `src/content/site.ts` – Single source of truth for portfolio data
+- `src/app/page.tsx` – Layout composition using the structured content
+- `src/components` – Reusable UI blocks (NavBar, SectionWrapper, ProjectCard, etc.)
+- `src/app/api` – API routes (`/contact`, `/resume`) for form handling and downloads
 
-- `schema.ts` defines TypeScript interfaces for every section (navigation, hero, about, experience, education, skills, projects, contact).
-- `site.ts` exports the content object that matches the schema.
+## Styling & Theming
 
-To update the portfolio copy:
+- Theme tokens defined in `src/app/globals.css` using Tailwind v4 `@theme` blocks
+- `ThemeProvider` applies tokens, toggles the `dark` class, and persists state
+- `ThemeToggle` button exposes the theme switcher inside the nav bar
 
-1. Edit the relevant section within `src/content/site.ts`.
-2. The TypeScript compiler validates structures against `SiteContent` interfaces.
-3. No component files need changes unless the layout itself is evolving.
+## Testing & Quality
 
-### Adding New Sections
+- Unit tests live in `src/components/__tests__`
+- Run locally with `npm test`
+- GitHub Actions workflow (`ci.yml`) runs lint + tests on pushes and PRs targeting `main`
+- Lint with `npm run lint` to catch TypeScript/ESLint issues early
 
-1. Extend interfaces in `schema.ts`.
-2. Populate data in `site.ts`.
-3. Update `app/page.tsx` to render the new section and wire components.
+## Deployment
 
-## 🎨 Theme Tokens & Toggle
+Optimized for Vercel:
 
-- Theme tokens are defined in `src/app/globals.css` using Tailwind CSS v4 `@theme` blocks for light/dark modes.
-- The `ThemeToggle` component (`src/components/ThemeToggle.tsx`) sets `document.documentElement.dataset.theme` and persists the choice in `localStorage` under `portfolio-theme`.
-- A hydration-safe inline script in `app/layout.tsx` primes the theme before the first paint.
+1. Ensure environment variables are configured (e.g., `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`, `RESEND_API_KEY` if used)
+2. Run `npm run build` to validate a production build locally
+3. Push to GitHub; Vercel (or another Node 20+ host) can import directly
 
-## 🧱 Key Components
+Other platforms (Netlify, Render) are compatible—install dependencies and run the build script.
 
-- `NavBar` — sticky navigation with active section detection and theme toggle.
-- `SectionWrapper` — consistent spacing and headings for anchored sections.
-- `TimelineItem` — reusable layout for experience and education entries.
-- `ProjectCard` — displays project descriptions, tech tags, and call-to-actions.
-- `CTAButton` — configurable primary/secondary call-to-action button.
+## Project Structure
 
-## ✅ Project Plan Tracking
+```
+portfolio/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   └── __tests__/
+│   └── content/
+├── public/
+├── README.md
+└── package.json
+```
 
-Progress is tracked in `../PROJECT_PLAN.md`. Status annotations are updated as tasks complete.
-
-## 📦 Deployment
-
-The project targets Vercel for production deployment:
-
-1. Set `NEXT_PUBLIC_` environment variables as needed (none required currently).
-2. Run `npm run build` locally to verify the production bundle.
-3. Push to a connected Git provider (GitHub/GitLab/Bitbucket) and import the repo in Vercel.
-
-Alternative platforms (Netlify, Render) also work—ensure Node.js 18+ and install dependencies before building.
-
-### Analytics
-
-- Plausible analytics is wired through `src/components/PlausibleAnalytics.tsx` and injected in `app/layout.tsx`.
-- To enable tracking, set `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` in your environment (e.g., `example.com`).
-- The script loads lazily and is skipped entirely when the variable is unset (development by default).
-
-## 🧪 Testing & QA (Planned)
-
-Upcoming work includes:
-
-- Configure ESLint/Tailwind/prettier rules for the new token syntax.
-- Add React Testing Library coverage for key components.
-- Set up CI (GitHub Actions) for linting and builds.
-- Run Lighthouse/axe accessibility audits and document remediation steps in the project plan.
-- Add deployment checklist (preview deploy, env verification) before launch.
-
-## 📚 Additional Resources
+## Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS v4 Preview](https://tailwindcss.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Plausible Analytics](https://plausible.io/docs)
 - [Vercel Deployment Guide](https://nextjs.org/docs/app/building-your-application/deploying)
-
-## 📝 Changelog & Upcoming Tasks
-
-- **2025-10-31:** Initial portfolio scaffold complete with structured content, theming, analytics, and OG image route.
-  - TODO: Run Lighthouse/axe audits and record remediation steps.
-  - TODO: Configure ESLint/Tailwind tooling for v4 directives.
-  - TODO: Add React Testing Library coverage and GitHub Actions CI.
-  - TODO: Finalize deployment checklist and create polished OG/social imagery.
