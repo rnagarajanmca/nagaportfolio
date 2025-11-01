@@ -10,10 +10,6 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: portfolio
-
     strategy:
       matrix:
         node-version: [20.x]
@@ -30,10 +26,13 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
+        working-directory: ./portfolio
         run: npm install
 
       - name: Lint
+        working-directory: ./portfolio
         run: npm run lint
 
       - name: Test
+        working-directory: ./portfolio
         run: npm test -- --runInBand
