@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -24,6 +25,14 @@ Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
 });
 
+function renderToggle() {
+  return render(
+    <ThemeProvider>
+      <ThemeToggle />
+    </ThemeProvider>
+  );
+}
+
 describe("ThemeToggle", () => {
   beforeEach(() => {
     localStorageMock.clear();
@@ -33,18 +42,18 @@ describe("ThemeToggle", () => {
   });
 
   it("renders toggle button", () => {
-    render(<ThemeToggle />);
+    renderToggle();
     expect(screen.getByRole("button", { name: /toggle theme/i })).toBeInTheDocument();
   });
 
   it("displays current theme", () => {
-    render(<ThemeToggle />);
+    renderToggle();
     expect(screen.getByText(/Light|Dark/i)).toBeInTheDocument();
   });
 
   it("toggles theme on click", async () => {
     const user = userEvent.setup();
-    render(<ThemeToggle />);
+    renderToggle();
 
     const button = screen.getByRole("button", { name: /toggle theme/i });
     const initialTheme = screen.getByText(/Light|Dark/i).textContent;
@@ -59,7 +68,7 @@ describe("ThemeToggle", () => {
 
   it("saves theme to localStorage", async () => {
     const user = userEvent.setup();
-    render(<ThemeToggle />);
+    renderToggle();
 
     const button = screen.getByRole("button", { name: /toggle theme/i });
     await user.click(button);
@@ -73,7 +82,7 @@ describe("ThemeToggle", () => {
 
   it("applies theme to document element", async () => {
     const user = userEvent.setup();
-    render(<ThemeToggle />);
+    renderToggle();
 
     const button = screen.getByRole("button", { name: /toggle theme/i });
     await user.click(button);
@@ -89,7 +98,7 @@ describe("ThemeToggle", () => {
 
   it("reads initial theme from localStorage", () => {
     localStorageMock.setItem("portfolio-theme", "dark");
-    render(<ThemeToggle />);
+    renderToggle();
     expect(screen.getByText(/Dark/i)).toBeInTheDocument();
   });
 });
