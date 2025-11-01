@@ -26,13 +26,10 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
-        working-directory: ./portfolio
-        run: npm install
+        run: npm install --prefix portfolio
 
       - name: Lint
-        working-directory: ./portfolio
-        run: npm run lint
+        run: npm run lint --prefix portfolio
 
       - name: Test
-        working-directory: ./portfolio
-        run: npm test -- --runInBand
+        run: npm test --prefix portfolio -- --runInBand
