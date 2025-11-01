@@ -21,13 +21,13 @@ export const siteContent: SiteContent = {
         href: "/resume.pdf",
         download: true,
       },
-      { label: "Email Nagarajan", href: "mailto:hello@nagarajan.dev", variant: "secondary" },
+      { label: "Email Nagarajan", href: "mailto:naga@nagarajanr.com", variant: "secondary" },
       { label: "View Experience", href: "#experience", variant: "secondary" },
     ],
     social: [
       { platform: "Portfolio", href: "https://nagarajanr.com" },
-      { platform: "LinkedIn", href: "https://www.linkedin.com/in/nagarajan-ravikumar" },
-      { platform: "Email", href: "mailto:hello@nagarajan.dev" },
+      { platform: "LinkedIn", href: "https://www.linkedin.com/in/nagarajanr0" },
+      { platform: "Email", href: "mailto:naga@nagarajanr.com" },
     ],
   },
   about: {

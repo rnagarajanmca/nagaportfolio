@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PlausibleAnalytics } from "@/components/PlausibleAnalytics";
 import { AnalyticsHints } from "@/components/AnalyticsHints";
-import { ThemeProvider } from '../components/ThemeProvider';
+import { ThemeProvider } from "../components/ThemeProvider";
 // Validate content on build/startup
 import "@/content/validate";
 
@@ -73,6 +75,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
         <PlausibleAnalytics />
+        <Analytics />
+        <SpeedInsights />
         <ErrorBoundary>
           <ThemeProvider>
             {children}

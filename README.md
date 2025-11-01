@@ -5,6 +5,12 @@
   Modern personal portfolio built with the Next.js App Router, Tailwind CSS v4 design tokens, and structured TypeScript content.
 
   [![CI](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml)
+  ![Node.js](https://img.shields.io/badge/node-20.x-339933?logo=node.js&logoColor=white)
+  ![Next.js](https://img.shields.io/badge/next.js-16.0.1-black?logo=next.js)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)
+  [![Hosted on Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com/)
+  ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
 </div>
 
@@ -91,11 +97,11 @@ npm run dev
 
 Optimized for Vercel:
 
-1. Ensure environment variables are configured (e.g., `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`, `RESEND_API_KEY` if used)
-2. Run `npm run build` to validate a production build locally
-3. Push to GitHub; Vercel (or another Node 20+ host) can import directly
+1. Ensure environment variables are configured in the Vercel dashboard (e.g., `RESEND_API_KEY`, `CONTACT_EMAIL`, `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` if used).
+2. Run `npm run build` locally to validate the production bundle.
+3. Push to GitHub; Vercel will build and deploy automatically using the `portfolio` directory.
 
-Other platforms (Netlify, Render) are compatible—install dependencies and run the build script.
+Other platforms (Netlify, Render) remain compatible—install dependencies and run the build script.
 
 ## Project Structure
 
