@@ -4,6 +4,8 @@
 
   A personal portfolio built with Next.js App Router, Tailwind CSS v4 tokens, and structured content files.
 
+  [![CI](https://github.com/nagarajanr/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/nagarajanr/portfolio/actions/workflows/ci.yml)
+
 </div>
 
 ## ✨ Features
@@ -27,12 +29,14 @@ The app runs at [http://localhost:3000](http://localhost:3000). Updates hot-relo
 
 ### Useful Scripts
 
-| Command        | Description                     |
-| -------------- | ------------------------------- |
-| `npm run dev`  | Start local development server. |
-| `npm run build`| Create a production build.      |
-| `npm run start`| Serve the production build.     |
-| `npm run lint` | Lint source files.              |
+| Command            | Description                     |
+| ------------------ | ------------------------------- |
+| `npm run dev`      | Start local development server. |
+| `npm run build`    | Create a production build.      |
+| `npm run start`    | Serve the production build.      |
+| `npm run lint`     | Lint source files.              |
+| `npm run type-check` | Run TypeScript type checking. |
+| `npm test`         | Run test suite.                 |
 
 ## 🗂 Content Management Workflow
 
