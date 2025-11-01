@@ -9,7 +9,8 @@
   ![Next.js](https://img.shields.io/badge/next.js-16.0.1-black?logo=next.js)
   ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
   ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)
-  [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com/)
+  [![Deployed on Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-F38020?logo=cloudflare&logoColor=white)](https://pages.cloudflare.com/)
+  ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
 </div>
 
@@ -94,13 +95,13 @@ npm run dev
 
 ## Deployment
 
-Optimized for Vercel:
+Optimized for Cloudflare Pages:
 
 1. Ensure environment variables are configured (e.g., `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`, `RESEND_API_KEY` if used)
-2. Run `npm run build` to validate a production build locally
-3. Push to GitHub; Vercel (or another Node 20+ host) can import directly
+2. Run `npm run build` locally to verify the production bundle
+3. Connect the GitHub repository in Cloudflare, set the build command to `npm run build`, and output directory to `.vercel/output/static` or export a static build via `next export` if needed
 
-Other platforms (Netlify, Render) are compatible—install dependencies and run the build script.
+Other platforms (Vercel, Netlify, Render) remain compatible—install dependencies and supply the standard build command.
 
 ## Project Structure
 
