@@ -16,8 +16,13 @@ export const siteContent: SiteContent = {
     summary:
       "Crafting seamless mobile experiences for over a decade with deep Android expertise, diverse screen support, Java mastery, and Agile delivery.",
     cta: [
-      { label: "Email Nagarajan", href: "mailto:hello@nagarajan.dev" },
-      { label: "View Experience", href: "#experience" },
+      {
+        label: "Download Résumé",
+        href: "/resume.pdf",
+        download: true,
+      },
+      { label: "Email Nagarajan", href: "mailto:hello@nagarajan.dev", variant: "secondary" },
+      { label: "View Experience", href: "#experience", variant: "secondary" },
     ],
     social: [
       { platform: "Portfolio", href: "https://nagarajanr.com" },

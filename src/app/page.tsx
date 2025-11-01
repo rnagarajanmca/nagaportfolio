@@ -31,11 +31,14 @@ export default function Home() {
               </h1>
               <p className="max-w-2xl text-lg text-muted">{hero.summary}</p>
               <div className="flex flex-wrap gap-3">
-                {hero.cta.map((cta, index) => (
+                {hero.cta.map((cta) => (
                   <CTAButton
                     key={cta.label}
                     href={cta.href}
-                    variant={index === 0 ? "primary" : "secondary"}
+                    variant={cta.variant}
+                    download={cta.download}
+                    target={cta.target}
+                    rel={cta.rel}
                   >
                     {cta.label}
                   </CTAButton>

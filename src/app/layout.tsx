@@ -19,14 +19,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Nagarajan Ravikumar · Portfolio",
   description:
-    "Product-focused full-stack engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
-  metadataBase: new URL("https://example.com"),
+    "Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.",
+  metadataBase: new URL("https://nagarajanr.com"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Nagarajan Ravikumar · Portfolio",
     description:
-      "Product-focused full-stack engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
-    url: "https://example.com",
-    siteName: "Nagarajan Ravikumar Portfolio",
+      "Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.",
+    url: "https://nagarajanr.com",
+    siteName: "Nagarajan Ravikumar · Portfolio",
     type: "website",
     images: [
       {
@@ -36,12 +39,13 @@ export const metadata: Metadata = {
         alt: "Nagarajan Ravikumar Portfolio preview",
       },
     ],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "Nagarajan Ravikumar · Portfolio",
     description:
-      "Product-focused full-stack engineer crafting resilient, accessible web experiences with Next.js and TypeScript.",
+      "Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.",
     images: ["/opengraph-image"],
   },
   icons: {

@@ -6,6 +6,10 @@ export interface NavLink {
 export interface CTALink {
   label: string;
   href: string;
+  variant?: "primary" | "secondary";
+  target?: string;
+  rel?: string;
+  download?: boolean;
 }
 
 export interface SocialLink {
