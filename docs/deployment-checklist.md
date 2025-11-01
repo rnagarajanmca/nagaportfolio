@@ -3,6 +3,10 @@
 ## Prerequisites
 - [ ] Install dependencies: `npm install`
 - [ ] Ensure environment variables:
+  - `RESEND_API_KEY` (required for contact form - get from https://resend.com)
+  - `CONTACT_EMAIL` (optional, defaults to hello@nagarajan.dev)
+  - `RESEND_FROM_EMAIL` (optional, defaults to portfolio@nagarajanr.com)
+  - `NEXT_PUBLIC_BASE_URL` (optional, defaults to https://nagarajanr.com)
   - `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` (optional for analytics)
 
 ## Verification

@@ -1,6 +1,9 @@
 import { CTAButton } from "@/components/CTAButton";
+import { ContactForm } from "@/components/ContactForm";
 import { NavBar } from "@/components/NavBar";
 import { ProjectCard } from "@/components/ProjectCard";
+import { ResumeDownload } from "@/components/ResumeDownload";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { SectionWrapper } from "@/components/SectionWrapper";
 import { SkillTag } from "@/components/SkillTag";
 import { TimelineItem } from "@/components/TimelineItem";
@@ -9,8 +12,47 @@ import { siteContent } from "@/content/site";
 export default function Home() {
   const { navigation, hero, about, experience, education, skills, projects, contact } = siteContent;
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://nagarajanr.com";
+  const linkedInUrl = hero.social.find((s) => s.platform === "LinkedIn")?.href || "";
+  const email = contact.email;
+
+  // JSON-LD Structured Data
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: hero.name,
+    jobTitle: hero.title,
+    description: hero.summary,
+    email: email,
+    url: baseUrl,
+    sameAs: [linkedInUrl, baseUrl].filter(Boolean),
+    knowsAbout: skills.flatMap((category) => category.items),
+    alumniOf: education.map((edu) => ({
+      "@type": "EducationalOrganization",
+      name: edu.school,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: edu.location.split(",")[0]?.trim(),
+        addressCountry: edu.location.split(",")[1]?.trim() || "India",
+      },
+    })),
+    worksFor: experience.map((exp) => ({
+      "@type": "Organization",
+      name: exp.company,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: exp.location.split(",")[0]?.trim(),
+        addressRegion: exp.location.split(",")[1]?.trim() || "",
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.08),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.15),_transparent_55%)]" />
       <a
         href="#main-content"
@@ -31,18 +73,23 @@ export default function Home() {
               </h1>
               <p className="max-w-2xl text-lg text-muted">{hero.summary}</p>
               <div className="flex flex-wrap gap-3">
-                {hero.cta.map((cta) => (
-                  <CTAButton
-                    key={cta.label}
-                    href={cta.href}
-                    variant={cta.variant}
-                    download={cta.download}
-                    target={cta.target}
-                    rel={cta.rel}
-                  >
-                    {cta.label}
-                  </CTAButton>
-                ))}
+                {hero.cta.map((cta) =>
+                  cta.download ? (
+                    <ResumeDownload key={cta.label} variant={cta.variant}>
+                      {cta.label}
+                    </ResumeDownload>
+                  ) : (
+                    <CTAButton
+                      key={cta.label}
+                      href={cta.href}
+                      variant={cta.variant}
+                      target={cta.target}
+                      rel={cta.rel}
+                    >
+                      {cta.label}
+                    </CTAButton>
+                  )
+                )}
               </div>
             </div>
             <aside className="space-y-4 rounded-3xl border border-border bg-surface p-6 shadow-sm animate-fade-up animation-delay-1">
@@ -54,14 +101,16 @@ export default function Home() {
                   <li key={item.platform}>
                     <a
                       href={item.href}
-                      className="inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground"
+                      className="inline-flex max-w-full flex-wrap items-center gap-2 text-muted transition-colors hover:text-foreground"
                       target={item.href.startsWith("http") ? "_blank" : undefined}
                       rel={item.href.startsWith("http") ? "noreferrer" : undefined}
                     >
                       <span className="text-xs uppercase tracking-[0.25em] text-muted">
                         {item.platform}
                       </span>
-                      <span className="font-medium">{item.href.replace(/^mailto:/, "")}</span>
+                      <span className="font-medium break-words break-all text-left">
+                        {item.href.replace(/^mailto:/, "")}
+                      </span>
                     </a>
                   </li>
                 ))}
@@ -130,8 +179,8 @@ export default function Home() {
                   {category.name}
                 </h3>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {category.items.map((item) => (
-                    <SkillTag key={item} label={item} />
+                  {category.items.map((item, index) => (
+                    <SkillTag key={item} label={item} index={index} />
                   ))}
                 </div>
               </div>
@@ -150,15 +199,19 @@ export default function Home() {
         </SectionWrapper>
 
         <SectionWrapper id="contact" title="Contact" subtitle={contact.headline}>
-          <div className="rounded-3xl border border-dashed border-border bg-surface/80 p-10 text-center shadow-sm animate-fade-up">
-            <p className="mx-auto max-w-2xl text-lg text-muted">
+          <div className="mx-auto max-w-2xl">
+            <p className="mb-8 text-center text-lg text-muted animate-fade-up">
               {contact.description}
             </p>
+            <div className="rounded-3xl border border-border bg-surface p-8 shadow-sm animate-fade-up animation-delay-1">
+              <ContactForm />
+            </div>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <CTAButton
                 href={`mailto:${contact.email}`}
+                variant="secondary"
               >
-                Email me
+                Or email directly
               </CTAButton>
               <CTAButton
                 href="https://cal.com"
@@ -175,6 +228,7 @@ export default function Home() {
       <footer className="border-t border-border bg-surface/60 py-6 text-center text-sm text-muted">
         © {new Date().getFullYear()} {hero.name}. Inspired by thoughtful, human-centered design.
       </footer>
+      <ScrollToTop />
     </div>
   );
 }

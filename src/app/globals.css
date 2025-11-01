@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* Tailwind CSS v4 theme tokens (lint may warn about @theme — safe to ignore) */
 @theme {
   --color-background: #f8fafc;
   --color-foreground: #0b1220;
@@ -18,26 +19,29 @@
 }
 
 @theme dark {
-  --color-background: #020617;
-  --color-foreground: #e2e8f0;
-  --color-muted: #94a3b8;
-  --color-muted-foreground: #cbd5f5;
+  --color-background: #050d1d;
+  --color-foreground: #f1f5f9;
+  --color-muted: #cbd5f5;
+  --color-muted-foreground: #e2e8f0;
   --color-accent: #e2e8f0;
-  --color-accent-foreground: #020617;
-  --color-surface: #0f172a;
-  --color-surface-strong: #1e293b;
-  --color-border: #1e293b;
-  --color-ring: #e2e8f0;
-  --shadow-soft: 0 20px 60px -20px rgba(148, 163, 184, 0.2);
+  --color-accent-foreground: #050d1d;
+  --color-surface: #0f1b33;
+  --color-surface-strong: #1f2d47;
+  --color-border: #30405e;
+  --color-ring: #cbd5f5;
+  --shadow-soft: 0 20px 60px -20px rgba(148, 163, 184, 0.25);
   --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
-  @apply border-border;
+  border-color: var(--color-border);
 }
 
 body {
-  @apply bg-background text-foreground antialiased;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes fade-up {
@@ -51,7 +55,10 @@ body {
   }
 }
 
+/* Animation helpers */
 .animate-fade-up {
+  opacity: 0;
+  transform: translateY(24px);
   animation: fade-up 0.6s var(--ease-emphasized) both;
 }
 
@@ -63,13 +70,19 @@ body {
   animation-delay: 0.3s;
 }
 
+.animation-delay-3 {
+  animation-delay: 0.45s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
     animation: none;
+    transform: none;
   }
 
   .animation-delay-1,
-  .animation-delay-2 {
+  .animation-delay-2,
+  .animation-delay-3 {
     animation-delay: 0s;
   }
 }

@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PlausibleAnalytics } from "@/components/PlausibleAnalytics";
 import { AnalyticsHints } from "@/components/AnalyticsHints";
+import { ThemeProvider } from '../components/ThemeProvider';
+// Validate content on build/startup
+import "@/content/validate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,35 +59,25 @@ export const metadata: Metadata = {
   },
 };
 
-const themeInitScript = `(() => {
-  try {
-    const storageKey = "portfolio-theme";
-    const stored = localStorage.getItem(storageKey);
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = stored === "light" || stored === "dark" ? stored : prefersDark ? "dark" : "light";
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-  } catch (error) {
-    console.warn("Theme initialization failed", error);
-  }
-})();`;
-
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" data-theme="light" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <AnalyticsHints />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <PlausibleAnalytics />
-        {children}
+        <ErrorBoundary>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
