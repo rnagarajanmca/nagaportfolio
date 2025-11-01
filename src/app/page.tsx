@@ -101,14 +101,16 @@ export default function Home() {
                   <li key={item.platform}>
                     <a
                       href={item.href}
-                      className="inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground"
+                      className="inline-flex max-w-full flex-wrap items-center gap-2 text-muted transition-colors hover:text-foreground"
                       target={item.href.startsWith("http") ? "_blank" : undefined}
                       rel={item.href.startsWith("http") ? "noreferrer" : undefined}
                     >
                       <span className="text-xs uppercase tracking-[0.25em] text-muted">
                         {item.platform}
                       </span>
-                      <span className="font-medium">{item.href.replace(/^mailto:/, "")}</span>
+                      <span className="font-medium break-words break-all text-left">
+                        {item.href.replace(/^mailto:/, "")}
+                      </span>
                     </a>
                   </li>
                 ))}
