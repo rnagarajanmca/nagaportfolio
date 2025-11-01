@@ -88,7 +88,7 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(resendApiKey);
-    const recipientEmail = process.env.CONTACT_EMAIL || "hello@nagarajan.dev";
+    const recipientEmail = process.env.CONTACT_EMAIL || "naga@nagarajanr.com";
     const fromEmail = process.env.RESEND_FROM_EMAIL || "portfolio@nagarajanr.com";
 
     const emailResult = await resend.emails.send({
