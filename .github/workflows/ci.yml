@@ -27,16 +27,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          cache-dependency-path: portfolio/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            portfolio/package-lock.json
 
       - name: Install dependencies
-        working-directory: portfolio
         run: npm install
 
       - name: Lint
-        working-directory: portfolio
         run: npm run lint
 
       - name: Test
-        working-directory: portfolio
         run: npm test -- --runInBand
