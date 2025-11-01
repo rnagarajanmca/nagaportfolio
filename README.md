@@ -5,6 +5,11 @@
   Modern personal portfolio built with the Next.js App Router, Tailwind CSS v4 design tokens, and structured TypeScript content.
 
   [![CI](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml)
+  ![Node.js](https://img.shields.io/badge/node-20.x-339933?logo=node.js&logoColor=white)
+  ![Next.js](https://img.shields.io/badge/next.js-16.0.1-black?logo=next.js)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)
+  [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com/)
 
 </div>
 
