@@ -1,8 +1,7 @@
 # Cloudflare Wrangler configuration for Next.js on Pages
 # Update `pages_project_name` to match the Pages project slug in your account.
-name = "portfolio-next"
+name = "nagaportfolio"
 pages_build_output_dir = ".vercel/output/static"
-pages_project_name = "portfolio-next"
 compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
