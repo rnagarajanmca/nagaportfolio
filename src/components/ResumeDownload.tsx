@@ -16,7 +16,7 @@ declare global {
 }
 
 export function ResumeDownload({ children, variant = "primary", ...props }: ResumeDownloadProps) {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = () => {
     // Track download event with Plausible
     if (typeof window !== "undefined" && window.plausible) {
       window.plausible("Resume Download", {

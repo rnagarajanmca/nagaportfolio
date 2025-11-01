@@ -7,18 +7,27 @@ jest.mock("@/components/ThemeToggle", () => ({
   ThemeToggle: () => <div data-testid="theme-toggle">Theme Toggle</div>,
 }));
 
-// Mock IntersectionObserver
-class IntersectionObserver {
-  observe = jest.fn();
-  disconnect = jest.fn();
+const observeMock = jest.fn();
+
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | Document | null = null;
+  readonly rootMargin = "";
+  readonly thresholds: ReadonlyArray<number> = [];
+
+  constructor(public readonly callback: IntersectionObserverCallback) {}
+
+  observe = observeMock;
   unobserve = jest.fn();
-  constructor(callback: IntersectionObserverCallback) {
-    // Store callback for manual triggering in tests
-    (this as any).callback = callback;
+  disconnect = jest.fn();
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
   }
 }
 
-global.IntersectionObserver = IntersectionObserver as any;
+Object.defineProperty(globalThis, "IntersectionObserver", {
+  writable: true,
+  value: MockIntersectionObserver,
+});
 
 describe("NavBar", () => {
   const mockLinks: NavLink[] = [
@@ -39,6 +48,7 @@ describe("NavBar", () => {
   afterEach(() => {
     document.body.innerHTML = "";
     jest.clearAllMocks();
+    observeMock.mockClear();
   });
 
   it("renders brand name", () => {
@@ -65,13 +75,9 @@ describe("NavBar", () => {
   });
 
   it("creates IntersectionObserver for section tracking", () => {
-    const observerSpy = jest.spyOn(global, "IntersectionObserver" as any);
     render(<NavBar links={mockLinks} brand="Test" />);
 
-    // IntersectionObserver should be created
-    expect(observerSpy).toHaveBeenCalled();
-    
-    observerSpy.mockRestore();
+    expect(observeMock).toHaveBeenCalled();
   });
 });
 

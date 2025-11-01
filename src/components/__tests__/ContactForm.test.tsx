@@ -121,8 +121,8 @@ describe("ContactForm", () => {
 
   it("disables submit button while submitting", async () => {
     const user = userEvent.setup();
-    let resolvePromise: (value: any) => void;
-    const pendingPromise = new Promise((resolve) => {
+    let resolvePromise: ((value: Response) => void) | undefined;
+    const pendingPromise = new Promise<Response>((resolve) => {
       resolvePromise = resolve;
     });
 
@@ -140,7 +140,12 @@ describe("ContactForm", () => {
     expect(submitButton).toBeDisabled();
     expect(screen.getByText(/sending/i)).toBeInTheDocument();
 
-    resolvePromise!({ ok: true, json: async () => ({ message: "Success", errors: {} }) });
+    resolvePromise?.(
+      new Response(JSON.stringify({ message: "Success", errors: {} }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
+    );
     await waitFor(() => {
       expect(submitButton).not.toBeDisabled();
     });

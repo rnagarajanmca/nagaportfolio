@@ -42,6 +42,14 @@ const themeTokens: Record<Theme, Record<string, string>> = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') {
+    return 'dark';
+  }
+  const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+  return storedTheme ?? 'dark';
+}
+
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
   root.dataset.theme = theme;
@@ -55,16 +63,7 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('dark');
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    setTheme(storedTheme ?? 'dark');
-  }, []);
+  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
   useEffect(() => {
     if (typeof window === 'undefined') {
