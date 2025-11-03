@@ -16,6 +16,7 @@ export default function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://nagarajanr.com";
   const linkedInUrl = hero.social.find((s) => s.platform === "LinkedIn")?.href || "";
   const email = contact.email;
+  const showHeroMetrics = false;
 
   // JSON-LD Structured Data
   const personSchema = {
@@ -101,31 +102,60 @@ export default function Home() {
                   )
                 )}
               </div>
+              {showHeroMetrics && hero.metrics?.length ? (
+                <div className="grid gap-4 rounded-3xl border border-border/60 bg-surface/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur animate-fade-up animation-delay-3 sm:grid-cols-3">
+                  {hero.metrics.map((metric) => (
+                    <div key={metric.label} className="space-y-2">
+                      <span className="text-3xl font-semibold text-foreground">{metric.value}</span>
+                      <p className="text-xs uppercase tracking-[0.25em] text-muted">{metric.label}</p>
+                      {metric.description ? (
+                        <p className="text-sm text-muted-foreground">{metric.description}</p>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
-            <aside className="space-y-4 rounded-3xl border border-border bg-surface p-6 shadow-sm animate-fade-up animation-delay-1">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">
-                Connect
-              </h2>
-              <ul className="space-y-2 text-sm">
-                {hero.social.map((item) => (
-                  <li key={item.platform}>
-                    <a
-                      href={item.href}
-                      className="inline-flex max-w-full flex-wrap items-center gap-2 text-muted transition-colors hover:text-foreground"
-                      target={item.href.startsWith("http") ? "_blank" : undefined}
-                      rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                    >
-                      <span className="text-xs uppercase tracking-[0.25em] text-muted">
-                        {item.platform}
-                      </span>
-                      <span className="font-medium break-words break-all text-left">
-                        {item.href.replace(/^mailto:/, "")}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </aside>
+            <div className="relative flex items-center justify-center animate-fade-up animation-delay-1">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 -translate-y-6 rounded-[48px] bg-[radial-gradient(circle_at_top,_rgba(240,84,84,0.32),_transparent_60%),_radial-gradient(circle_at_bottom_right,_rgba(23,74,118,0.4),_transparent_65%)] blur-3xl opacity-80"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -left-12 -top-10 h-20 w-20 rounded-full bg-[radial-gradient(circle,_rgba(255,178,107,0.55),_transparent_60%)] blur-xl"
+              />
+              <aside className="relative z-10 space-y-4 rounded-3xl border border-border/70 bg-surface/95 p-6 shadow-[var(--shadow-soft)] backdrop-blur">
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">
+                    Connect
+                  </h2>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-surface-strong/60 px-3 py-1 text-xs font-medium text-muted">
+                    <span className="inline-block h-2 w-2 rounded-full bg-highlight" />
+                    {hero.social.length} links
+                  </span>
+                </div>
+                <ul className="space-y-2 text-sm">
+                  {hero.social.map((item) => (
+                    <li key={item.platform}>
+                      <a
+                        href={item.href}
+                        className="group inline-flex max-w-full flex-wrap items-center gap-2 text-muted transition-colors hover:text-foreground"
+                        target={item.href.startsWith("http") ? "_blank" : undefined}
+                        rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                      >
+                        <span className="text-xs uppercase tracking-[0.25em] text-muted group-hover:text-highlight">
+                          {item.platform}
+                        </span>
+                        <span className="font-medium break-words break-all text-left">
+                          {item.href.replace(/^mailto:/, "")}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            </div>
           </div>
         </section>
 

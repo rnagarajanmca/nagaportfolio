@@ -25,6 +25,23 @@ export const siteContent: SiteContent = {
       "Enabling innovation at scale",
       "Delivering high-impact products",
     ],
+    metrics: [
+      {
+        label: "Years of leadership",
+        value: "12+",
+        description: "Driving mobile & digital outcomes",
+      },
+      {
+        label: "Teams enabled",
+        value: "15",
+        description: "Cross-functional squads aligned",
+      },
+      {
+        label: "Apps delivered",
+        value: "40+",
+        description: "High-performing launches shipped",
+      },
+    ],
     cta: [
       {
         label: "Download Résumé",
