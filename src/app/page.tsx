@@ -8,6 +8,7 @@ import { SectionWrapper } from "@/components/SectionWrapper";
 import { SkillTag } from "@/components/SkillTag";
 import { TimelineItem } from "@/components/TimelineItem";
 import { siteContent } from "@/content/site";
+import { HeroTypingHeadline } from "@/components/HeroTypingHeadline";
 
 export default function Home() {
   const { navigation, hero, about, experience, education, skills, projects, contact } = siteContent;
@@ -62,8 +63,11 @@ export default function Home() {
       </a>
       <NavBar links={navigation} brand={hero.name} />
       <main id="main-content" className="mx-auto flex max-w-5xl flex-col gap-24 px-6 pb-24 pt-24 sm:px-8">
-        <section id="home" className="scroll-mt-24">
-          <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center">
+        <section
+          id="home"
+          className="scroll-mt-20 sm:scroll-mt-28 min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] pb-12 sm:pb-16"
+        >
+          <div className="grid h-full gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center">
             <div className="space-y-6 animate-fade-up">
               <p className="text-sm uppercase tracking-[0.2em] text-muted">
                 {hero.title}
@@ -71,8 +75,14 @@ export default function Home() {
               <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
                 {hero.name}
               </h1>
-              <p className="max-w-2xl text-lg text-muted">{hero.summary}</p>
-              <div className="flex flex-wrap gap-3">
+              <HeroTypingHeadline
+                phrases={hero.typingPhrases}
+                className="animate-fade-up animation-delay-1"
+              />
+              <p className="max-w-2xl text-lg text-muted animate-fade-up animation-delay-2">
+                {hero.summary}
+              </p>
+              <div className="flex flex-wrap gap-3 animate-fade-up animation-delay-3">
                 {hero.cta.map((cta) =>
                   cta.download ? (
                     <ResumeDownload key={cta.label} variant={cta.variant}>
@@ -119,7 +129,7 @@ export default function Home() {
           </div>
         </section>
 
-        <SectionWrapper id="about" title="About" subtitle={about.heading}>
+        <SectionWrapper id="about" title="About" subtitle={about.heading} fillViewport>
           {about.body.map((paragraph) => (
             <p key={paragraph} className="text-lg leading-relaxed text-muted animate-fade-up">
               {paragraph}
@@ -127,7 +137,7 @@ export default function Home() {
           ))}
         </SectionWrapper>
 
-        <SectionWrapper id="experience" title="Experience" subtitle="Recent roles and impact">
+        <SectionWrapper id="experience" title="Experience" subtitle="Recent roles and impact" fillViewport>
           <div className="relative">
             <span className="absolute left-[5px] top-0 h-full w-px bg-gradient-to-b from-surface-strong via-transparent to-transparent" aria-hidden />
             <div className="space-y-12">
@@ -149,7 +159,7 @@ export default function Home() {
           </div>
         </SectionWrapper>
 
-        <SectionWrapper id="education" title="Education" subtitle="Foundations that shaped my craft">
+        <SectionWrapper id="education" title="Education" subtitle="Foundations that shaped my craft" fillViewport>
           <div className="relative">
             <span className="absolute left-[5px] top-0 h-full w-px bg-gradient-to-b from-surface-strong via-transparent to-transparent" aria-hidden />
             <div className="space-y-12">
@@ -171,7 +181,7 @@ export default function Home() {
           </div>
         </SectionWrapper>
 
-        <SectionWrapper id="skills" title="Skills" subtitle="Core tools and topics I rely on">
+        <SectionWrapper id="skills" title="Skills" subtitle="Core tools and topics I rely on" fillViewport>
           <div className="grid gap-6 sm:grid-cols-2">
             {skills.map((category) => (
               <div key={category.name} className="rounded-2xl border border-border bg-surface p-6 animate-fade-up">

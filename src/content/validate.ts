@@ -25,6 +25,7 @@ const heroContentSchema = z.object({
   name: z.string().min(1, "Name is required"),
   title: z.string().min(1, "Title is required"),
   summary: z.string().min(1, "Summary is required"),
+  typingPhrases: z.array(z.string().min(1)).min(1, "At least one typing phrase is required"),
   cta: z.array(ctaLinkSchema).min(1, "At least one CTA is required"),
   social: z.array(socialLinkSchema).min(1, "At least one social link is required"),
 });

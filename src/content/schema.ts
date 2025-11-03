@@ -21,6 +21,7 @@ export interface HeroContent {
   name: string;
   title: string;
   summary: string;
+  typingPhrases: string[];
   cta: CTALink[];
   social: SocialLink[];
 }

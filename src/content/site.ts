@@ -12,9 +12,19 @@ export const siteContent: SiteContent = {
   ],
   hero: {
     name: "Nagarajan Ravikumar",
-    title: "Senior Android Engineer",
+    title: "Technical Manager · Mobile Platforms",
     summary:
-      "Crafting seamless mobile experiences for over a decade with deep Android expertise, diverse screen support, Java mastery, and Agile delivery.",
+      "Guiding mobile product initiatives end-to-end: aligning strategy, architecture, and execution to deliver reliable, multi-platform experiences.",
+    typingPhrases: [
+      "Driving mobile strategy",
+      "Architecting scalable platforms",
+      "Championing engineering excellence",
+      "Leading cross-functional teams",
+      "Optimizing mobile performance",
+      "Shaping seamless experiences",
+      "Enabling innovation at scale",
+      "Delivering high-impact products",
+    ],
     cta: [
       {
         label: "Download Résumé",
@@ -31,10 +41,10 @@ export const siteContent: SiteContent = {
     ],
   },
   about: {
-    heading: "Senior Android engineer crafting reliable mobile products",
+    heading: "Technical Manager aligning strategy and execution",
     body: [
-      "Over a decade of delivering high-impact Android apps across logistics, retail, and asset management domains.",
-      "Blend of hands-on engineering and leadership—comfortable guiding cross-functional teams, mentoring engineers, and operating in Agile environments.",
+      "Over a decade spent guiding mobile and digital programs from discovery to launch—leading cross-functional teams, shaping scalable architectures, and steering reliable, high-performing products across platforms.",
+      "Focused on pairing innovation with rigorous engineering discipline, keeping quality high while aligning technology strategy to measurable business goals.",
     ],
   },
   experience: [
