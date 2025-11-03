@@ -13,17 +13,17 @@ const THEME_STORAGE_KEY = 'portfolio-theme';
 
 const themeTokens: Record<Theme, Record<string, string>> = {
   light: {
-    '--color-background': '#f8fafc',
-    '--color-foreground': '#0b1220',
-    '--color-muted': '#64748b',
-    '--color-muted-foreground': '#94a3b8',
-    '--color-accent': '#0f172a',
-    '--color-accent-foreground': '#f8fafc',
+    '--color-background': '#eef2f7',
+    '--color-foreground': '#0d1726',
+    '--color-muted': '#3f4d63',
+    '--color-muted-foreground': '#1f2a3d',
+    '--color-accent': '#174a76',
+    '--color-accent-foreground': '#f6f9fc',
     '--color-surface': '#ffffff',
-    '--color-surface-strong': '#e2e8f0',
-    '--color-border': '#cbd5f5',
-    '--color-ring': '#0f172a',
-    '--shadow-soft': '0 20px 60px -20px rgba(15, 23, 42, 0.25)',
+    '--color-surface-strong': '#d7dfeb',
+    '--color-border': '#c0c9d8',
+    '--color-ring': '#174a76',
+    '--shadow-soft': '0 20px 60px -22px rgba(13, 23, 38, 0.25)',
   },
   dark: {
     '--color-background': '#050d1d',

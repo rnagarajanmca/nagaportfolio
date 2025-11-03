@@ -17,12 +17,20 @@ export interface SocialLink {
   href: string;
 }
 
+export interface HeroMetric {
+  label: string;
+  value: string;
+  description?: string;
+}
+
 export interface HeroContent {
   name: string;
   title: string;
   summary: string;
+  typingPhrases: string[];
   cta: CTALink[];
   social: SocialLink[];
+  metrics?: HeroMetric[];
 }
 
 export interface AboutContent {

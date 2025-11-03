@@ -21,12 +21,20 @@ const socialLinkSchema = z.object({
   href: z.string().min(1, "Href is required"),
 });
 
+const heroMetricSchema = z.object({
+  label: z.string().min(1, "Metric label is required"),
+  value: z.string().min(1, "Metric value is required"),
+  description: z.string().optional(),
+});
+
 const heroContentSchema = z.object({
   name: z.string().min(1, "Name is required"),
   title: z.string().min(1, "Title is required"),
   summary: z.string().min(1, "Summary is required"),
+  typingPhrases: z.array(z.string().min(1)).min(1, "At least one typing phrase is required"),
   cta: z.array(ctaLinkSchema).min(1, "At least one CTA is required"),
   social: z.array(socialLinkSchema).min(1, "At least one social link is required"),
+  metrics: z.array(heroMetricSchema).optional(),
 });
 
 const aboutContentSchema = z.object({
