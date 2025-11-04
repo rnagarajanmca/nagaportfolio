@@ -27,7 +27,7 @@ export function SectionWrapper({
       : "py-10 sm:py-16 lg:py-20";
   const headingSpacingClass = density === "compact" ? "mb-5" : "mb-7";
   const contentSpacingClass = density === "compact" ? "space-y-4" : "space-y-5";
-  const minHeightClass = fillViewport ? "md:min-h-[calc(100vh+4rem)]" : "";
+  const minHeightClass = fillViewport ? "min-h-[calc(100vh-6rem)] sm:min-h-[calc(100vh-7rem)] md:min-h-[calc(100vh-8rem)]" : "";
   const snapClass = fillViewport ? "md:snap-start" : "";
   const sectionClasses = `${scrollMarginClass} ${paddingClass} ${minHeightClass} ${snapClass} ${className}`
     .replace(/\s+/g, " ")

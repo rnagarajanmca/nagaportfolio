@@ -159,7 +159,7 @@ export default function Home() {
           </div>
         </section>
 
-        <SectionWrapper id="about" title="About" subtitle={about.heading} className="pt-6 sm:pt-8">
+        <SectionWrapper id="about" title="About" subtitle={about.heading} className="pt-6 sm:pt-8" fillViewport>
           {about.body.map((paragraph) => (
             <p key={paragraph} className="text-lg leading-relaxed text-muted animate-fade-up">
               {paragraph}

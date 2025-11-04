@@ -52,8 +52,8 @@ export const siteContent: SiteContent = {
       { label: "View Experience", href: "#experience", variant: "secondary" },
     ],
     social: [
-      { platform: "Portfolio", href: "https://nagarajanr.com" },
       { platform: "LinkedIn", href: "https://www.linkedin.com/in/nagarajanr0" },
+      { platform: "GitHub", href: "https://github.com/rnagarajanmca" },
       { platform: "Email", href: "mailto:naga@nagarajanr.com" },
     ],
   },

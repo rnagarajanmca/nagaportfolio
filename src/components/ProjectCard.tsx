@@ -8,6 +8,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   const { company, client, links } = project;
   const metaLine = [company, client].filter(Boolean).join(" · ");
+  const ctaLinks = links.filter((link) => !(link.label === "Experience" && link.href.startsWith("#")));
 
   return (
     <article className="flex flex-col gap-4 rounded-3xl border border-border bg-surface p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-[var(--shadow-soft)]">
@@ -28,9 +29,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
         ))}
       </ul>
       <div className="flex flex-wrap gap-3">
-        {links.map((link) => {
+        {ctaLinks.map((link) => {
           const isExternal = link.href.startsWith("http");
-          const ctaLabel = link.label === "Experience" ? "View experience" : link.label;
           return (
             <CTAButton
               key={`${project.name}-${link.href}`}
@@ -39,7 +39,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noreferrer" : undefined}
             >
-              {ctaLabel}
+              {link.label}
             </CTAButton>
           );
         })}
