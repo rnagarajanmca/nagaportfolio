@@ -75,6 +75,9 @@ export interface ProjectLink {
 
 export interface ProjectItem {
   name: string;
+  company?: string;
+  client?: string;
+  role?: string;
   description: string;
   technologies: string[];
   links: ProjectLink[];

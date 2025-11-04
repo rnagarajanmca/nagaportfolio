@@ -6,35 +6,43 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const { company, client, links } = project;
+  const metaLine = [company, client].filter(Boolean).join(" · ");
+
   return (
-    <article className="flex flex-col gap-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+    <article className="flex flex-col gap-4 rounded-3xl border border-border bg-surface p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-[var(--shadow-soft)]">
       <header className="flex items-center justify-between gap-4">
-        <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{project.name}</h3>
-        <span className="text-xs uppercase tracking-[0.25em] text-zinc-400">{project.year}</span>
+        <h3 className="text-xl font-semibold text-foreground">{project.name}</h3>
+        <span className="text-xs uppercase tracking-[0.25em] text-muted">{project.year}</span>
       </header>
-      <p className="text-base text-zinc-600 dark:text-zinc-300">{project.description}</p>
-      <ul className="flex flex-wrap gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+      {metaLine ? <p className="text-xs uppercase tracking-[0.25em] text-muted">{metaLine}</p> : null}
+      <p className="text-base text-muted-foreground">{project.description}</p>
+      <ul className="flex flex-wrap gap-2 text-sm text-muted">
         {project.technologies.map((tech) => (
           <li
             key={tech}
-            className="rounded-full border border-zinc-200 px-3 py-1 dark:border-zinc-800"
+            className="rounded-full border border-border bg-surface-strong/70 px-3 py-1 text-xs font-medium text-muted"
           >
             {tech}
           </li>
         ))}
       </ul>
       <div className="flex flex-wrap gap-3">
-        {project.links.map((link) => (
-          <CTAButton
-            key={link.label}
-            href={link.href}
-            className="border border-zinc-300 bg-transparent text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800"
-            target={link.href.startsWith("http") ? "_blank" : undefined}
-            rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-          >
-            {link.label}
-          </CTAButton>
-        ))}
+        {links.map((link) => {
+          const isExternal = link.href.startsWith("http");
+          const ctaLabel = link.label === "Experience" ? "View experience" : link.label;
+          return (
+            <CTAButton
+              key={`${project.name}-${link.href}`}
+              href={link.href}
+              className="border border-border bg-transparent text-foreground hover:bg-surface-strong/70"
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noreferrer" : undefined}
+            >
+              {ctaLabel}
+            </CTAButton>
+          );
+        })}
       </div>
     </article>
   );
