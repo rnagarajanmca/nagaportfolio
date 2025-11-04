@@ -58,20 +58,22 @@ describe("NavBar", () => {
 
   it("renders all navigation links", () => {
     render(<NavBar links={mockLinks} brand="Test" />);
-    expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Contact" })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Home" })).not.toHaveLength(0);
+    expect(screen.getAllByRole("link", { name: "About" })).not.toHaveLength(0);
+    expect(screen.getAllByRole("link", { name: "Contact" })).not.toHaveLength(0);
   });
 
   it("renders theme toggle", () => {
     render(<NavBar links={mockLinks} brand="Test" />);
-    expect(screen.getByTestId("theme-toggle")).toBeInTheDocument();
+    expect(screen.getAllByTestId("theme-toggle")).not.toHaveLength(0);
   });
 
   it("has correct href attributes for links", () => {
     render(<NavBar links={mockLinks} brand="Test" />);
-    const homeLink = screen.getByRole("link", { name: "Home" });
-    expect(homeLink).toHaveAttribute("href", "#home");
+    const homeLinks = screen.getAllByRole("link", { name: "Home" });
+    homeLinks.forEach((link) => {
+      expect(link).toHaveAttribute("href", "#home");
+    });
   });
 
   it("creates IntersectionObserver for section tracking", () => {
