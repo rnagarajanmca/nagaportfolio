@@ -63,24 +63,24 @@ export default function Home() {
         Skip to content
       </a>
       <NavBar links={navigation} brand={hero.name} />
-      <main id="main-content" className="mx-auto flex max-w-5xl flex-col gap-24 px-6 pb-24 pt-24 sm:px-8">
+      <main id="main-content" className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pb-20 pt-20 sm:gap-24 sm:px-8 sm:pb-24 sm:pt-24">
         <section
           id="home"
-          className="scroll-mt-20 sm:scroll-mt-28 min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] pb-12 sm:pb-16"
+          className="scroll-mt-16 sm:scroll-mt-24 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-6rem)] pb-12 sm:pb-16"
         >
           <div className="grid h-full gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center">
             <div className="space-y-6 animate-fade-up">
-              <p className="text-sm uppercase tracking-[0.2em] text-muted">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted sm:text-sm">
                 {hero.title}
               </p>
-              <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="text-[2.5rem] font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
                 {hero.name}
               </h1>
               <HeroTypingHeadline
                 phrases={hero.typingPhrases}
                 className="animate-fade-up animation-delay-1"
               />
-              <p className="max-w-2xl text-lg text-muted animate-fade-up animation-delay-2">
+              <p className="max-w-2xl text-base text-muted animate-fade-up animation-delay-2 sm:text-lg">
                 {hero.summary}
               </p>
               <div className="flex flex-wrap gap-3 animate-fade-up animation-delay-3">
@@ -159,7 +159,7 @@ export default function Home() {
           </div>
         </section>
 
-        <SectionWrapper id="about" title="About" subtitle={about.heading} fillViewport>
+        <SectionWrapper id="about" title="About" subtitle={about.heading} className="pt-6 sm:pt-8">
           {about.body.map((paragraph) => (
             <p key={paragraph} className="text-lg leading-relaxed text-muted animate-fade-up">
               {paragraph}
