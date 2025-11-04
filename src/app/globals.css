@@ -95,6 +95,40 @@ body {
   margin-left: 2px;
 }
 
+.project-experience-link {
+  position: relative;
+  transition: color 200ms var(--ease-emphasized);
+}
+
+.project-experience-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.2;
+  transform: scaleX(0.4);
+  transform-origin: left center;
+  transition: opacity 200ms var(--ease-emphasized), transform 200ms var(--ease-emphasized);
+}
+
+.project-experience-link:hover::after,
+.project-experience-link:focus-visible::after {
+  opacity: 0.6;
+  transform: scaleX(1);
+}
+
+.project-experience-link__arrow {
+  transition: transform 200ms var(--ease-emphasized);
+}
+
+.project-experience-link:hover .project-experience-link__arrow,
+.project-experience-link:focus-visible .project-experience-link__arrow {
+  transform: translateX(2px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
     animation: none;
