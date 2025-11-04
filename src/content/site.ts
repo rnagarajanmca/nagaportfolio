@@ -48,7 +48,6 @@ export const siteContent: SiteContent = {
         href: "/resume.pdf",
         download: true,
       },
-      { label: "Email Nagarajan", href: "mailto:naga@nagarajanr.com", variant: "secondary" },
       { label: "View Experience", href: "#experience", variant: "secondary" },
     ],
     social: [
