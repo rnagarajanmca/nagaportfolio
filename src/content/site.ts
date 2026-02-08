@@ -200,7 +200,7 @@ export const siteContent: SiteContent = {
       description:
         "Leading three cross-functional engineering squads delivering the reusable mobile platform powering the 7-Eleven and Speedway consumer apps.",
       technologies: ["Android", "iOS", "Kotlin", "Swift", "Platform Strategy"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2024—Present",
     },
     {
@@ -209,7 +209,7 @@ export const siteContent: SiteContent = {
       description:
         "Led the rollout of an Android framework powering 55+ supply chain workflows as Wayfair migrated from RF scanners to Zebra devices.",
       technologies: ["Android", "Kotlin", "Jetpack", "Zebra Devices"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2019—2024",
     },
     {
@@ -218,7 +218,7 @@ export const siteContent: SiteContent = {
       description:
         "Partnered with store operations to prototype self-checkout stations and integrate iBeacon-driven proximity detection in the Android app.",
       technologies: ["Android", "Java", "iBeacon", "Retail Tech"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2017—2019",
     },
     {
@@ -228,7 +228,7 @@ export const siteContent: SiteContent = {
       description:
         "Led the TrueMobile Android suite with camera, RFID, and barcode integrations to help enterprises inventory and locate assets in real time.",
       technologies: ["Android", "Room", "RFID", "Barcode Scanning"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2014—2017",
     },
     {
@@ -238,7 +238,7 @@ export const siteContent: SiteContent = {
       description:
         "Built Android assessments with WebRTC consults, offline interview capture, and automated sync to support case managers delivering in-home care.",
       technologies: ["Android", "Java", "WebRTC", "Offline Sync"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2013—2014",
     },
     {
@@ -247,7 +247,7 @@ export const siteContent: SiteContent = {
       description:
         "Created a configurable Android framework with cloud CMS controls, push orchestration, and wearable/IoT readiness to speed enterprise rollouts.",
       technologies: ["Android", "Java", "Cloud CMS", "Push Messaging"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2013—2014",
     },
     {
@@ -257,7 +257,7 @@ export const siteContent: SiteContent = {
       description:
         "Delivered a surgical recording prototype on Google Glass, enabling live OR streaming and remote clinician collaboration.",
       technologies: ["Android", "Google Glass", "Wearables", "Video Streaming"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2013",
     },
   ],
