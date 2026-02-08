@@ -168,10 +168,6 @@ export default function Home() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 -translate-y-6 rounded-[48px] bg-[radial-gradient(circle_at_top,_rgba(240,84,84,0.32),_transparent_60%),_radial-gradient(circle_at_bottom_right,_rgba(23,74,118,0.4),_transparent_65%)] blur-3xl opacity-80"
               />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -left-12 -top-10 h-20 w-20 rounded-full bg-[radial-gradient(circle,_rgba(255,178,107,0.55),_transparent_60%)] blur-xl"
-              />
               <aside className="relative z-10 w-full space-y-4 rounded-3xl border border-border/70 bg-surface/95 p-6 shadow-[var(--shadow-soft)] backdrop-blur md:w-auto">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">
