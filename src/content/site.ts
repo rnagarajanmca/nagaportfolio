@@ -59,7 +59,7 @@ export const siteContent: SiteContent = {
   about: {
     heading: "Technical Manager aligning strategy and execution",
     body: [
-      "From Android engineer to technical manager: over a decade building and leading mobile platforms that scale. I've progressed from architecting individual frameworks to directing teams of 15+ engineers, always maintaining the engineering rigor that defines reliable systems.",
+      "From Android engineer to Technical manager: over a decade building and leading mobile platforms that scale. I've progressed from architecting individual frameworks to directing teams of 15+ engineers, always maintaining the engineering rigor that defines reliable systems.",
       "I pair deep technical expertise with strategic thinking ensuring mobile initiatives align with business goals while keeping quality and innovation at the forefront.",
     ],
   },
