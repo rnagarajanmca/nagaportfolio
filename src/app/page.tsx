@@ -251,11 +251,13 @@ export default function Home() {
                   subtitle={`${item.school} · ${item.location}`}
                   meta={`${item.startDate} — ${item.endDate}`}
                 >
-                  <ul className="list-disc space-y-2 pl-4 text-muted">
-                    {item.highlights.map((highlight) => (
-                      <li key={highlight}>{highlight}</li>
-                    ))}
-                  </ul>
+                  {item.highlights.length > 0 ? (
+                    <ul className="list-disc space-y-2 pl-4 text-muted">
+                      {item.highlights.map((highlight) => (
+                        <li key={highlight}>{highlight}</li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </TimelineItem>
               ))}
             </div>

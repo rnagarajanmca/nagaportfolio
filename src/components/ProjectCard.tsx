@@ -28,22 +28,24 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </li>
         ))}
       </ul>
-      <div className="flex flex-wrap gap-3">
-        {ctaLinks.map((link) => {
-          const isExternal = link.href.startsWith("http");
-          return (
-            <CTAButton
-              key={`${project.name}-${link.href}`}
-              href={link.href}
-              className="border border-border bg-transparent text-foreground hover:bg-surface-strong/70"
-              target={isExternal ? "_blank" : undefined}
-              rel={isExternal ? "noreferrer" : undefined}
-            >
-              {link.label}
-            </CTAButton>
-          );
-        })}
-      </div>
+      {ctaLinks.length > 0 ? (
+        <div className="flex flex-wrap gap-3">
+          {ctaLinks.map((link) => {
+            const isExternal = link.href.startsWith("http");
+            return (
+              <CTAButton
+                key={`${project.name}-${link.href}`}
+                href={link.href}
+                className="border border-border bg-transparent text-foreground hover:bg-surface-strong/70"
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noreferrer" : undefined}
+              >
+                {link.label}
+              </CTAButton>
+            );
+          })}
+        </div>
+      ) : null}
     </article>
   );
 }

@@ -71,12 +71,14 @@ export const siteContent: SiteContent = {
       startDate: "Mar 2024",
       endDate: "Present",
       description: [
-        "Lead three mobile platform teams (15+ engineers) powering the 7-Eleven and Speedway consumer apps for millions of customers.",
-        "Define and execute reusable mobile platform strategy that accelerates delivery of enterprise customer experiences.",
-        "Align seven-plus product pods and partner teams to ship cohesive mobile checkout, fuel rewards, and delivery journeys.",
-        "Champion engineering excellence across architecture, performance, security, and modern mobile technology adoption.",
-        "Mentor and grow high-performing engineers, fostering technical leadership and continuous improvement.",
-        "Translate platform capabilities into measurable business impact across loyalty, payments, and fulfillment touchpoints.",
+        "Lead three specialized core teams totaling 15+ engineers who build and release the 7-Eleven, Speedway, and 7Now mobile applications, while partnering with 8+ product pods to deliver features and services across the platform.",
+        "Orchestrated the consolidation of 7-Eleven and Speedway codebases into a unified platform, reducing development costs by 50% and without impacting delivery timelines.",
+        "Driving release management for 7-Eleven and Speedway mobile apps, ensuring stability improvements and compliance with the latest SDK standards across both platforms.",
+        "Led technical modernization efforts including the migration to Compose for Android and SwiftUI for iOS, while directing comprehensive library audits and upgrades to support the latest OS versions.",
+        "Led code quality initiatives by driving SonarQube integration and establishing quality standards for shared frameworks and reusable UI components used across all three applications.",
+        "Partnered with Security teams to enhance the organization's security posture by implementing security best practices and measures throughout the mobile application ecosystem.",
+        "Launched automation initiatives for mobile frameworks to streamline development processes and reduce manual testing efforts.",
+        "Work cross functionally to identify industry best practices and reusable solutions, leading their integration into various 7-Eleven mobile apps.",
       ],
       badges: ["Engineering Leadership", "Mobile Strategy", "Platform Architecture"],
     },
@@ -163,19 +165,19 @@ export const siteContent: SiteContent = {
   ],
   education: [
     {
-      credential: "Bachelor of Computer Science",
+      credential: "Masters of Computer Application",
       school: "University of Madras",
       location: "Chennai, India",
-      startDate: "2000",
-      endDate: "2003",
+      startDate: "2009",
+      endDate: "2012",
       highlights: [],
     },
     {
-      credential: "Bachelor of Computer Applications",
+      credential: "Bachelor of Computer Application",
       school: "Thiruthangal Nadar College",
       location: "Chennai, India",
-      startDate: "1997",
-      endDate: "2000",
+      startDate: "2006",
+      endDate: "2009",
       highlights: [],
     },
   ],
@@ -200,7 +202,7 @@ export const siteContent: SiteContent = {
       description:
         "Leading three cross-functional engineering squads delivering the reusable mobile platform powering the 7-Eleven and Speedway consumer apps.",
       technologies: ["Android", "iOS", "Kotlin", "Swift", "Platform Strategy"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2024—Present",
     },
     {
@@ -209,7 +211,7 @@ export const siteContent: SiteContent = {
       description:
         "Led the rollout of an Android framework powering 55+ supply chain workflows as Wayfair migrated from RF scanners to Zebra devices.",
       technologies: ["Android", "Kotlin", "Jetpack", "Zebra Devices"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2019—2024",
     },
     {
@@ -218,7 +220,7 @@ export const siteContent: SiteContent = {
       description:
         "Partnered with store operations to prototype self-checkout stations and integrate iBeacon-driven proximity detection in the Android app.",
       technologies: ["Android", "Java", "iBeacon", "Retail Tech"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2017—2019",
     },
     {
@@ -228,7 +230,7 @@ export const siteContent: SiteContent = {
       description:
         "Led the TrueMobile Android suite with camera, RFID, and barcode integrations to help enterprises inventory and locate assets in real time.",
       technologies: ["Android", "Room", "RFID", "Barcode Scanning"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2014—2017",
     },
     {
@@ -238,7 +240,7 @@ export const siteContent: SiteContent = {
       description:
         "Built Android assessments with WebRTC consults, offline interview capture, and automated sync to support case managers delivering in-home care.",
       technologies: ["Android", "Java", "WebRTC", "Offline Sync"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2013—2014",
     },
     {
@@ -247,7 +249,7 @@ export const siteContent: SiteContent = {
       description:
         "Created a configurable Android framework with cloud CMS controls, push orchestration, and wearable/IoT readiness to speed enterprise rollouts.",
       technologies: ["Android", "Java", "Cloud CMS", "Push Messaging"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2013—2014",
     },
     {
@@ -257,7 +259,7 @@ export const siteContent: SiteContent = {
       description:
         "Delivered a surgical recording prototype on Google Glass, enabling live OR streaming and remote clinician collaboration.",
       technologies: ["Android", "Google Glass", "Wearables", "Video Streaming"],
-      links: [{ label: "Experience", href: "#experience" }],
+      links: [],
       year: "2013",
     },
   ],
