@@ -54,7 +54,7 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
     browser = await puppeteer.launch({
       args: [...(chromium.args || []), "--disable-dev-shm-usage"],
       executablePath,
-      headless: "new",
+      headless: true,
     });
 
     console.log("Creating new page...");
