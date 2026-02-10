@@ -59,8 +59,8 @@ export const siteContent: SiteContent = {
   about: {
     heading: "Technical Manager aligning strategy and execution",
     body: [
-      "Over a decade spent guiding mobile and digital programs from discovery to launch—leading cross-functional teams, shaping scalable architectures, and steering reliable, high-performing products across platforms.",
-      "Focused on pairing innovation with rigorous engineering discipline, keeping quality high while aligning technology strategy to measurable business goals.",
+      "From Android engineer to Technical manager: over a decade building and leading mobile platforms that scale. I've progressed from architecting individual frameworks to directing teams of 15+ engineers, always maintaining the engineering rigor that defines reliable systems.",
+      "I pair deep technical expertise with strategic thinking ensuring mobile initiatives align with business goals while keeping quality and innovation at the forefront.",
     ],
   },
   experience: [
