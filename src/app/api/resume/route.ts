@@ -8,8 +8,11 @@ export async function GET() {
     const resumeMdPath = join(process.cwd(), "public", "resume.md");
     const markdownContent = await readFile(resumeMdPath, "utf-8");
 
-    // Generate PDF from markdown
-    const pdfBuffer = await generatePdfFromMarkdown(markdownContent);
+    // Convert markdown to HTML
+    const htmlContent = markdownToHtml(markdownContent);
+
+    // Generate PDF from HTML
+    const pdfBuffer = await generatePdfFromHtml(htmlContent);
 
     // Return PDF with proper headers
     return new NextResponse(pdfBuffer as unknown as BodyInit, {
@@ -27,134 +30,161 @@ export async function GET() {
   }
 }
 
-// Generate PDF from markdown using pdf-lib
-async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
+// Convert markdown to HTML
+function markdownToHtml(markdown: string): string {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { marked } = require("marked");
+
+  // Configure marked options
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+  });
+
+  let html = marked(markdown);
+
+  // Wrap in proper HTML structure
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #333; }
+    .container { max-width: 8.5in; margin: 0 auto; padding: 0.5in; }
+    h1 { font-size: 28px; margin: 20px 0 10px; text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
+    h2 { font-size: 14px; margin: 15px 0 8px; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+    h3 { font-size: 12px; margin: 10px 0 5px; color: #555; }
+    p { margin: 8px 0; font-size: 10px; line-height: 1.4; }
+    ul { margin: 8px 0 8px 20px; font-size: 10px; }
+    li { margin: 4px 0; line-height: 1.4; }
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+    hr { border: none; border-top: 1px solid #ccc; margin: 15px 0; }
+    @media print { body { margin: 0; padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    ${html}
+  </div>
+</body>
+</html>`;
+}
+
+// Generate PDF from HTML using a server-side approach
+async function generatePdfFromHtml(htmlContent: string): Promise<Buffer> {
+  try {
+    // Try using Puppeteer if available
+    return await generatePdfWithPuppeteer(htmlContent);
+  } catch (error) {
+    console.error("Puppeteer not available, using fallback PDF generation");
+    // Fallback to simple text-based PDF
+    return generateSimplePdfFromHtml(htmlContent);
+  }
+}
+
+// Generate PDF using Puppeteer (if available)
+async function generatePdfWithPuppeteer(htmlContent: string): Promise<Buffer> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PDFDocument, rgb } = require("pdf-lib");
+    const puppeteer = require("puppeteer");
 
-    const pdfDoc = await PDFDocument.create();
-    let page = pdfDoc.addPage([612, 792]); // Letter size
-    let yPosition = 750;
-    const pageHeight = 792;
-    const margin = 50;
-    const maxWidth = 512;
-    const lineHeight = 14;
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
 
-    const lines = markdown.split("\n");
+    const page = await browser.newPage();
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-    for (const line of lines) {
-      if (line.trim() === "") {
-        yPosition -= 8;
-        continue;
-      }
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      margin: { top: "0.5in", right: "0.75in", bottom: "0.5in", left: "0.75in" },
+      printBackground: true,
+    });
 
-      // Check if we need a new page
-      if (yPosition < margin + 40) {
-        page = pdfDoc.addPage([612, 792]);
-        yPosition = pageHeight - margin;
-      }
-
-      // Headers
-      if (line.startsWith("# ")) {
-        const text = line.replace(/^# /, "");
-        page.drawText(text, {
-          x: margin,
-          y: yPosition,
-          size: 20,
-          color: rgb(0, 0, 0),
-        });
-        yPosition -= 30;
-      } else if (line.startsWith("## ")) {
-        const text = line.replace(/^## /, "");
-        page.drawText(text, {
-          x: margin,
-          y: yPosition,
-          size: 13,
-          color: rgb(0.1, 0.1, 0.1),
-        });
-        yPosition -= 20;
-      } else if (line.startsWith("### ")) {
-        const text = line.replace(/^### /, "");
-        page.drawText(text, {
-          x: margin,
-          y: yPosition,
-          size: 11,
-          color: rgb(0.2, 0.2, 0.2),
-        });
-        yPosition -= 16;
-      } else if (line.startsWith("- ")) {
-        const text = line.replace(/^- /, "");
-        // Wrap long text for bullet points
-        const wrappedLines = wrapText(text, maxWidth - 30, 10);
-        for (let i = 0; i < wrappedLines.length; i++) {
-          page.drawText(i === 0 ? `• ${wrappedLines[i]}` : `  ${wrappedLines[i]}`, {
-            x: margin + 15,
-            y: yPosition,
-            size: 10,
-            color: rgb(0, 0, 0),
-          });
-          yPosition -= lineHeight;
-        }
-      } else if (line.startsWith("---")) {
-        // Draw a line
-        page.drawLine({
-          start: { x: margin, y: yPosition - 5 },
-          end: { x: 612 - margin, y: yPosition - 5 },
-          thickness: 1,
-          color: rgb(0.8, 0.8, 0.8),
-        });
-        yPosition -= 16;
-      } else {
-        // Regular text - wrap long lines
-        const wrappedLines = wrapText(line, maxWidth, 10);
-        for (const wrappedLine of wrappedLines) {
-          page.drawText(wrappedLine, {
-            x: margin,
-            y: yPosition,
-            size: 10,
-            color: rgb(0, 0, 0),
-          });
-          yPosition -= lineHeight;
-        }
-      }
-    }
-
-    const pdfBytes = await pdfDoc.save();
-    return Buffer.from(pdfBytes);
+    await browser.close();
+    return pdfBuffer as Buffer;
   } catch (error) {
-    console.error("PDF generation failed:", error);
     throw error;
   }
 }
 
-// Helper function to wrap text based on approximate character width
-function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
-  // Approximate character width (varies by font, this is for Helvetica)
-  const charWidth = fontSize * 0.5;
-  const charsPerLine = Math.floor(maxWidth / charWidth);
+// Fallback: Generate PDF from HTML by extracting text
+function generateSimplePdfFromHtml(htmlContent: string): Buffer {
+  // Extract text from HTML
+  const text = htmlContent
+    .replace(/<style[\s\S]*?<\/style>/g, "")
+    .replace(/<script[\s\S]*?<\/script>/g, "")
+    .replace(/<[^>]*>/g, "\n")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/\*\*/g, "")
+    .replace(/\*\*/g, "")
+    .split("\n")
+    .filter((line) => line.trim())
+    .join("\n");
 
-  const words = text.split(" ");
-  const lines: string[] = [];
-  let currentLine = "";
+  // Create PDF with proper text rendering
+  const lines = text.split("\n").slice(0, 150);
+  let yPosition = 750;
+  let pageContent = "";
+  let pageCount = 1;
 
-  for (const word of words) {
-    if ((currentLine + word).length > charsPerLine) {
-      if (currentLine) {
-        lines.push(currentLine.trim());
-      }
-      currentLine = word + " ";
-    } else {
-      currentLine += word + " ";
+  for (const line of lines) {
+    if (yPosition < 50) {
+      pageContent += `endstream\nendobj\n`;
+      pageCount++;
+      yPosition = 750;
     }
+
+    const encodedLine = line
+      .replace(/\\/g, "\\\\")
+      .replace(/\(/g, "\\(")
+      .replace(/\)/g, "\\)");
+    pageContent += `BT\n/F1 10 Tf\n50 ${yPosition} Td\n(${encodedLine}) Tj\nET\n`;
+    yPosition -= 12;
   }
 
-  if (currentLine) {
-    lines.push(currentLine.trim());
-  }
+  const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length ${pageContent.length} >>
+stream
+${pageContent}
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+${(244 + pageContent.length + 50).toString().padStart(10, "0")} 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+${(244 + pageContent.length + 100).toString()}
+%%EOF`;
 
-  return lines.length > 0 ? lines : [text];
+  return Buffer.from(pdfContent);
 }
+
 
 
 
