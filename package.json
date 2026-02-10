@@ -10,7 +10,8 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "postinstall": "node -e \"require('html-pdf-node').generatePdf || true\""
   },
   "dependencies": {
     "@vercel/analytics": "^1.3.1",
