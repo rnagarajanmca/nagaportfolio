@@ -39,18 +39,18 @@ async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
     const pageHeight = 792;
     const margin = 50;
     const maxWidth = 512;
+    const lineHeight = 14;
 
     const lines = markdown.split("\n");
-    let currentFontSize = 11;
 
     for (const line of lines) {
       if (line.trim() === "") {
-        yPosition -= 10;
+        yPosition -= 8;
         continue;
       }
 
       // Check if we need a new page
-      if (yPosition < margin + 20) {
+      if (yPosition < margin + 40) {
         page = pdfDoc.addPage([612, 792]);
         yPosition = pageHeight - margin;
       }
@@ -63,9 +63,8 @@ async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
           y: yPosition,
           size: 20,
           color: rgb(0, 0, 0),
-          maxWidth: maxWidth,
         });
-        yPosition -= 25;
+        yPosition -= 30;
       } else if (line.startsWith("## ")) {
         const text = line.replace(/^## /, "");
         page.drawText(text, {
@@ -74,7 +73,7 @@ async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
           size: 13,
           color: rgb(0.1, 0.1, 0.1),
         });
-        yPosition -= 18;
+        yPosition -= 20;
       } else if (line.startsWith("### ")) {
         const text = line.replace(/^### /, "");
         page.drawText(text, {
@@ -83,36 +82,41 @@ async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
           size: 11,
           color: rgb(0.2, 0.2, 0.2),
         });
-        yPosition -= 15;
+        yPosition -= 16;
       } else if (line.startsWith("- ")) {
         const text = line.replace(/^- /, "");
-        page.drawText(`• ${text}`, {
-          x: margin + 15,
-          y: yPosition,
-          size: 10,
-          color: rgb(0, 0, 0),
-          maxWidth: maxWidth - 15,
-        });
-        yPosition -= 12;
+        // Wrap long text for bullet points
+        const wrappedLines = wrapText(text, maxWidth - 30, 10);
+        for (let i = 0; i < wrappedLines.length; i++) {
+          page.drawText(i === 0 ? `• ${wrappedLines[i]}` : `  ${wrappedLines[i]}`, {
+            x: margin + 15,
+            y: yPosition,
+            size: 10,
+            color: rgb(0, 0, 0),
+          });
+          yPosition -= lineHeight;
+        }
       } else if (line.startsWith("---")) {
         // Draw a line
         page.drawLine({
-          start: { x: margin, y: yPosition },
-          end: { x: 612 - margin, y: yPosition },
+          start: { x: margin, y: yPosition - 5 },
+          end: { x: 612 - margin, y: yPosition - 5 },
           thickness: 1,
           color: rgb(0.8, 0.8, 0.8),
         });
-        yPosition -= 15;
+        yPosition -= 16;
       } else {
-        // Regular text
-        page.drawText(line, {
-          x: margin,
-          y: yPosition,
-          size: 10,
-          color: rgb(0, 0, 0),
-          maxWidth: maxWidth,
-        });
-        yPosition -= 12;
+        // Regular text - wrap long lines
+        const wrappedLines = wrapText(line, maxWidth, 10);
+        for (const wrappedLine of wrappedLines) {
+          page.drawText(wrappedLine, {
+            x: margin,
+            y: yPosition,
+            size: 10,
+            color: rgb(0, 0, 0),
+          });
+          yPosition -= lineHeight;
+        }
       }
     }
 
@@ -122,6 +126,34 @@ async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
     console.error("PDF generation failed:", error);
     throw error;
   }
+}
+
+// Helper function to wrap text based on approximate character width
+function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
+  // Approximate character width (varies by font, this is for Helvetica)
+  const charWidth = fontSize * 0.5;
+  const charsPerLine = Math.floor(maxWidth / charWidth);
+
+  const words = text.split(" ");
+  const lines: string[] = [];
+  let currentLine = "";
+
+  for (const word of words) {
+    if ((currentLine + word).length > charsPerLine) {
+      if (currentLine) {
+        lines.push(currentLine.trim());
+      }
+      currentLine = word + " ";
+    } else {
+      currentLine += word + " ";
+    }
+  }
+
+  if (currentLine) {
+    lines.push(currentLine.trim());
+  }
+
+  return lines.length > 0 ? lines : [text];
 }
 
 
