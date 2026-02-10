@@ -52,9 +52,10 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
     });
 
     // Use html method if available, otherwise use text-based fallback
-    if (typeof (pdf as any).html === "function") {
+    const pdfWithHtml = pdf as { html?: (html: string, options: Record<string, number>) => Promise<void> };
+    if (typeof pdfWithHtml.html === "function") {
       console.log("Using jsPDF html method");
-      await (pdf as any).html(html, {
+      await pdfWithHtml.html(html, {
         x: 15,
         y: 15,
         width: 180,
