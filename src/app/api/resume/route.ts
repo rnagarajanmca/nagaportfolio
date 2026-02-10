@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { buildResumeTemplateData, renderResumeHtml } from "@/lib/resumeTemplate";
-import { jsPDF } from "jspdf";
+import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
 
 let cachedPdf: Buffer | null = null;
 let cachedAt = 0;
@@ -40,81 +41,41 @@ function sendPdfResponse(pdfBuffer: Buffer) {
 }
 
 async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
+  let browser;
   try {
     const templateData = buildResumeTemplateData();
+    const html = renderResumeHtml(templateData);
 
-    // Create PDF with text content directly (Vercel-compatible)
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
+    // Launch Puppeteer with Chromium
+    const executablePath = await chromium.executablePath();
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath,
+      headless: true,
     });
 
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 15;
-    const contentWidth = pageWidth - margin * 2;
-    let yPosition = margin;
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle0" });
 
-    // Helper to add text with wrapping
-    const addText = (text: string, fontSize: number, isBold = false) => {
-      pdf.setFontSize(fontSize);
-      pdf.setFont("helvetica", isBold ? "bold" : "normal");
-      const lines = pdf.splitTextToSize(text, contentWidth);
-      const lineHeight = fontSize * 0.5;
-
-      lines.forEach((line: string) => {
-        if (yPosition + lineHeight > pageHeight - margin) {
-          pdf.addPage();
-          yPosition = margin;
-        }
-        pdf.text(line, margin, yPosition);
-        yPosition += lineHeight;
-      });
-      yPosition += 2; // Extra space after text block
-    };
-
-    // Header
-    addText(templateData.name, 16, true);
-    addText(templateData.title, 11);
-    yPosition += 3;
-
-    // Contact
-    templateData.contactLines.forEach((line) => {
-      const cleanLine = line.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, "");
-      addText(cleanLine, 9);
-    });
-    yPosition += 5;
-
-    // Summary
-    addText("PROFESSIONAL SUMMARY", 12, true);
-    templateData.summary.forEach((para) => {
-      addText(para, 10);
-    });
-    yPosition += 3;
-
-    // Experience
-    addText("PROFESSIONAL EXPERIENCE", 12, true);
-    templateData.experiences.forEach((exp) => {
-      addText(`${exp.title} at ${exp.company}`, 11, true);
-      addText(`${exp.location} | ${exp.period}`, 9);
-      exp.bullets.forEach((bullet) => {
-        addText(`• ${bullet}`, 10);
-      });
-      yPosition += 2;
-    });
-    yPosition += 3;
-
-    // Education
-    addText("EDUCATION", 12, true);
-    templateData.education.forEach((edu) => {
-      addText(edu.credential, 11, true);
-      addText(`${edu.school} | ${edu.years}`, 10);
-      yPosition += 2;
+    // Generate PDF with proper formatting
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      margin: {
+        top: "15mm",
+        right: "15mm",
+        bottom: "18mm",
+        left: "15mm",
+      },
+      printBackground: true,
+      preferCSSPageSize: true,
     });
 
-    return Buffer.from(pdf.output("arraybuffer"));
+    await browser.close();
+    return Buffer.from(pdfBuffer);
   } catch (error) {
+    if (browser) {
+      await browser.close();
+    }
     console.error("PDF generation error:", error);
     throw error;
   }
