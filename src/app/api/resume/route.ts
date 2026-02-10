@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
 import { buildResumeTemplateData, renderResumeHtml } from "@/lib/resumeTemplate";
 
+let cachedPdf: Buffer | null = null;
+let cachedAt = 0;
+const CACHE_TTL_MS = 1000 * 60 * 15; // 15 minutes
+
 export async function GET() {
   try {
+    const now = Date.now();
+    if (cachedPdf && now - cachedAt < CACHE_TTL_MS) {
+      return sendPdfResponse(Buffer.from(cachedPdf));
+    }
+
     const pdfBuffer = await generateHtmlTemplateResumePdf();
+    cachedPdf = pdfBuffer;
+    cachedAt = now;
+
     return sendPdfResponse(pdfBuffer);
   } catch (error) {
     console.error("Error generating resume PDF:", error);

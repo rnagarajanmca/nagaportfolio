@@ -44,7 +44,7 @@ export const siteContent: SiteContent = {
     ],
     cta: [
       {
-        label: "Download Résumé",
+        label: "Download Resume",
         href: "/api/resume",
         download: true,
       },
@@ -147,7 +147,7 @@ export const siteContent: SiteContent = {
         "Directed TrackX TrueMobile, IVT forklift tracking, and Container Centralen mobility programs from concept to deployment, cutting fleet idle time and inventory shrinkage.",
         "Standardized engineering playbooks, CI pipelines, and device integration (RFID, barcode, UWB) to reduce delivery variance by double digits.",
       ],
-      badges: ["Android", "Technical Leadership", "RFID & IoT"],
+      badges: ["Mobile Development", "Technical Leadership", "RFID & IoT"],
     },
     {
       title: "Software Engineer",
@@ -264,9 +264,9 @@ export const siteContent: SiteContent = {
     },
   ],
   contact: {
-    headline: "Let’s build something together",
+    headline: "Let's build something together",
     description:
-      "I’m actively exploring new opportunities—especially those focused on design systems, developer experience, and high-impact interfaces.",
+      "Interested in discussing mobile strategy, platform engineering, or building high-performing teams? Let's talk.",
     email: "hello@nagarajan.dev",
   },
 };
