@@ -47,51 +47,50 @@ function generateProfessionalResumePdf(markdown: string): Buffer {
   pdfContent.push("<< /Length 0 >>");
   pdfContent.push("stream");
 
-  const streamStart = pdfContent.length;
   const streamContent: string[] = [];
 
   let yPos = 750;
   const pageHeight = 792;
   const margin = 40;
-  const lineHeight = 12;
 
   for (const line of lines) {
     if (!line.trim()) {
-      yPos -= 6;
+      yPos -= 8;
       continue;
     }
 
     // Check for page break
-    if (yPos < margin + 40) {
+    if (yPos < margin + 60) {
       yPos = pageHeight - margin;
     }
 
     let fontSize = 10;
     let fontName = "F1";
     let text = line;
+    let lineSpacing = 14;
 
     // Parse markdown formatting
     if (line.startsWith("# ")) {
       fontSize = 18;
       fontName = "F2";
       text = line.replace(/^# /, "");
-      yPos -= 8;
+      lineSpacing = 22;
     } else if (line.startsWith("## ")) {
       fontSize = 13;
       fontName = "F2";
       text = line.replace(/^## /, "");
-      yPos -= 6;
+      lineSpacing = 16;
     } else if (line.startsWith("### ")) {
       fontSize = 11;
       fontName = "F2";
       text = line.replace(/^### /, "");
-      yPos -= 4;
+      lineSpacing = 14;
     } else if (line.startsWith("- ")) {
       fontSize = 10;
       text = "• " + line.replace(/^- /, "");
-      yPos -= 3;
+      lineSpacing = 13;
     } else {
-      yPos -= 3;
+      lineSpacing = 13;
     }
 
     // Remove markdown formatting
@@ -100,12 +99,15 @@ function generateProfessionalResumePdf(markdown: string): Buffer {
     // Encode text for PDF
     const encodedText = encodePdfString(text);
 
-    // Add text to stream
+    // Add text to stream - place text THEN move down
     streamContent.push("BT");
     streamContent.push(`/${fontName} ${fontSize} Tf`);
     streamContent.push(`${margin} ${yPos} Td`);
     streamContent.push(`(${encodedText}) Tj`);
     streamContent.push("ET");
+
+    // Move down for next line
+    yPos -= lineSpacing;
   }
 
   // Add stream content
