@@ -8,11 +8,8 @@ export async function GET() {
     const resumeMdPath = join(process.cwd(), "public", "resume.md");
     const markdownContent = await readFile(resumeMdPath, "utf-8");
 
-    // Convert markdown to HTML
-    const htmlContent = markdownToHtml(markdownContent);
-
-    // Generate PDF from HTML
-    const pdfBuffer = await generatePdfFromHtml(htmlContent);
+    // Generate professional PDF from markdown
+    const pdfBuffer = await generateProfessionalResumePdf(markdownContent);
 
     // Return PDF with proper headers
     return new NextResponse(pdfBuffer as unknown as BodyInit, {
@@ -30,65 +27,14 @@ export async function GET() {
   }
 }
 
-// Convert markdown to HTML
-function markdownToHtml(markdown: string): string {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { marked } = require("marked");
-
-  // Configure marked options
-  marked.setOptions({
-    breaks: true,
-    gfm: true,
-  });
-
-  let html = marked(markdown);
-
-  // Wrap in proper HTML structure
-  return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    * { margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #333; }
-    .container { max-width: 8.5in; margin: 0 auto; padding: 0.5in; }
-    h1 { font-size: 28px; margin: 20px 0 10px; text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
-    h2 { font-size: 14px; margin: 15px 0 8px; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-    h3 { font-size: 12px; margin: 10px 0 5px; color: #555; }
-    p { margin: 8px 0; font-size: 10px; line-height: 1.4; }
-    ul { margin: 8px 0 8px 20px; font-size: 10px; }
-    li { margin: 4px 0; line-height: 1.4; }
-    strong { font-weight: 600; }
-    em { font-style: italic; }
-    hr { border: none; border-top: 1px solid #ccc; margin: 15px 0; }
-    @media print { body { margin: 0; padding: 0; } }
-  </style>
-</head>
-<body>
-  <div class="container">
-    ${html}
-  </div>
-</body>
-</html>`;
-}
-
-// Generate PDF from HTML using a server-side approach
-async function generatePdfFromHtml(htmlContent: string): Promise<Buffer> {
-  try {
-    // Try using Puppeteer if available
-    return await generatePdfWithPuppeteer(htmlContent);
-  } catch (error) {
-    console.error("Puppeteer not available, using fallback PDF generation");
-    // Fallback to simple text-based PDF
-    return generateSimplePdfFromHtml(htmlContent);
-  }
-}
-
-// Generate PDF using Puppeteer (if available)
-async function generatePdfWithPuppeteer(htmlContent: string): Promise<Buffer> {
+// Generate professional resume PDF from markdown
+async function generateProfessionalResumePdf(markdown: string): Promise<Buffer> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const puppeteer = require("puppeteer");
+
+    // Create professional HTML from markdown
+    const htmlContent = createProfessionalResumeHtml(markdown);
 
     const browser = await puppeteer.launch({
       headless: true,
@@ -100,89 +46,436 @@ async function generatePdfWithPuppeteer(htmlContent: string): Promise<Buffer> {
 
     const pdfBuffer = await page.pdf({
       format: "A4",
-      margin: { top: "0.5in", right: "0.75in", bottom: "0.5in", left: "0.75in" },
+      margin: { top: "0.4in", right: "0.5in", bottom: "0.4in", left: "0.5in" },
       printBackground: true,
     });
 
     await browser.close();
     return pdfBuffer as Buffer;
   } catch (error) {
+    console.error("PDF generation failed:", error);
     throw error;
   }
 }
 
-// Fallback: Generate PDF from HTML by extracting text
-function generateSimplePdfFromHtml(htmlContent: string): Buffer {
-  // Extract text from HTML
-  const text = htmlContent
-    .replace(/<style[\s\S]*?<\/style>/g, "")
-    .replace(/<script[\s\S]*?<\/script>/g, "")
-    .replace(/<[^>]*>/g, "\n")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&")
-    .replace(/\*\*/g, "")
-    .replace(/\*\*/g, "")
-    .split("\n")
-    .filter((line) => line.trim())
-    .join("\n");
+// Create professional resume HTML from markdown
+function createProfessionalResumeHtml(markdown: string): string {
+  // Parse markdown into sections
+  const sections = parseResumeMarkdown(markdown);
 
-  // Create PDF with proper text rendering
-  const lines = text.split("\n").slice(0, 150);
-  let yPosition = 750;
-  let pageContent = "";
-  let pageCount = 1;
-
-  for (const line of lines) {
-    if (yPosition < 50) {
-      pageContent += `endstream\nendobj\n`;
-      pageCount++;
-      yPosition = 750;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nagarajan Ravikumar - Resume</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    const encodedLine = line
-      .replace(/\\/g, "\\\\")
-      .replace(/\(/g, "\\(")
-      .replace(/\)/g, "\\)");
-    pageContent += `BT\n/F1 10 Tf\n50 ${yPosition} Td\n(${encodedLine}) Tj\nET\n`;
-    yPosition -= 12;
+    body {
+      font-family: 'Calibri', 'Arial', sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #000;
+      background: white;
+    }
+
+    .container {
+      max-width: 8.5in;
+      height: 11in;
+      margin: 0 auto;
+      padding: 0.4in 0.5in;
+      background: white;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 6px;
+    }
+
+    .name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .contact-info {
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .contact-info span {
+      margin: 0 6px;
+    }
+
+    .contact-info span:first-child {
+      margin-left: 0;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #f0f0f0;
+      padding: 4px 6px;
+      margin-bottom: 4px;
+      border-left: 3px solid #000;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Professional Summary */
+    .summary {
+      font-size: 10px;
+      line-height: 1.4;
+      margin-bottom: 4px;
+      text-align: justify;
+    }
+
+    /* Competencies */
+    .competency-group {
+      margin-bottom: 3px;
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .competency-label {
+      font-weight: bold;
+      display: inline;
+    }
+
+    .competency-items {
+      display: inline;
+    }
+
+    /* Experience */
+    .job {
+      margin-bottom: 6px;
+    }
+
+    .job-title {
+      font-weight: bold;
+      font-size: 11px;
+      margin-bottom: 1px;
+    }
+
+    .job-company {
+      font-size: 10px;
+      margin-bottom: 1px;
+    }
+
+    .job-dates {
+      font-size: 10px;
+      color: #333;
+      margin-bottom: 2px;
+    }
+
+    .job-description {
+      font-size: 10px;
+      line-height: 1.3;
+      margin-left: 12px;
+    }
+
+    .job-description li {
+      margin-bottom: 2px;
+      list-style-position: inside;
+    }
+
+    /* Education */
+    .education-item {
+      margin-bottom: 4px;
+      font-size: 10px;
+    }
+
+    .degree {
+      font-weight: bold;
+      margin-bottom: 1px;
+    }
+
+    .school {
+      font-size: 10px;
+      margin-bottom: 1px;
+    }
+
+    .years {
+      font-size: 10px;
+      color: #333;
+    }
+
+    /* Additional Info */
+    .additional-info {
+      font-size: 10px;
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+
+    .additional-info strong {
+      font-weight: bold;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        margin: 0;
+        padding: 0.4in 0.5in;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="name">NAGARAJAN RAVIKUMAR</div>
+      <div class="contact-info">
+        <span>469-933-3360</span>
+        <span>naga@nagarajanr.com</span>
+        <span>linkedin.com/in/nagarajanr0</span>
+        <span>github.com/rnagarajanmca</span>
+      </div>
+    </div>
+
+    <!-- Professional Summary -->
+    ${sections.summary ? `
+    <div class="section">
+      <div class="section-title">Professional Summary</div>
+      <div class="summary">${sections.summary}</div>
+    </div>
+    ` : ''}
+
+    <!-- Core Competencies -->
+    ${sections.competencies ? `
+    <div class="section">
+      <div class="section-title">Core Competencies</div>
+      ${sections.competencies.map(comp => `
+        <div class="competency-group">
+          <span class="competency-label">${comp.category}:</span>
+          <span class="competency-items">${comp.items}</span>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <!-- Professional Experience -->
+    ${sections.experience ? `
+    <div class="section">
+      <div class="section-title">Professional Experience</div>
+      ${sections.experience.map(job => `
+        <div class="job">
+          <div class="job-title">${job.title}</div>
+          <div class="job-company">${job.company}</div>
+          <div class="job-dates">${job.dates}</div>
+          <ul class="job-description">
+            ${job.bullets.map(bullet => `<li>${bullet}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <!-- Education -->
+    ${sections.education ? `
+    <div class="section">
+      <div class="section-title">Education</div>
+      ${sections.education.map(edu => `
+        <div class="education-item">
+          <div class="degree">${edu.degree}</div>
+          <div class="school">${edu.school}</div>
+          <div class="years">${edu.years}</div>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <!-- Additional Information -->
+    ${sections.additional ? `
+    <div class="section">
+      <div class="section-title">Additional Information</div>
+      ${sections.additional.map(item => `
+        <div class="additional-info">${item}</div>
+      `).join('')}
+    </div>
+    ` : ''}
+  </div>
+</body>
+</html>`;
+}
+
+// Parse resume markdown into structured sections
+function parseResumeMarkdown(markdown: string): Record<string, unknown> {
+  const sections: Record<string, unknown> = {};
+  const lines = markdown.split("\n");
+  let currentSection = "";
+  let currentContent: string[] = [];
+
+  for (const line of lines) {
+    if (line.startsWith("# ")) {
+      // Main title - skip
+      continue;
+    } else if (line.startsWith("## ")) {
+      // Section header
+      if (currentSection && currentContent.length > 0) {
+        sections[currentSection] = processSection(currentSection, currentContent);
+      }
+      currentSection = line.replace(/^## /, "").toLowerCase().replace(/\s+/g, "_");
+      currentContent = [];
+    } else if (line.trim()) {
+      currentContent.push(line);
+    }
   }
 
-  const pdfContent = `%PDF-1.4
-1 0 obj
-<< /Type /Catalog /Pages 2 0 R >>
-endobj
-2 0 obj
-<< /Type /Pages /Kids [3 0 R] /Count 1 >>
-endobj
-3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
-endobj
-4 0 obj
-<< /Length ${pageContent.length} >>
-stream
-${pageContent}
-endstream
-endobj
-5 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
-endobj
-xref
-0 6
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000244 00000 n 
-${(244 + pageContent.length + 50).toString().padStart(10, "0")} 00000 n 
-trailer
-<< /Size 6 /Root 1 0 R >>
-startxref
-${(244 + pageContent.length + 100).toString()}
-%%EOF`;
+  // Process last section
+  if (currentSection && currentContent.length > 0) {
+    sections[currentSection] = processSection(currentSection, currentContent);
+  }
 
-  return Buffer.from(pdfContent);
+  return sections;
+}
+
+// Process section content based on section type
+function processSection(sectionName: string, content: string[]): unknown {
+  const text = content.join("\n").trim();
+
+  if (sectionName === "professional_summary") {
+    return text.replace(/\*\*/g, "").replace(/\n/g, " ");
+  }
+
+  if (sectionName === "core_competencies") {
+    const competencies: Array<{ category: string; items: string }> = [];
+    let currentCategory = "";
+    let currentItems = "";
+
+    for (const line of content) {
+      if (line.startsWith("**") && line.includes(":")) {
+        if (currentCategory) {
+          competencies.push({
+            category: currentCategory,
+            items: currentItems.trim(),
+          });
+        }
+        currentCategory = line.replace(/\*\*/g, "").replace(":", "").trim();
+        currentItems = "";
+      } else if (line.trim()) {
+        currentItems += line.replace(/\*\*/g, "").trim() + " ";
+      }
+    }
+
+    if (currentCategory) {
+      competencies.push({
+        category: currentCategory,
+        items: currentItems.trim(),
+      });
+    }
+
+    return competencies;
+  }
+
+  if (sectionName === "professional_experience") {
+    const jobs: Array<{
+      title: string;
+      company: string;
+      dates: string;
+      bullets: string[];
+    }> = [];
+    let currentJob: {
+      title: string;
+      company: string;
+      dates: string;
+      bullets: string[];
+    } | null = null;
+
+    for (const line of content) {
+      if (line.startsWith("### ")) {
+        if (currentJob) {
+          jobs.push(currentJob);
+        }
+        currentJob = {
+          title: line.replace(/^### /, "").trim(),
+          company: "",
+          dates: "",
+          bullets: [],
+        };
+      } else if (currentJob && line.startsWith("**") && !line.startsWith("- ")) {
+        const parts = line.replace(/\*\*/g, "").split("|");
+        if (parts.length >= 2) {
+          currentJob.company = parts[0].trim();
+          currentJob.dates = parts.slice(1).join("|").trim();
+        }
+      } else if (currentJob && line.startsWith("- ")) {
+        currentJob.bullets.push(line.replace(/^- /, "").trim());
+      }
+    }
+
+    if (currentJob) {
+      jobs.push(currentJob);
+    }
+
+    return jobs;
+  }
+
+  if (sectionName === "education") {
+    const education: Array<{
+      degree: string;
+      school: string;
+      years: string;
+    }> = [];
+    let currentEdu: { degree: string; school: string; years: string } | null =
+      null;
+
+    for (const line of content) {
+      if (line.startsWith("**") && !line.includes("|")) {
+        if (currentEdu) {
+          education.push(currentEdu);
+        }
+        currentEdu = {
+          degree: line.replace(/\*\*/g, "").trim(),
+          school: "",
+          years: "",
+        };
+      } else if (currentEdu && line.trim()) {
+        const parts = line.split("|");
+        if (parts.length >= 2) {
+          currentEdu.school = parts[0].trim();
+          currentEdu.years = parts.slice(1).join("|").trim();
+        }
+      }
+    }
+
+    if (currentEdu) {
+      education.push(currentEdu);
+    }
+
+    return education;
+  }
+
+  if (sectionName === "additional_information") {
+    const items: string[] = [];
+    for (const line of content) {
+      if (line.startsWith("- ")) {
+        items.push(line.replace(/^- /, "").trim());
+      }
+    }
+    return items;
+  }
+
+  return null;
 }
 
 
