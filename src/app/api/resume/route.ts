@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { buildResumeTemplateData, renderResumeHtml } from "@/lib/resumeTemplate";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import { JSDOM } from "jsdom";
 
 let cachedPdf: Buffer | null = null;
 let cachedAt = 0;
@@ -9,7 +12,7 @@ export async function GET() {
   try {
     const now = Date.now();
     if (cachedPdf && now - cachedAt < CACHE_TTL_MS) {
-      return sendPdfResponse(Buffer.from(cachedPdf));
+      return sendPdfResponse(cachedPdf);
     }
 
     const pdfBuffer = await generateHtmlTemplateResumePdf();
@@ -24,7 +27,7 @@ export async function GET() {
 }
 
 function sendPdfResponse(pdfBuffer: Buffer) {
-  return new NextResponse(pdfBuffer as unknown as BodyInit, {
+  return new NextResponse(pdfBuffer, {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
@@ -39,28 +42,44 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
   const templateData = buildResumeTemplateData();
   const html = renderResumeHtml(templateData);
 
-  const htmlPdfModule = await import("html-pdf-node");
-  const generatePdf =
-    htmlPdfModule.generatePdf ?? htmlPdfModule.default?.generatePdf ?? htmlPdfModule.default;
+  // Create a virtual DOM for server-side rendering
+  const dom = new JSDOM(html);
+  const document = dom.window.document;
 
-  if (typeof generatePdf !== "function") {
-    throw new Error("html-pdf-node generatePdf function is unavailable");
+  // Convert HTML to canvas
+  const canvas = await html2canvas(document.body, {
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    backgroundColor: "#ffffff",
+  });
+
+  // Create PDF from canvas
+  const pdf = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
+  });
+
+  const imgData = canvas.toDataURL("image/png");
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
+
+  // Calculate height to maintain aspect ratio
+  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  // Add pages if content exceeds one page
+  pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  heightLeft -= pdfHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+    heightLeft -= pdfHeight;
   }
 
-  const pdfBuffer: Buffer = await generatePdf(
-    { content: html },
-    {
-      format: "A4",
-      margin: {
-        top: "15mm",
-        right: "15mm",
-        bottom: "18mm",
-        left: "15mm",
-      },
-      printBackground: true,
-      preferCSSPageSize: true,
-    }
-  );
-
-  return pdfBuffer;
+  return Buffer.from(pdf.output("arraybuffer"));
 }
