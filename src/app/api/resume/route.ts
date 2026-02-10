@@ -52,16 +52,24 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
     console.log("Chromium executable path:", executablePath);
 
     browser = await puppeteer.launch({
-      args: [...(chromium.args || []), "--disable-dev-shm-usage"],
+      args: [
+        ...chromium.args,
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+      ],
       executablePath,
       headless: true,
+      timeout: 30000,
     });
 
     console.log("Creating new page...");
     const page = await browser.newPage();
+    page.setDefaultTimeout(30000);
+    page.setDefaultNavigationTimeout(30000);
     
     console.log("Setting page content...");
-    await page.setContent(html, { waitUntil: "domcontentloaded" });
+    await page.setContent(html, { waitUntil: "load" });
 
     console.log("Generating PDF...");
     // Generate PDF with proper formatting
@@ -75,6 +83,7 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
       },
       printBackground: true,
       preferCSSPageSize: true,
+      timeout: 30000,
     });
 
     console.log("PDF generated, closing browser...");
