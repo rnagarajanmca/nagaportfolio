@@ -46,17 +46,24 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
     const templateData = buildResumeTemplateData();
     const html = renderResumeHtml(templateData);
 
-    // Launch Puppeteer with Chromium
+    console.log("Launching Puppeteer...");
+    // Launch Puppeteer with Chromium optimized for serverless
     const executablePath = await chromium.executablePath();
+    console.log("Chromium executable path:", executablePath);
+
     browser = await puppeteer.launch({
-      args: chromium.args,
+      args: [...(chromium.args || []), "--disable-dev-shm-usage"],
       executablePath,
-      headless: true,
+      headless: "new",
     });
 
+    console.log("Creating new page...");
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
+    
+    console.log("Setting page content...");
+    await page.setContent(html, { waitUntil: "domcontentloaded" });
 
+    console.log("Generating PDF...");
     // Generate PDF with proper formatting
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -70,13 +77,19 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
       preferCSSPageSize: true,
     });
 
+    console.log("PDF generated, closing browser...");
     await browser.close();
+    console.log("PDF generation complete");
     return Buffer.from(pdfBuffer);
   } catch (error) {
-    if (browser) {
-      await browser.close();
-    }
     console.error("PDF generation error:", error);
+    if (browser) {
+      try {
+        await browser.close();
+      } catch (closeError) {
+        console.error("Error closing browser:", closeError);
+      }
+    }
     throw error;
   }
 }
