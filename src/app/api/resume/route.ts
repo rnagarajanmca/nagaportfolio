@@ -63,185 +63,41 @@ function createProfessionalResumeHtml(markdown: string): string {
   // Parse markdown into sections
   const sections = parseResumeMarkdown(markdown);
 
-  return `<!DOCTYPE html>
+  // Build HTML manually to avoid complex template literals
+  let html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nagarajan Ravikumar - Resume</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Calibri', 'Arial', sans-serif;
-      font-size: 11px;
-      line-height: 1.4;
-      color: #000;
-      background: white;
-    }
-
-    .container {
-      max-width: 8.5in;
-      height: 11in;
-      margin: 0 auto;
-      padding: 0.4in 0.5in;
-      background: white;
-    }
-
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 8px;
-      border-bottom: 2px solid #000;
-      padding-bottom: 6px;
-    }
-
-    .name {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 2px;
-      letter-spacing: 0.5px;
-    }
-
-    .contact-info {
-      font-size: 10px;
-      line-height: 1.3;
-    }
-
-    .contact-info span {
-      margin: 0 6px;
-    }
-
-    .contact-info span:first-child {
-      margin-left: 0;
-    }
-
-    /* Section */
-    .section {
-      margin-bottom: 8px;
-    }
-
-    .section-title {
-      font-size: 12px;
-      font-weight: bold;
-      background-color: #f0f0f0;
-      padding: 4px 6px;
-      margin-bottom: 4px;
-      border-left: 3px solid #000;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Professional Summary */
-    .summary {
-      font-size: 10px;
-      line-height: 1.4;
-      margin-bottom: 4px;
-      text-align: justify;
-    }
-
-    /* Competencies */
-    .competency-group {
-      margin-bottom: 3px;
-      font-size: 10px;
-      line-height: 1.3;
-    }
-
-    .competency-label {
-      font-weight: bold;
-      display: inline;
-    }
-
-    .competency-items {
-      display: inline;
-    }
-
-    /* Experience */
-    .job {
-      margin-bottom: 6px;
-    }
-
-    .job-title {
-      font-weight: bold;
-      font-size: 11px;
-      margin-bottom: 1px;
-    }
-
-    .job-company {
-      font-size: 10px;
-      margin-bottom: 1px;
-    }
-
-    .job-dates {
-      font-size: 10px;
-      color: #333;
-      margin-bottom: 2px;
-    }
-
-    .job-description {
-      font-size: 10px;
-      line-height: 1.3;
-      margin-left: 12px;
-    }
-
-    .job-description li {
-      margin-bottom: 2px;
-      list-style-position: inside;
-    }
-
-    /* Education */
-    .education-item {
-      margin-bottom: 4px;
-      font-size: 10px;
-    }
-
-    .degree {
-      font-weight: bold;
-      margin-bottom: 1px;
-    }
-
-    .school {
-      font-size: 10px;
-      margin-bottom: 1px;
-    }
-
-    .years {
-      font-size: 10px;
-      color: #333;
-    }
-
-    /* Additional Info */
-    .additional-info {
-      font-size: 10px;
-      line-height: 1.3;
-      margin-bottom: 2px;
-    }
-
-    .additional-info strong {
-      font-weight: bold;
-    }
-
-    /* Print styles */
-    @media print {
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        margin: 0;
-        padding: 0.4in 0.5in;
-        height: auto;
-      }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11px; line-height: 1.4; color: #000; }
+    .container { max-width: 8.5in; margin: 0 auto; padding: 0.4in 0.5in; }
+    .header { text-align: center; margin-bottom: 8px; border-bottom: 2px solid #000; padding-bottom: 6px; }
+    .name { font-size: 16px; font-weight: bold; margin-bottom: 2px; }
+    .contact-info { font-size: 10px; line-height: 1.3; }
+    .contact-info span { margin: 0 6px; }
+    .section { margin-bottom: 8px; }
+    .section-title { font-size: 12px; font-weight: bold; background-color: #f0f0f0; padding: 4px 6px; margin-bottom: 4px; border-left: 3px solid #000; text-transform: uppercase; }
+    .summary { font-size: 10px; line-height: 1.4; margin-bottom: 4px; }
+    .competency-group { margin-bottom: 3px; font-size: 10px; }
+    .competency-label { font-weight: bold; }
+    .job { margin-bottom: 6px; }
+    .job-title { font-weight: bold; font-size: 11px; margin-bottom: 1px; }
+    .job-company { font-size: 10px; margin-bottom: 1px; }
+    .job-dates { font-size: 10px; color: #333; margin-bottom: 2px; }
+    .job-description { font-size: 10px; line-height: 1.3; margin-left: 12px; }
+    .job-description li { margin-bottom: 2px; }
+    .education-item { margin-bottom: 4px; font-size: 10px; }
+    .degree { font-weight: bold; margin-bottom: 1px; }
+    .school { font-size: 10px; margin-bottom: 1px; }
+    .years { font-size: 10px; color: #333; }
+    .additional-info { font-size: 10px; line-height: 1.3; margin-bottom: 2px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
     <div class="header">
       <div class="name">NAGARAJAN RAVIKUMAR</div>
       <div class="contact-info">
@@ -250,72 +106,85 @@ function createProfessionalResumeHtml(markdown: string): string {
         <span>linkedin.com/in/nagarajanr0</span>
         <span>github.com/rnagarajanmca</span>
       </div>
-    </div>
+    </div>`;
 
-    <!-- Professional Summary -->
-    ${sections.summary ? `
-    <div class="section">
+  // Add Professional Summary
+  if (sections.summary) {
+    html += `<div class="section">
       <div class="section-title">Professional Summary</div>
-      <div class="summary">${sections.summary}</div>
-    </div>
-    ` : ''}
+      <div class="summary">${escapeHtml(sections.summary as string)}</div>
+    </div>`;
+  }
 
-    <!-- Core Competencies -->
-    ${sections.competencies ? `
-    <div class="section">
-      <div class="section-title">Core Competencies</div>
-      ${sections.competencies.map(comp => `
-        <div class="competency-group">
-          <span class="competency-label">${comp.category}:</span>
-          <span class="competency-items">${comp.items}</span>
-        </div>
-      `).join('')}
-    </div>
-    ` : ''}
+  // Add Core Competencies
+  if (sections.competencies && Array.isArray(sections.competencies)) {
+    html += `<div class="section">
+      <div class="section-title">Core Competencies</div>`;
+    for (const comp of sections.competencies as Array<{ category: string; items: string }>) {
+      html += `<div class="competency-group">
+        <span class="competency-label">${escapeHtml(comp.category)}:</span>
+        <span>${escapeHtml(comp.items)}</span>
+      </div>`;
+    }
+    html += `</div>`;
+  }
 
-    <!-- Professional Experience -->
-    ${sections.experience ? `
-    <div class="section">
-      <div class="section-title">Professional Experience</div>
-      ${sections.experience.map(job => `
-        <div class="job">
-          <div class="job-title">${job.title}</div>
-          <div class="job-company">${job.company}</div>
-          <div class="job-dates">${job.dates}</div>
-          <ul class="job-description">
-            ${job.bullets.map(bullet => `<li>${bullet}</li>`).join('')}
-          </ul>
-        </div>
-      `).join('')}
-    </div>
-    ` : ''}
+  // Add Professional Experience
+  if (sections.experience && Array.isArray(sections.experience)) {
+    html += `<div class="section">
+      <div class="section-title">Professional Experience</div>`;
+    for (const job of sections.experience as Array<{ title: string; company: string; dates: string; bullets: string[] }>) {
+      html += `<div class="job">
+        <div class="job-title">${escapeHtml(job.title)}</div>
+        <div class="job-company">${escapeHtml(job.company)}</div>
+        <div class="job-dates">${escapeHtml(job.dates)}</div>
+        <ul class="job-description">`;
+      for (const bullet of job.bullets) {
+        html += `<li>${escapeHtml(bullet)}</li>`;
+      }
+      html += `</ul></div>`;
+    }
+    html += `</div>`;
+  }
 
-    <!-- Education -->
-    ${sections.education ? `
-    <div class="section">
-      <div class="section-title">Education</div>
-      ${sections.education.map(edu => `
-        <div class="education-item">
-          <div class="degree">${edu.degree}</div>
-          <div class="school">${edu.school}</div>
-          <div class="years">${edu.years}</div>
-        </div>
-      `).join('')}
-    </div>
-    ` : ''}
+  // Add Education
+  if (sections.education && Array.isArray(sections.education)) {
+    html += `<div class="section">
+      <div class="section-title">Education</div>`;
+    for (const edu of sections.education as Array<{ degree: string; school: string; years: string }>) {
+      html += `<div class="education-item">
+        <div class="degree">${escapeHtml(edu.degree)}</div>
+        <div class="school">${escapeHtml(edu.school)}</div>
+        <div class="years">${escapeHtml(edu.years)}</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
 
-    <!-- Additional Information -->
-    ${sections.additional ? `
-    <div class="section">
-      <div class="section-title">Additional Information</div>
-      ${sections.additional.map(item => `
-        <div class="additional-info">${item}</div>
-      `).join('')}
-    </div>
-    ` : ''}
-  </div>
-</body>
-</html>`;
+  // Add Additional Information
+  if (sections.additional && Array.isArray(sections.additional)) {
+    html += `<div class="section">
+      <div class="section-title">Additional Information</div>`;
+    for (const item of sections.additional as string[]) {
+      html += `<div class="additional-info">${escapeHtml(item)}</div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `</div></body></html>`;
+  return html;
+}
+
+// Helper function to escape HTML
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;",
+  };
+  return text.replace(/[&<>"']/g, (char) => map[char]);
 }
 
 // Parse resume markdown into structured sections
