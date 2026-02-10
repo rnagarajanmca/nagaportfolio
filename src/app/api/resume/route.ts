@@ -42,49 +42,80 @@ function sendPdfResponse(pdfBuffer: Buffer) {
 async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
   try {
     const templateData = buildResumeTemplateData();
-    const html = renderResumeHtml(templateData);
 
-    // Create PDF directly from HTML string using jsPDF
+    // Create PDF with text content directly (Vercel-compatible)
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "mm",
       format: "a4",
     });
 
-    // Use html method if available, otherwise use text-based fallback
-    const pdfWithHtml = pdf as { html?: (html: string, options: Record<string, number>) => Promise<void> };
-    if (typeof pdfWithHtml.html === "function") {
-      console.log("Using jsPDF html method");
-      await pdfWithHtml.html(html, {
-        x: 15,
-        y: 15,
-        width: 180,
-        windowHeight: 800,
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 15;
+    const contentWidth = pageWidth - margin * 2;
+    let yPosition = margin;
+
+    // Helper to add text with wrapping
+    const addText = (text: string, fontSize: number, isBold = false) => {
+      pdf.setFontSize(fontSize);
+      pdf.setFont("helvetica", isBold ? "bold" : "normal");
+      const lines = pdf.splitTextToSize(text, contentWidth);
+      const lineHeight = fontSize * 0.5;
+
+      lines.forEach((line: string) => {
+        if (yPosition + lineHeight > pageHeight - margin) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        pdf.text(line, margin, yPosition);
+        yPosition += lineHeight;
       });
-    } else {
-      console.log("html method not available, using simple text rendering");
-      // Fallback: extract text from HTML and render as text
-      const textContent = extractTextFromHtml(html);
-      pdf.setFontSize(10);
-      const lines = pdf.splitTextToSize(textContent, 180);
-      pdf.text(lines, 15, 15);
-    }
+      yPosition += 2; // Extra space after text block
+    };
+
+    // Header
+    addText(templateData.name, 16, true);
+    addText(templateData.title, 11);
+    yPosition += 3;
+
+    // Contact
+    templateData.contactLines.forEach((line) => {
+      const cleanLine = line.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, "");
+      addText(cleanLine, 9);
+    });
+    yPosition += 5;
+
+    // Summary
+    addText("PROFESSIONAL SUMMARY", 12, true);
+    templateData.summary.forEach((para) => {
+      addText(para, 10);
+    });
+    yPosition += 3;
+
+    // Experience
+    addText("PROFESSIONAL EXPERIENCE", 12, true);
+    templateData.experiences.forEach((exp) => {
+      addText(`${exp.title} at ${exp.company}`, 11, true);
+      addText(`${exp.location} | ${exp.period}`, 9);
+      exp.bullets.forEach((bullet) => {
+        addText(`• ${bullet}`, 10);
+      });
+      yPosition += 2;
+    });
+    yPosition += 3;
+
+    // Education
+    addText("EDUCATION", 12, true);
+    templateData.education.forEach((edu) => {
+      addText(edu.credential, 11, true);
+      addText(`${edu.school} | ${edu.years}`, 10);
+      yPosition += 2;
+    });
 
     return Buffer.from(pdf.output("arraybuffer"));
   } catch (error) {
     console.error("PDF generation error:", error);
     throw error;
   }
-}
-
-function extractTextFromHtml(html: string): string {
-  // Simple HTML to text extraction
-  return html
-    .replace(/<[^>]*>/g, " ") // Remove HTML tags
-    .replace(/&nbsp;/g, " ")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&")
-    .replace(/\s+/g, " ") // Collapse whitespace
-    .trim();
 }
