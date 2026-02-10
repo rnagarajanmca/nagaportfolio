@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { buildResumeTemplateData, renderResumeHtml } from "@/lib/resumeTemplate";
+import { buildResumeTemplateData } from "@/lib/resumeTemplate";
 import { jsPDF } from "jspdf";
 
 let cachedPdf: Buffer | null = null;
@@ -43,7 +43,7 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
   try {
     const templateData = buildResumeTemplateData();
 
-    // Create styled PDF with jsPDF (Vercel-compatible, no Chromium needed)
+    // Create styled PDF matching HTML template design
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "mm",
@@ -52,16 +52,17 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
 
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 15;
+    const margin = 12;
     const contentWidth = pageWidth - margin * 2;
     let yPosition = margin;
 
-    // Helper to add text with wrapping and styling
-    const addText = (text: string, fontSize: number, isBold = false, spacing = 2) => {
+    // Helper to add text with wrapping
+    const addText = (text: string, fontSize: number, isBold = false, color = [27, 29, 33] as [number, number, number]) => {
       pdf.setFontSize(fontSize);
       pdf.setFont("helvetica", isBold ? "bold" : "normal");
+      pdf.setTextColor(...color);
       const lines = pdf.splitTextToSize(text, contentWidth);
-      const lineHeight = fontSize * 0.4;
+      const lineHeight = fontSize * 0.35;
 
       lines.forEach((line: string) => {
         if (yPosition + lineHeight > pageHeight - margin) {
@@ -71,76 +72,100 @@ async function generateHtmlTemplateResumePdf(): Promise<Buffer> {
         pdf.text(line, margin, yPosition);
         yPosition += lineHeight;
       });
-      yPosition += spacing;
     };
 
-    // Header with name and title
-    pdf.setTextColor(40, 40, 40);
-    addText(templateData.name, 18, true, 1);
-    addText(templateData.title, 12, false, 4);
+    // Header - Name
+    addText(templateData.name, 24, true, [27, 29, 33]);
+    yPosition += 2;
 
-    // Contact info
-    pdf.setTextColor(80, 80, 80);
-    pdf.setFontSize(9);
+    // Title
+    addText(templateData.title, 11, false, [58, 86, 97]);
+    yPosition += 3;
+
+    // Contact lines
+    pdf.setFontSize(9.5);
+    pdf.setTextColor(79, 86, 97);
     templateData.contactLines.forEach((line) => {
       const cleanLine = line.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, "");
       pdf.text(cleanLine, margin, yPosition);
-      yPosition += 3;
-    });
-    yPosition += 3;
-
-    // Divider line
-    pdf.setDrawColor(200, 200, 200);
-    pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-    yPosition += 5;
-
-    // Summary section
-    pdf.setTextColor(40, 40, 40);
-    addText("PROFESSIONAL SUMMARY", 11, true, 2);
-    pdf.setTextColor(60, 60, 60);
-    templateData.summary.forEach((para) => {
-      addText(para, 10, false, 3);
+      yPosition += 2.5;
     });
     yPosition += 2;
 
     // Divider
-    pdf.setDrawColor(200, 200, 200);
+    pdf.setDrawColor(231, 233, 239);
     pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-    yPosition += 5;
+    yPosition += 4;
 
-    // Experience section
-    pdf.setTextColor(40, 40, 40);
-    addText("PROFESSIONAL EXPERIENCE", 11, true, 2);
-    pdf.setTextColor(60, 60, 60);
-    
-    templateData.experiences.forEach((exp) => {
-      pdf.setTextColor(40, 40, 40);
-      addText(`${exp.title} — ${exp.company}`, 10, true, 1);
-      pdf.setTextColor(100, 100, 100);
-      addText(`${exp.location} | ${exp.period}`, 9, false, 2);
-      
-      pdf.setTextColor(60, 60, 60);
-      exp.bullets.forEach((bullet) => {
-        addText(`• ${bullet}`, 9, false, 1.5);
-      });
+    // Summary section
+    addText("PROFESSIONAL SUMMARY", 11, true, [27, 29, 33]);
+    yPosition += 2;
+    templateData.summary.forEach((para) => {
+      addText(para, 9.5, false, [27, 29, 33]);
       yPosition += 1;
     });
-
     yPosition += 2;
-    pdf.setDrawColor(200, 200, 200);
+
+    // Divider
+    pdf.setDrawColor(231, 233, 239);
     pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-    yPosition += 5;
+    yPosition += 4;
+
+    // Experience section
+    addText("PROFESSIONAL EXPERIENCE", 11, true, [27, 29, 33]);
+    yPosition += 2;
+
+    templateData.experiences.forEach((exp) => {
+      // Title and company
+      addText(`${exp.title}`, 10.5, true, [27, 29, 33]);
+      yPosition += 1;
+      addText(`${exp.company} • ${exp.location}`, 9, false, [58, 86, 97]);
+      yPosition += 1;
+      addText(exp.period, 8.5, false, [100, 109, 118]);
+      yPosition += 2;
+
+      // Bullets
+      exp.bullets.forEach((bullet) => {
+        addText(`• ${bullet}`, 9, false, [27, 29, 33]);
+        yPosition += 0.5;
+      });
+
+      // Badges
+      if (exp.badges?.length) {
+        yPosition += 1;
+        pdf.setFontSize(7.5);
+        pdf.setTextColor(79, 86, 97);
+        const badgeText = exp.badges.join(" • ");
+        const badgeLines = pdf.splitTextToSize(badgeText, contentWidth);
+        badgeLines.forEach((line: string) => {
+          if (yPosition + 2 > pageHeight - margin) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          pdf.text(line, margin, yPosition);
+          yPosition += 2;
+        });
+      }
+
+      yPosition += 2;
+    });
+
+    // Divider
+    pdf.setDrawColor(231, 233, 239);
+    pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+    yPosition += 4;
 
     // Education section
-    pdf.setTextColor(40, 40, 40);
-    addText("EDUCATION", 11, true, 2);
-    pdf.setTextColor(60, 60, 60);
-    
+    addText("EDUCATION", 11, true, [27, 29, 33]);
+    yPosition += 2;
+
     templateData.education.forEach((edu) => {
-      pdf.setTextColor(40, 40, 40);
-      addText(edu.credential, 10, true, 1);
-      pdf.setTextColor(100, 100, 100);
-      addText(`${edu.school} | ${edu.years}`, 9, false, 3);
+      addText(edu.credential, 10, true, [27, 29, 33]);
+      yPosition += 1;
+      addText(`${edu.school}${edu.location ? ` • ${edu.location}` : ""}`, 9, false, [58, 86, 97]);
+      yPosition += 1;
+      addText(edu.years, 8.5, false, [100, 109, 118]);
+      yPosition += 2.5;
     });
 
     return Buffer.from(pdf.output("arraybuffer"));
