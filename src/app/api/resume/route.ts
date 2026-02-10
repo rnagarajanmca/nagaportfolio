@@ -11,19 +11,92 @@ export async function GET() {
     // Convert markdown to HTML
     const htmlContent = markdownToHtml(markdownContent);
 
-    // Return HTML that can be printed to PDF by the browser
-    // This allows dynamic updates - whenever resume.md changes, the PDF will reflect it
-    return new NextResponse(htmlContent, {
+    // Generate PDF from HTML
+    const pdfBuffer = await generatePdfFromHtml(htmlContent);
+
+    // Return PDF with proper headers
+    return new NextResponse(pdfBuffer as unknown as BodyInit, {
       status: 200,
       headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=3600", // Cache for 1 hour to reflect updates
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=Nagarajan Ravikumar.pdf",
+        "Content-Length": pdfBuffer.length.toString(),
+        "Cache-Control": "public, max-age=3600",
       },
     });
   } catch (error) {
-    console.error("Error serving resume:", error);
-    return new NextResponse("Resume not found", { status: 404 });
+    console.error("Error generating resume PDF:", error);
+    return new NextResponse("Error generating resume PDF", { status: 500 });
   }
+}
+
+// Generate PDF from HTML using Puppeteer
+async function generatePdfFromHtml(htmlContent: string): Promise<Buffer> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const puppeteer = require("puppeteer");
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+
+    const page = await browser.newPage();
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      margin: { top: "0.5in", right: "0.75in", bottom: "0.5in", left: "0.75in" },
+      printBackground: true,
+    });
+
+    await browser.close();
+    return pdfBuffer as Buffer;
+  } catch (error) {
+    console.error("Puppeteer PDF generation failed:", error);
+    return generateSimplePdf();
+  }
+}
+
+// Fallback: Generate a simple PDF if other methods fail
+function generateSimplePdf(): Buffer {
+  const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 44 >>
+stream
+BT
+/F1 12 Tf
+50 700 Td
+(Resume generation in progress) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000338 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+417
+%%EOF`;
+
+  return Buffer.from(pdfContent);
 }
 
 // Convert markdown to professional HTML for PDF printing
