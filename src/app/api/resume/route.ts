@@ -9,7 +9,7 @@ export async function GET() {
     const markdownContent = await readFile(resumeMdPath, "utf-8");
 
     // Generate professional PDF from markdown
-    const pdfBuffer = generateProfessionalResumePdf(markdownContent);
+    const pdfBuffer = await generateProfessionalResumePdf(markdownContent);
 
     // Return PDF with proper headers
     return new NextResponse(pdfBuffer as unknown as BodyInit, {
@@ -27,131 +27,81 @@ export async function GET() {
   }
 }
 
-// Generate professional resume PDF with proper formatting
-function generateProfessionalResumePdf(markdown: string): Buffer {
+// Generate professional resume PDF using pdf-lib
+async function generateProfessionalResumePdf(markdown: string): Promise<Buffer> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { PDFDocument, rgb } = require("pdf-lib");
+
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage([612, 792]);
+  const { height } = page.getSize();
+
   const lines = markdown.split("\n");
-  const pdfContent: string[] = [];
-
-  // PDF header
-  pdfContent.push("%PDF-1.4");
-  pdfContent.push("1 0 obj");
-  pdfContent.push("<< /Type /Catalog /Pages 2 0 R >>");
-  pdfContent.push("endobj");
-  pdfContent.push("2 0 obj");
-  pdfContent.push("<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
-  pdfContent.push("endobj");
-  pdfContent.push("3 0 obj");
-  pdfContent.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>");
-  pdfContent.push("endobj");
-  pdfContent.push("4 0 obj");
-  pdfContent.push("<< /Length 0 >>");
-  pdfContent.push("stream");
-
-  const streamContent: string[] = [];
-
-  let yPos = 750;
-  const pageHeight = 792;
+  let yPosition = height - 40;
   const margin = 40;
+  const pageBottomMargin = 40;
 
   for (const line of lines) {
     if (!line.trim()) {
-      yPos -= 8;
+      yPosition -= 8;
       continue;
     }
 
     // Check for page break
-    if (yPos < margin + 60) {
-      yPos = pageHeight - margin;
+    if (yPosition < pageBottomMargin + 60) {
+      const newPage = pdfDoc.addPage([612, 792]);
+      yPosition = newPage.getHeight() - 40;
     }
 
     let fontSize = 10;
-    let fontName = "F1";
     let text = line;
-    let lineSpacing = 14;
+    let lineHeight = 13;
+    let isBold = false;
 
     // Parse markdown formatting
     if (line.startsWith("# ")) {
       fontSize = 18;
-      fontName = "F2";
       text = line.replace(/^# /, "");
-      lineSpacing = 22;
+      lineHeight = 22;
+      isBold = true;
     } else if (line.startsWith("## ")) {
       fontSize = 13;
-      fontName = "F2";
       text = line.replace(/^## /, "");
-      lineSpacing = 16;
+      lineHeight = 16;
+      isBold = true;
     } else if (line.startsWith("### ")) {
       fontSize = 11;
-      fontName = "F2";
       text = line.replace(/^### /, "");
-      lineSpacing = 14;
+      lineHeight = 14;
+      isBold = true;
     } else if (line.startsWith("- ")) {
       fontSize = 10;
       text = "• " + line.replace(/^- /, "");
-      lineSpacing = 13;
+      lineHeight = 13;
     } else {
-      lineSpacing = 13;
+      lineHeight = 13;
     }
 
     // Remove markdown formatting
     text = text.replace(/\*\*/g, "").replace(/\*/g, "");
 
-    // Encode text for PDF
-    const encodedText = encodePdfString(text);
+    // Draw text
+    const fontName = isBold ? "Helvetica-Bold" : "Helvetica";
+    page.drawText(text, {
+      x: margin,
+      y: yPosition,
+      size: fontSize,
+      font: await pdfDoc.embedFont(fontName),
+      color: rgb(0, 0, 0),
+      maxWidth: 532,
+      lineHeight: lineHeight,
+    });
 
-    // Add text to stream - place text THEN move down
-    streamContent.push("BT");
-    streamContent.push(`/${fontName} ${fontSize} Tf`);
-    streamContent.push(`${margin} ${yPos} Td`);
-    streamContent.push(`(${encodedText}) Tj`);
-    streamContent.push("ET");
-
-    // Move down for next line
-    yPos -= lineSpacing;
+    yPosition -= lineHeight;
   }
 
-  // Add stream content
-  const stream = streamContent.join("\n");
-  pdfContent.push(stream);
-  pdfContent.push("endstream");
-  pdfContent.push("endobj");
-
-  // Font definitions
-  pdfContent.push("5 0 obj");
-  pdfContent.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
-  pdfContent.push("endobj");
-  pdfContent.push("6 0 obj");
-  pdfContent.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
-  pdfContent.push("endobj");
-
-  // Xref table
-  const xrefPos = pdfContent.length;
-  pdfContent.push("xref");
-  pdfContent.push("0 7");
-  pdfContent.push("0000000000 65535 f");
-  pdfContent.push("0000000009 00000 n");
-  pdfContent.push("0000000058 00000 n");
-  pdfContent.push("0000000115 00000 n");
-  pdfContent.push("0000000244 00000 n");
-  pdfContent.push("0000000350 00000 n");
-  pdfContent.push("0000000450 00000 n");
-
-  pdfContent.push("trailer");
-  pdfContent.push("<< /Size 7 /Root 1 0 R >>");
-  pdfContent.push("startxref");
-  pdfContent.push(String(xrefPos * 20));
-  pdfContent.push("%%EOF");
-
-  return Buffer.from(pdfContent.join("\n"));
-}
-
-// Encode string for PDF
-function encodePdfString(text: string): string {
-  return text
-    .replace(/\\/g, "\\\\")
-    .replace(/\(/g, "\\(")
-    .replace(/\)/g, "\\)")
-    .substring(0, 250);
+  const pdfBytes = await pdfDoc.save();
+  return Buffer.from(pdfBytes);
 }
 
 
