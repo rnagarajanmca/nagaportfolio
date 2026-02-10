@@ -9,9 +9,11 @@ export async function GET() {
   try {
     const now = Date.now();
     if (cachedPdf && now - cachedAt < CACHE_TTL_MS) {
+      console.log("Returning cached PDF");
       return sendPdfResponse(Buffer.from(cachedPdf));
     }
 
+    console.log("Generating new PDF...");
     const pdfBuffer = await generateHtmlTemplateResumePdf();
     cachedPdf = pdfBuffer;
     cachedAt = now;
@@ -19,7 +21,8 @@ export async function GET() {
     return sendPdfResponse(pdfBuffer);
   } catch (error) {
     console.error("Error generating resume PDF:", error);
-    return new NextResponse("Error generating resume PDF", { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return new NextResponse(`Error generating resume PDF: ${errorMessage}`, { status: 500 });
   }
 }
 
