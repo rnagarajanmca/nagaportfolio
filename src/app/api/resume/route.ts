@@ -8,11 +8,8 @@ export async function GET() {
     const resumeMdPath = join(process.cwd(), "public", "resume.md");
     const markdownContent = await readFile(resumeMdPath, "utf-8");
 
-    // Convert markdown to HTML
-    const htmlContent = markdownToHtml(markdownContent);
-
-    // Generate PDF from HTML
-    const pdfBuffer = await generatePdfFromHtml(htmlContent);
+    // Generate PDF from markdown
+    const pdfBuffer = await generatePdfFromMarkdown(markdownContent);
 
     // Return PDF with proper headers
     return new NextResponse(pdfBuffer as unknown as BodyInit, {
@@ -30,161 +27,102 @@ export async function GET() {
   }
 }
 
-// Generate PDF from HTML using jsPDF and html2canvas
-async function generatePdfFromHtml(htmlContent: string): Promise<Buffer> {
+// Generate PDF from markdown using pdf-lib
+async function generatePdfFromMarkdown(markdown: string): Promise<Buffer> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const jsPDF = require("jspdf").jsPDF;
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const html2canvas = require("html2canvas").default;
+    const { PDFDocument, rgb } = require("pdf-lib");
 
-    // Create a temporary DOM element with the HTML content
-    const element = typeof document !== "undefined" ? document.createElement("div") : null;
-    
-    if (!element) {
-      // Server-side: use a simple text-based PDF generation
-      return generateSimplePdf(htmlContent);
+    const pdfDoc = await PDFDocument.create();
+    let page = pdfDoc.addPage([612, 792]); // Letter size
+    let yPosition = 750;
+    const pageHeight = 792;
+    const margin = 50;
+    const maxWidth = 512;
+
+    const lines = markdown.split("\n");
+    let currentFontSize = 11;
+
+    for (const line of lines) {
+      if (line.trim() === "") {
+        yPosition -= 10;
+        continue;
+      }
+
+      // Check if we need a new page
+      if (yPosition < margin + 20) {
+        page = pdfDoc.addPage([612, 792]);
+        yPosition = pageHeight - margin;
+      }
+
+      // Headers
+      if (line.startsWith("# ")) {
+        const text = line.replace(/^# /, "");
+        page.drawText(text, {
+          x: margin,
+          y: yPosition,
+          size: 20,
+          color: rgb(0, 0, 0),
+          maxWidth: maxWidth,
+        });
+        yPosition -= 25;
+      } else if (line.startsWith("## ")) {
+        const text = line.replace(/^## /, "");
+        page.drawText(text, {
+          x: margin,
+          y: yPosition,
+          size: 13,
+          color: rgb(0.1, 0.1, 0.1),
+        });
+        yPosition -= 18;
+      } else if (line.startsWith("### ")) {
+        const text = line.replace(/^### /, "");
+        page.drawText(text, {
+          x: margin,
+          y: yPosition,
+          size: 11,
+          color: rgb(0.2, 0.2, 0.2),
+        });
+        yPosition -= 15;
+      } else if (line.startsWith("- ")) {
+        const text = line.replace(/^- /, "");
+        page.drawText(`• ${text}`, {
+          x: margin + 15,
+          y: yPosition,
+          size: 10,
+          color: rgb(0, 0, 0),
+          maxWidth: maxWidth - 15,
+        });
+        yPosition -= 12;
+      } else if (line.startsWith("---")) {
+        // Draw a line
+        page.drawLine({
+          start: { x: margin, y: yPosition },
+          end: { x: 612 - margin, y: yPosition },
+          thickness: 1,
+          color: rgb(0.8, 0.8, 0.8),
+        });
+        yPosition -= 15;
+      } else {
+        // Regular text
+        page.drawText(line, {
+          x: margin,
+          y: yPosition,
+          size: 10,
+          color: rgb(0, 0, 0),
+          maxWidth: maxWidth,
+        });
+        yPosition -= 12;
+      }
     }
 
-    element.innerHTML = htmlContent;
-    element.style.padding = "20px";
-    element.style.backgroundColor = "white";
-
-    // Convert HTML to canvas
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-    });
-
-    // Create PDF from canvas
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-    const imgWidth = 210; // A4 width in mm
-    const pageHeight = 297; // A4 height in mm
-    let heightLeft = canvas.height * (imgWidth / canvas.width);
-    let position = 0;
-
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, heightLeft);
-    heightLeft -= pageHeight;
-
-    while (heightLeft >= 0) {
-      position = heightLeft - canvas.height * (imgWidth / canvas.width);
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, heightLeft);
-      heightLeft -= pageHeight;
-    }
-
-    return Buffer.from(pdf.output("arraybuffer"));
+    const pdfBytes = await pdfDoc.save();
+    return Buffer.from(pdfBytes);
   } catch (error) {
-    console.error("PDF generation with jsPDF failed:", error);
-    // Fallback to simple PDF
-    return generateSimplePdf(htmlContent);
+    console.error("PDF generation failed:", error);
+    throw error;
   }
 }
 
-// Fallback: Generate a simple PDF with text content
-function generateSimplePdf(htmlContent: string): Buffer {
-  // Strip HTML tags and create simple text PDF
-  const text = htmlContent
-    .replace(/<[^>]*>/g, "\n")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&")
-    .split("\n")
-    .filter((line) => line.trim())
-    .join("\n");
-
-  // Create a minimal but valid PDF with text content
-  const lines = text.split("\n").slice(0, 100); // Limit to first 100 lines
-  let yPosition = 750;
-  let pageContent = "";
-
-  for (const line of lines) {
-    if (yPosition < 50) {
-      pageContent += `endstream\nendobj\n`;
-      yPosition = 750;
-    }
-    const encodedLine = line.replace(/[()\\]/g, "\\$&");
-    pageContent += `BT\n/F1 10 Tf\n50 ${yPosition} Td\n(${encodedLine}) Tj\nET\n`;
-    yPosition -= 15;
-  }
-
-  const pdfContent = `%PDF-1.4
-1 0 obj
-<< /Type /Catalog /Pages 2 0 R >>
-endobj
-2 0 obj
-<< /Type /Pages /Kids [3 0 R] /Count 1 >>
-endobj
-3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
-endobj
-4 0 obj
-<< /Length ${pageContent.length} >>
-stream
-${pageContent}
-endstream
-endobj
-5 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
-endobj
-xref
-0 6
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000244 00000 n 
-${(244 + pageContent.length + 50).toString().padStart(10, "0")} 00000 n 
-trailer
-<< /Size 6 /Root 1 0 R >>
-startxref
-${(244 + pageContent.length + 100).toString()}
-%%EOF`;
-
-  return Buffer.from(pdfContent);
-}
-
-// Convert markdown to HTML
-function markdownToHtml(markdown: string): string {
-  let html = markdown
-    .replace(/^# (.*?)$/gm, "<h1>$1</h1>")
-    .replace(/^## (.*?)$/gm, "<h2>$1</h2>")
-    .replace(/^### (.*?)$/gm, "<h3>$1</h3>")
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(/^---$/gm, "<hr>")
-    .replace(/^\- (.*?)$/gm, "<li>$1</li>")
-    .replace(/\n\n/g, "</p><p>")
-    .replace(/^(?!<[a-z])/gm, "<p>");
-
-  html = html.replace(/(<li>[\s\S]*?<\/li>)/, "<ul>$1</ul>");
-
-  return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
-    h1 { font-size: 24px; margin-bottom: 10px; border-bottom: 2px solid #333; }
-    h2 { font-size: 14px; margin-top: 15px; margin-bottom: 8px; color: #333; }
-    h3 { font-size: 12px; margin-top: 10px; }
-    p { font-size: 10px; margin: 5px 0; }
-    ul { margin-left: 20px; }
-    li { font-size: 10px; margin: 3px 0; }
-  </style>
-</head>
-<body>
-  ${html}
-</body>
-</html>`;
-}
 
 
