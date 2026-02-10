@@ -9,7 +9,7 @@ export async function GET() {
     const markdownContent = await readFile(resumeMdPath, "utf-8");
 
     // Generate professional PDF from markdown
-    const pdfBuffer = await generateProfessionalResumePdf(markdownContent);
+    const pdfBuffer = generateProfessionalResumePdf(markdownContent);
 
     // Return PDF with proper headers
     return new NextResponse(pdfBuffer as unknown as BodyInit, {
@@ -27,82 +27,129 @@ export async function GET() {
   }
 }
 
-// Generate professional resume PDF using pdfkit
-async function generateProfessionalResumePdf(markdown: string): Promise<Buffer> {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const PDFDocument = require("pdfkit");
-
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({
-      size: "A4",
-      margin: 40,
-      bufferPages: true,
-    });
-
-    const chunks: Buffer[] = [];
-
-    doc.on("data", (chunk: Buffer) => {
-      chunks.push(chunk);
-    });
-
-    doc.on("end", () => {
-      resolve(Buffer.concat(chunks));
-    });
-
-    doc.on("error", reject);
-
-    // Parse and render resume
-    renderResume(doc, markdown);
-    doc.end();
-  });
-}
-
-// Render resume content to PDF
-function renderResume(doc: any, markdown: string): void {
+// Generate professional resume PDF with proper formatting
+function generateProfessionalResumePdf(markdown: string): Buffer {
   const lines = markdown.split("\n");
-  let isFirstLine = true;
+  const pdfContent: string[] = [];
+
+  // PDF header
+  pdfContent.push("%PDF-1.4");
+  pdfContent.push("1 0 obj");
+  pdfContent.push("<< /Type /Catalog /Pages 2 0 R >>");
+  pdfContent.push("endobj");
+  pdfContent.push("2 0 obj");
+  pdfContent.push("<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+  pdfContent.push("endobj");
+  pdfContent.push("3 0 obj");
+  pdfContent.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>");
+  pdfContent.push("endobj");
+  pdfContent.push("4 0 obj");
+  pdfContent.push("<< /Length 0 >>");
+  pdfContent.push("stream");
+
+  const streamStart = pdfContent.length;
+  const streamContent: string[] = [];
+
+  let yPos = 750;
+  const pageHeight = 792;
+  const margin = 40;
+  const lineHeight = 12;
 
   for (const line of lines) {
     if (!line.trim()) {
-      doc.moveDown(0.3);
+      yPos -= 6;
       continue;
     }
 
-    // Remove markdown formatting
-    let text = line.replace(/\*\*/g, "").replace(/\*/g, "");
-
-    // Handle headers
-    if (line.startsWith("# ")) {
-      text = line.replace(/^# /, "");
-      if (!isFirstLine) doc.moveDown(0.5);
-      doc.fontSize(18).font("Helvetica-Bold").text(text);
-      doc.moveDown(0.2);
-      isFirstLine = false;
-    } else if (line.startsWith("## ")) {
-      text = line.replace(/^## /, "");
-      doc.moveDown(0.3);
-      doc.fontSize(12).font("Helvetica-Bold").text(text);
-      doc.moveTo(40, doc.y).lineTo(555, doc.y).stroke();
-      doc.moveDown(0.2);
-    } else if (line.startsWith("### ")) {
-      text = line.replace(/^### /, "");
-      doc.fontSize(11).font("Helvetica-Bold").text(text);
-      doc.moveDown(0.1);
-    } else if (line.startsWith("- ")) {
-      text = line.replace(/^- /, "");
-      doc.fontSize(10).font("Helvetica").text(`• ${text}`, { indent: 20 });
-      doc.moveDown(0.1);
-    } else if (line.startsWith("**") && line.includes("|")) {
-      // Job title and company line
-      const parts = text.split("|").map(p => p.trim());
-      doc.fontSize(10).font("Helvetica").text(parts.join(" | "));
-      doc.moveDown(0.1);
-    } else {
-      // Regular text
-      doc.fontSize(10).font("Helvetica").text(text, { align: "left" });
-      doc.moveDown(0.1);
+    // Check for page break
+    if (yPos < margin + 40) {
+      yPos = pageHeight - margin;
     }
+
+    let fontSize = 10;
+    let fontName = "F1";
+    let text = line;
+
+    // Parse markdown formatting
+    if (line.startsWith("# ")) {
+      fontSize = 18;
+      fontName = "F2";
+      text = line.replace(/^# /, "");
+      yPos -= 8;
+    } else if (line.startsWith("## ")) {
+      fontSize = 13;
+      fontName = "F2";
+      text = line.replace(/^## /, "");
+      yPos -= 6;
+    } else if (line.startsWith("### ")) {
+      fontSize = 11;
+      fontName = "F2";
+      text = line.replace(/^### /, "");
+      yPos -= 4;
+    } else if (line.startsWith("- ")) {
+      fontSize = 10;
+      text = "• " + line.replace(/^- /, "");
+      yPos -= 3;
+    } else {
+      yPos -= 3;
+    }
+
+    // Remove markdown formatting
+    text = text.replace(/\*\*/g, "").replace(/\*/g, "");
+
+    // Encode text for PDF
+    const encodedText = encodePdfString(text);
+
+    // Add text to stream
+    streamContent.push("BT");
+    streamContent.push(`/${fontName} ${fontSize} Tf`);
+    streamContent.push(`${margin} ${yPos} Td`);
+    streamContent.push(`(${encodedText}) Tj`);
+    streamContent.push("ET");
   }
+
+  // Add stream content
+  const stream = streamContent.join("\n");
+  pdfContent.push(stream);
+  pdfContent.push("endstream");
+  pdfContent.push("endobj");
+
+  // Font definitions
+  pdfContent.push("5 0 obj");
+  pdfContent.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+  pdfContent.push("endobj");
+  pdfContent.push("6 0 obj");
+  pdfContent.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
+  pdfContent.push("endobj");
+
+  // Xref table
+  const xrefPos = pdfContent.length;
+  pdfContent.push("xref");
+  pdfContent.push("0 7");
+  pdfContent.push("0000000000 65535 f");
+  pdfContent.push("0000000009 00000 n");
+  pdfContent.push("0000000058 00000 n");
+  pdfContent.push("0000000115 00000 n");
+  pdfContent.push("0000000244 00000 n");
+  pdfContent.push("0000000350 00000 n");
+  pdfContent.push("0000000450 00000 n");
+
+  pdfContent.push("trailer");
+  pdfContent.push("<< /Size 7 /Root 1 0 R >>");
+  pdfContent.push("startxref");
+  pdfContent.push(String(xrefPos * 20));
+  pdfContent.push("%%EOF");
+
+  return Buffer.from(pdfContent.join("\n"));
+}
+
+// Encode string for PDF
+function encodePdfString(text: string): string {
+  return text
+    .replace(/\\/g, "\\\\")
+    .replace(/\(/g, "\\(")
+    .replace(/\)/g, "\\)")
+    .substring(0, 250);
 }
 
 
