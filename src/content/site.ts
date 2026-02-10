@@ -59,8 +59,8 @@ export const siteContent: SiteContent = {
   about: {
     heading: "Technical Manager aligning strategy and execution",
     body: [
-      "From Android engineer to Technical manager: over a decade building and leading mobile platforms that scale. I've progressed from architecting individual frameworks to directing teams of 15+ engineers, always maintaining the engineering rigor that defines reliable systems.",
-      "I pair deep technical expertise with strategic thinking ensuring mobile initiatives align with business goals while keeping quality and innovation at the forefront.",
+      "Technical manager with 11+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.",
+      "Blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.",
     ],
   },
   experience: [
@@ -143,7 +143,7 @@ export const siteContent: SiteContent = {
       startDate: "Dec 2014",
       endDate: "Jun 2018",
       description: [
-        "Led an eight-person Android practice delivering asset-tracking and logistics platforms across global retail and supply-chain clients.",
+        "Led an eight-person mobile practice delivering asset-tracking and logistics platforms across global retail and supply-chain clients.",
         "Directed TrackX TrueMobile, IVT forklift tracking, and Container Centralen mobility programs from concept to deployment, cutting fleet idle time and inventory shrinkage.",
         "Standardized engineering playbooks, CI pipelines, and device integration (RFID, barcode, UWB) to reduce delivery variance by double digits.",
       ],
