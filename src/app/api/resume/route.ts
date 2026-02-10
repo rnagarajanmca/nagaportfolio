@@ -24,7 +24,7 @@ export async function GET() {
 }
 
 function sendPdfResponse(pdfBuffer: Buffer) {
-  return new NextResponse(pdfBuffer as unknown as BodyInit, {
+  return new NextResponse(pdfBuffer, {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
