@@ -72,7 +72,7 @@ const resumeSummaryOverride = [
 ];
 
 export function renderResumeHtml(data: ResumeTemplateData): string {
-  const { name, title, contactLines, summary, experiences, education } = data;
+  const { name, title, contactLines, summary, competencies, experiences, education } = data;
   const summaryLines = resumeSummaryOverride.length ? resumeSummaryOverride : summary;
 
   const contactHtml = contactLines
@@ -82,6 +82,8 @@ export function renderResumeHtml(data: ResumeTemplateData): string {
   const summaryHtml = summaryLines
     .map((paragraph) => `<p class="body-text">${paragraph}</p>`)
     .join("\n");
+
+  const competencyHtml = "";
 
   const experienceHtml = experiences
     .map((role) => {
