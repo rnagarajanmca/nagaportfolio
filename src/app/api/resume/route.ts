@@ -4,6 +4,7 @@ import { buildResumeTemplateData, renderResumeHtml } from "@/lib/resumeTemplate"
 let cachedPdf: Buffer | null = null;
 let cachedAt = 0;
 const CACHE_TTL_MS = 1000 * 60 * 15; // 15 minutes
+let isInitializing = false;
 
 export async function GET() {
   try {
@@ -14,6 +15,17 @@ export async function GET() {
     }
 
     console.log("Generating new PDF...");
+    
+    // Ensure html-pdf-node is initialized
+    if (!isInitializing) {
+      isInitializing = true;
+      try {
+        await import("html-pdf-node");
+      } catch (e) {
+        console.warn("html-pdf-node initialization warning:", e);
+      }
+    }
+
     const pdfBuffer = await generateHtmlTemplateResumePdf();
     cachedPdf = pdfBuffer;
     cachedAt = now;
