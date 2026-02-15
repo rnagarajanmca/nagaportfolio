@@ -12,7 +12,8 @@
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "resume:generate": "node scripts/regenerate-resume.js"
+    "resume:generate": "node scripts/regenerate-resume.js",
+    "deploy": "node scripts/deploy-and-verify.js"
   },
   "dependencies": {
     "@vercel/analytics": "^1.3.1",
