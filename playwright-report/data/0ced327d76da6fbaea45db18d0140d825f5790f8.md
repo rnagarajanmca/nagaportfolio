@@ -1,0 +1,328 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - link "Skip to content" [ref=e5] [cursor=pointer]:
+        - /url: "#main-content"
+      - navigation [ref=e7]:
+        - generic [ref=e8]: Nagarajan Ravikumar
+        - generic [ref=e9]:
+          - list [ref=e10]:
+            - listitem [ref=e11]:
+              - link "Home" [ref=e12] [cursor=pointer]:
+                - /url: "#home"
+            - listitem [ref=e13]:
+              - link "About" [ref=e14] [cursor=pointer]:
+                - /url: "#about"
+            - listitem [ref=e15]:
+              - link "Experience" [ref=e16] [cursor=pointer]:
+                - /url: "#experience"
+            - listitem [ref=e17]:
+              - link "Education" [ref=e18] [cursor=pointer]:
+                - /url: "#education"
+            - listitem [ref=e19]:
+              - link "Skills" [ref=e20] [cursor=pointer]:
+                - /url: "#skills"
+            - listitem [ref=e21]:
+              - link "Projects" [ref=e22] [cursor=pointer]:
+                - /url: "#projects"
+            - listitem [ref=e23]:
+              - link "Contact" [ref=e24] [cursor=pointer]:
+                - /url: "#contact"
+          - button "Switch to light mode" [ref=e25]:
+            - generic [ref=e26]: Dark
+            - generic [ref=e27]: MODE
+      - main [ref=e28]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - paragraph [ref=e32]: Technical Manager · Mobile Platforms
+            - heading "Nagarajan Ravikumar" [level=1] [ref=e33]
+            - generic [ref=e34]:
+              - generic [ref=e35]: ✹
+              - generic [ref=e36]:
+                - generic [ref=e37]: Focus areas
+                - generic [ref=e38]: D
+            - paragraph [ref=e40]: "Guiding mobile product initiatives end-to-end: aligning strategy, architecture, and execution to deliver reliable, multi-platform experiences."
+            - generic [ref=e41]:
+              - link "Download Resume" [ref=e42] [cursor=pointer]:
+                - /url: /api/resume
+                - generic [ref=e43]: Download Resume
+              - link "View Experience" [ref=e44] [cursor=pointer]:
+                - /url: "#experience"
+                - generic [ref=e45]: View Experience
+          - complementary [ref=e47]:
+            - heading "Connect" [level=2] [ref=e49]
+            - list [ref=e50]:
+              - listitem [ref=e51]:
+                - link "LinkedIn https://www.linkedin.com/in/nagarajanr0" [ref=e52] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/nagarajanr0
+                  - img [ref=e54]
+                  - generic [ref=e56]:
+                    - generic [ref=e57]: LinkedIn
+                    - generic [ref=e58]: https://www.linkedin.com/in/nagarajanr0
+              - listitem [ref=e59]:
+                - link "GitHub https://github.com/rnagarajanmca" [ref=e60] [cursor=pointer]:
+                  - /url: https://github.com/rnagarajanmca
+                  - img [ref=e62]
+                  - generic [ref=e64]:
+                    - generic [ref=e65]: GitHub
+                    - generic [ref=e66]: https://github.com/rnagarajanmca
+              - listitem [ref=e67]:
+                - link "Email naga@nagarajanr.com" [ref=e68] [cursor=pointer]:
+                  - /url: mailto:naga@nagarajanr.com
+                  - img [ref=e70]
+                  - generic [ref=e72]:
+                    - generic [ref=e73]: Email
+                    - generic [ref=e74]: naga@nagarajanr.com
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - heading "About" [level=2] [ref=e77]
+            - paragraph [ref=e78]: Technical Manager aligning strategy and execution
+          - generic [ref=e79]:
+            - paragraph [ref=e80]: Technical manager with 11+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.
+            - paragraph [ref=e81]: Blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - heading "Experience" [level=2] [ref=e84]
+            - paragraph [ref=e85]: Recent roles and impact
+          - generic [ref=e89]:
+            - article [ref=e90]:
+              - generic [ref=e92]:
+                - generic [ref=e93]:
+                  - heading "Software Engineering Manager" [level=3] [ref=e94]
+                  - paragraph [ref=e95]: 7-Eleven · Dallas, TX
+                  - paragraph [ref=e96]: Mar 2024 — Present
+                - generic [ref=e97]:
+                  - paragraph [ref=e98]: Lead three specialized core teams totaling 15+ engineers who build and release the 7-Eleven, Speedway, and 7Now mobile applications, while partnering with 8+ product pods to deliver features and services across the platform.
+                  - paragraph [ref=e99]: Orchestrated the consolidation of 7-Eleven and Speedway codebases into a unified platform, reducing development costs by 50% and without impacting delivery timelines.
+                  - paragraph [ref=e100]: Driving release management for 7-Eleven and Speedway mobile apps, ensuring stability improvements and compliance with the latest SDK standards across both platforms.
+                  - paragraph [ref=e101]: Led technical modernization efforts including the migration to Compose for Android and SwiftUI for iOS, while directing comprehensive library audits and upgrades to support the latest OS versions.
+                  - paragraph [ref=e102]: Led code quality initiatives by driving SonarQube integration and establishing quality standards for shared frameworks and reusable UI components used across all three applications.
+                  - paragraph [ref=e103]: Partnered with Security teams to enhance the organization's security posture by implementing security best practices and measures throughout the mobile application ecosystem.
+                  - paragraph [ref=e104]: Launched automation initiatives for mobile frameworks to streamline development processes and reduce manual testing efforts.
+                  - paragraph [ref=e105]: Work cross functionally to identify industry best practices and reusable solutions, leading their integration into various 7-Eleven mobile apps.
+            - article [ref=e106]:
+              - generic [ref=e108]:
+                - generic [ref=e109]:
+                  - heading "Senior Software Engineer" [level=3] [ref=e110]
+                  - paragraph [ref=e111]: Wayfair · Boston, MA
+                  - paragraph [ref=e112]: Mar 2021 — Mar 2024
+                - generic [ref=e113]:
+                  - paragraph [ref=e114]: Led the warehousing Android platform, enabling feature teams to scale workflows and ship faster across fulfillment operations.
+                  - paragraph [ref=e115]: Introduced app-wide state serialization so associates resume work from cached context, boosting throughput and reliability.
+                  - paragraph [ref=e116]: Modernized core workflows from MVP to MVI architecture, reducing defects and easing future feature work.
+                  - paragraph [ref=e117]: Onboarded and mentored new Android engineers, accelerating team productivity and platform adoption.
+                  - paragraph [ref=e118]: Leveraged Kotlin, Coroutines, Dagger/Hilt, SQLDelight, and Jetpack Compose to deliver resilient, maintainable mobile solutions.
+                  - paragraph [ref=e119]: Partnered on the Nexus warehouse management system rollout supporting 18 fulfillment centers, 8,000+ users, and 124M scans in H1 2022.
+            - article [ref=e120]:
+              - generic [ref=e122]:
+                - generic [ref=e123]:
+                  - heading "Software Engineer" [level=3] [ref=e124]
+                  - paragraph [ref=e125]: Wayfair · Boston, MA
+                  - paragraph [ref=e126]: Jun 2019 — Mar 2021
+                - generic [ref=e127]:
+                  - paragraph [ref=e128]: Co-created Wayfair's Nexus warehouse management platform, replacing legacy RF hardware with touchscreen Android devices.
+                  - paragraph [ref=e129]: Implemented reusable modules that powered 45+ warehouse workflows and millions of weekly scans.
+                  - paragraph [ref=e130]: Partnered with operations to pilot and iterate on mobile workflows across 18 fulfillment centers.
+                  - paragraph [ref=e131]: Established the platform as a separately deployable component, improving release cadence and scalability.
+            - article [ref=e132]:
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - heading "Senior Android Engineer" [level=3] [ref=e136]
+                  - paragraph [ref=e137]: 7-Eleven · Dallas, TX
+                  - paragraph [ref=e138]: Sep 2018 — Jun 2019
+                - generic [ref=e139]:
+                  - paragraph [ref=e140]: Extended the consumer mobile platform that powers checkout, fuel rewards, and delivery journeys for 7-Eleven and Speedway brands.
+                  - paragraph [ref=e141]: Partnered with seven product pods to deliver reusable modules and accelerate release cadence across the portfolio.
+            - article [ref=e142]:
+              - generic [ref=e144]:
+                - generic [ref=e145]:
+                  - heading "Senior Android Engineer" [level=3] [ref=e146]
+                  - paragraph [ref=e147]: Delta Air Lines · Atlanta, GA
+                  - paragraph [ref=e148]: Jul 2018 — Sep 2018
+                - generic [ref=e149]:
+                  - paragraph [ref=e150]: Shipped rapid Android enhancements for the Fly Delta experience to support day-of-travel servicing and loyalty features.
+                  - paragraph [ref=e151]: Collaborated with design and QA in an agile release train to deliver high-quality updates under accelerated timelines.
+            - article [ref=e152]:
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - heading "Technical Lead" [level=3] [ref=e156]
+                  - paragraph [ref=e157]: Fusion Global Technologies and Solutions · Chennai, India
+                  - paragraph [ref=e158]: Dec 2014 — Jun 2018
+                - generic [ref=e159]:
+                  - paragraph [ref=e160]: Led an eight-person mobile practice delivering asset-tracking and logistics platforms across global retail and supply-chain clients.
+                  - paragraph [ref=e161]: Directed TrackX TrueMobile, IVT forklift tracking, and Container Centralen mobility programs from concept to deployment, cutting fleet idle time and inventory shrinkage.
+                  - paragraph [ref=e162]: Standardized engineering playbooks, CI pipelines, and device integration (RFID, barcode, UWB) to reduce delivery variance by double digits.
+            - article [ref=e163]:
+              - generic [ref=e165]:
+                - generic [ref=e166]:
+                  - heading "Software Engineer" [level=3] [ref=e167]
+                  - paragraph [ref=e168]: Naso Technologies Pvt Ltd · Chennai, India
+                  - paragraph [ref=e169]: May 2012 — Dec 2014
+                - generic [ref=e170]:
+                  - paragraph [ref=e171]: Delivered HIPAA-aligned mPathy mental-health assessments with WebRTC consults, offline interview capture, and automated sync safeguards.
+                  - paragraph [ref=e172]: Built the mFirst mobility framework to accelerate Android deployments with cloud content controls, push orchestration, and modular UX delivery.
+                  - paragraph [ref=e173]: Prototyped Google Glass surgical capture for Lifeline Hospital, enabling live OR streaming and clinician collaboration on wearable hardware.
+        - generic [ref=e174]:
+          - generic [ref=e175]:
+            - heading "Education" [level=2] [ref=e176]
+            - paragraph [ref=e177]: Foundations that shaped my craft
+          - generic [ref=e181]:
+            - article [ref=e182]:
+              - generic [ref=e185]:
+                - heading "Masters of Computer Application" [level=3] [ref=e186]
+                - paragraph [ref=e187]: University of Madras · Chennai, India
+                - paragraph [ref=e188]: 2009 — 2012
+            - article [ref=e189]:
+              - generic [ref=e192]:
+                - heading "Bachelor of Computer Application" [level=3] [ref=e193]
+                - paragraph [ref=e194]: Thiruthangal Nadar College · Chennai, India
+                - paragraph [ref=e195]: 2006 — 2009
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - heading "Skills" [level=2] [ref=e198]
+            - paragraph [ref=e199]: Core tools and topics I rely on
+          - generic [ref=e201]:
+            - generic [ref=e202]:
+              - heading "Mobile Platform Engineering" [level=3] [ref=e203]
+              - generic [ref=e204]:
+                - generic [ref=e205]: Android
+                - generic [ref=e206]: iOS
+                - generic [ref=e207]: Kotlin
+                - generic [ref=e208]: Swift
+                - generic [ref=e209]: Jetpack Compose
+                - generic [ref=e210]: MVI Architecture
+                - generic [ref=e211]: App State Serialization
+            - generic [ref=e212]:
+              - heading "Platform Strategy" [level=3] [ref=e213]
+              - generic [ref=e214]:
+                - generic [ref=e215]: Mobile Platform Strategy
+                - generic [ref=e216]: Reusable Component Design
+                - generic [ref=e217]: Performance & Security Governance
+                - generic [ref=e218]: Program Roadmapping
+            - generic [ref=e219]:
+              - heading "Leadership & Collaboration" [level=3] [ref=e220]
+              - generic [ref=e221]:
+                - generic [ref=e222]: Engineering Leadership
+                - generic [ref=e223]: Cross-Functional Alignment
+                - generic [ref=e224]: Mentorship & Coaching
+        - generic [ref=e225]:
+          - generic [ref=e226]:
+            - heading "Projects" [level=2] [ref=e227]
+            - paragraph [ref=e228]: Selected collaborations and experiments
+          - generic [ref=e230]:
+            - article [ref=e232]:
+              - generic [ref=e233]:
+                - heading "7-Eleven — Mobile Platform" [level=3] [ref=e234]
+                - generic [ref=e235]: 2024—Present
+              - paragraph [ref=e236]: 7-Eleven
+              - paragraph [ref=e237]: Leading three cross-functional engineering squads delivering the reusable mobile platform powering the 7-Eleven and Speedway consumer apps.
+              - list [ref=e238]:
+                - listitem [ref=e239]: Android
+                - listitem [ref=e240]: iOS
+                - listitem [ref=e241]: Kotlin
+                - listitem [ref=e242]: Swift
+                - listitem [ref=e243]: Platform Strategy
+            - article [ref=e245]:
+              - generic [ref=e246]:
+                - heading "Wayfair — Nexus" [level=3] [ref=e247]
+                - generic [ref=e248]: 2019—2024
+              - paragraph [ref=e249]: Wayfair
+              - paragraph [ref=e250]: Led the rollout of an Android framework powering 55+ supply chain workflows as Wayfair migrated from RF scanners to Zebra devices.
+              - list [ref=e251]:
+                - listitem [ref=e252]: Android
+                - listitem [ref=e253]: Kotlin
+                - listitem [ref=e254]: Jetpack
+                - listitem [ref=e255]: Zebra Devices
+            - article [ref=e257]:
+              - generic [ref=e258]:
+                - heading "7-Eleven — Mobile Checkout" [level=3] [ref=e259]
+                - generic [ref=e260]: 2017—2019
+              - paragraph [ref=e261]: 7-Eleven
+              - paragraph [ref=e262]: Partnered with store operations to prototype self-checkout stations and integrate iBeacon-driven proximity detection in the Android app.
+              - list [ref=e263]:
+                - listitem [ref=e264]: Android
+                - listitem [ref=e265]: Java
+                - listitem [ref=e266]: iBeacon
+                - listitem [ref=e267]: Retail Tech
+            - article [ref=e269]:
+              - generic [ref=e270]:
+                - heading "TrackX — Asset Management" [level=3] [ref=e271]
+                - generic [ref=e272]: 2014—2017
+              - paragraph [ref=e273]: Fusion Global Technologies · TrackX
+              - paragraph [ref=e274]: Led the TrueMobile Android suite with camera, RFID, and barcode integrations to help enterprises inventory and locate assets in real time.
+              - list [ref=e275]:
+                - listitem [ref=e276]: Android
+                - listitem [ref=e277]: Room
+                - listitem [ref=e278]: RFID
+                - listitem [ref=e279]: Barcode Scanning
+            - article [ref=e281]:
+              - generic [ref=e282]:
+                - heading "mPathy Mental Health Platform" [level=3] [ref=e283]
+                - generic [ref=e284]: 2013—2014
+              - paragraph [ref=e285]: Naso Technologies · mPathy
+              - paragraph [ref=e286]: Built Android assessments with WebRTC consults, offline interview capture, and automated sync to support case managers delivering in-home care.
+              - list [ref=e287]:
+                - listitem [ref=e288]: Android
+                - listitem [ref=e289]: Java
+                - listitem [ref=e290]: WebRTC
+                - listitem [ref=e291]: Offline Sync
+            - article [ref=e293]:
+              - generic [ref=e294]:
+                - heading "mFirst Mobility Framework" [level=3] [ref=e295]
+                - generic [ref=e296]: 2013—2014
+              - paragraph [ref=e297]: Naso Technologies
+              - paragraph [ref=e298]: Created a configurable Android framework with cloud CMS controls, push orchestration, and wearable/IoT readiness to speed enterprise rollouts.
+              - list [ref=e299]:
+                - listitem [ref=e300]: Android
+                - listitem [ref=e301]: Java
+                - listitem [ref=e302]: Cloud CMS
+                - listitem [ref=e303]: Push Messaging
+            - article [ref=e305]:
+              - generic [ref=e306]:
+                - heading "Lifeline Hospital Google Glass Streaming" [level=3] [ref=e307]
+                - generic [ref=e308]: "2013"
+              - paragraph [ref=e309]: Naso Technologies · Lifeline Hospital
+              - paragraph [ref=e310]: Delivered a surgical recording prototype on Google Glass, enabling live OR streaming and remote clinician collaboration.
+              - list [ref=e311]:
+                - listitem [ref=e312]: Android
+                - listitem [ref=e313]: Google Glass
+                - listitem [ref=e314]: Wearables
+                - listitem [ref=e315]: Video Streaming
+        - generic [ref=e316]:
+          - generic [ref=e317]:
+            - heading "Contact" [level=2] [ref=e318]
+            - paragraph [ref=e319]: Let's build something together
+          - generic [ref=e321]:
+            - paragraph [ref=e322]: Interested in discussing mobile strategy, platform engineering, or building high-performing teams? Let's talk.
+            - generic [ref=e324]:
+              - generic [ref=e325]:
+                - generic [ref=e326]:
+                  - generic [ref=e327]: Name
+                  - textbox "Name" [ref=e328]
+                - generic [ref=e329]:
+                  - generic [ref=e330]: Email
+                  - textbox "Email" [ref=e331]
+              - generic [ref=e332]:
+                - generic [ref=e333]: How can I help?
+                - textbox "How can I help?" [ref=e334]
+              - generic [ref=e335]: Company
+              - button "Send message" [ref=e336]:
+                - generic [ref=e337]: Send message
+              - status
+            - generic [ref=e338]:
+              - link "Or email directly" [ref=e339] [cursor=pointer]:
+                - /url: mailto:hello@nagarajan.dev
+                - generic [ref=e340]: Or email directly
+              - link "Book a call" [ref=e341] [cursor=pointer]:
+                - /url: https://cal.com
+                - generic [ref=e342]: Book a call
+      - generic [ref=e343]: © 2026 Nagarajan Ravikumar. Inspired by thoughtful, human-centered design.
+  - button "Open Next.js Dev Tools" [ref=e349] [cursor=pointer]:
+    - img [ref=e350]
+  - alert [ref=e353]
+```
