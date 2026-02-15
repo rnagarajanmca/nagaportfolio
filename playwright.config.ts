@@ -10,7 +10,20 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [
+    ['html', {
+      open: 'never',
+      outputFolder: 'playwright-report',
+    }],
+    ['json', {
+      outputFile: 'test-reports/playwright-results.json',
+    }],
+    ['junit', {
+      outputFile: 'test-reports/junit-playwright.xml',
+    }],
+    ['list'],
+    ['github'],
+  ],
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',

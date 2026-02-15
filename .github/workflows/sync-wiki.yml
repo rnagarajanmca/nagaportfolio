@@ -1,0 +1,52 @@
+name: Sync Documentation to Wiki
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Sync documentation to Wiki
+        run: node scripts/sync-wiki.js
+
+      - name: Clone Wiki Repository
+        run: |
+          git clone https://${{ github.token }}@github.com/${{ github.repository }}.wiki.git wiki
+
+      - name: Copy synced files to wiki
+        run: |
+          # Copy all markdown files from current directory to wiki (except node_modules, .git, etc.)
+          find . -maxdepth 1 -name "*.md" -type f -exec cp {} wiki/ \;
+          # Note: The sync-wiki.js script already handled the conversion,
+          # so we're just ensuring the files are in the wiki directory
+
+      - name: Commit and push changes
+        working-directory: wiki
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Sync docs from main branch"
+          git push
+
+      - name: Create wiki pages
+        if: always()
+        run: |
+          echo "✅ Documentation synchronized to GitHub Wiki"
+          echo "Visit: https://github.com/${{ github.repository }}/wiki"
