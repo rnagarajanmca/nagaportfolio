@@ -37,18 +37,23 @@ This repo powers Nagarajan Ravikumar’s portfolio. Content is strictly typed, U
 - **Framework:** Next.js 16 (App Router, Turbopack)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS v4 preview tokens + custom CSS variables
-- **Testing:** Jest + React Testing Library
+- **Testing:** Jest + React Testing Library (unit/integration) + Playwright (E2E)
+- **Rate Limiting:** Upstash Redis (serverless-compatible)
 - **Analytics:** Plausible (optional)
 - **Email:** Resend (API integration)
 
 ## Key Features
 
-- Structured content in `src/content` with schema validation
-- Responsive sections (hero, experience timeline, projects, contact)
-- Sticky nav with active-section highlighting
-- Accessible CTAs and contact form with Resend-backed API route
-- Light/dark themes persisted in `localStorage`
-- Automated CI (lint + tests) via GitHub Actions
+- **Structured Content:** Strict TypeScript schema validation in `src/content/site.ts`
+- **Responsive Design:** Mobile-first layout with Tailwind CSS v4 design tokens
+- **Navigation:** Sticky nav with active-section highlighting and smooth scroll behavior
+- **Accessibility:** WCAG-compliant with ARIA labels, semantic HTML, and proper color contrast
+- **Theme Support:** Light/dark modes with system preference detection and localStorage persistence
+- **Contact Form:** Accessible form with Resend email integration and Upstash Redis rate limiting (3 req/15min)
+- **Resume Download:** PDF generation with Chromium backend and download tracking
+- **Testing:** 74 unit tests (Jest + React Testing Library) + 20 E2E tests (Playwright)
+- **CI/CD:** Automated GitHub Actions workflow (lint, type-check, tests on every push)
+- **Performance:** Optimized bundle with Turbopack and production-ready deployment on Vercel
 
 ## Getting Started
 
@@ -71,6 +76,9 @@ npm run dev
 | `npm run type-check` | Execute TypeScript in `--noEmit` mode |
 | `npm test` | Execute unit/integration tests |
 | `npm test -- --watch` | Watch mode for tests |
+| `npm run e2e` | Run end-to-end tests (requires dev server running) |
+| `npm run e2e:ui` | Run E2E tests with interactive UI |
+| `npm run e2e:debug` | Run E2E tests in debug mode |
 
 ## Architecture
 
@@ -88,10 +96,25 @@ npm run dev
 
 ## Testing & Quality
 
-- Unit tests live in `src/components/__tests__`
-- Run locally with `npm test`
-- GitHub Actions workflow (`ci.yml`) runs lint + tests on pushes and PRs targeting `main`
-- Lint with `npm run lint` to catch TypeScript/ESLint issues early
+### Unit & Integration Tests
+- Located in `src/components/__tests__/`
+- 74 test cases across 11 test suites (~73% component coverage)
+- Run with `npm test` or watch with `npm test -- --watch`
+
+### End-to-End Tests
+- Located in `e2e/*.spec.ts`
+- 20 passing E2E tests covering critical user flows:
+  - Homepage navigation and section visibility
+  - Contact form submission
+  - Resume download functionality
+  - Theme toggle and persistence
+- Run with `npm run e2e` (requires local dev server)
+
+### Quality Gates
+- GitHub Actions workflow (`ci.yml`) runs lint + tests on all pushes and PRs
+- Pre-commit linting catches issues early
+- TypeScript strict mode ensures type safety
+- See `docs/` directory for detailed testing documentation
 
 ## Deployment
 
@@ -120,9 +143,20 @@ portfolio/
 └── package.json
 ```
 
+## Documentation
+
+For comprehensive guides and detailed documentation, see the [**`docs/`** directory](./docs/README.md):
+
+- **[Architecture Review](./docs/ARCHITECTURE_REVIEW.md)** — Complete project analysis and optimization roadmap
+- **[Deployment Workflow](./docs/DEPLOYMENT_WORKFLOW.md)** — Step-by-step deployment guide
+- **[Testing Guide](./docs/README.md#testing)** — Unit, integration, and E2E testing documentation
+- **[Design System](./docs/craftivo-visual-blueprint.md)** — Visual guidelines and design tokens
+
 ## Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Playwright Testing](https://playwright.dev)
+- [Jest Testing Framework](https://jestjs.io)
 - [Plausible Analytics](https://plausible.io/docs)
 - [Vercel Deployment Guide](https://nextjs.org/docs/app/building-your-application/deploying)

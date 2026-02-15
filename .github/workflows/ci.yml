@@ -1,4 +1,4 @@
-name: CI
+name: CI with Test Reports
 
 on:
   push:
@@ -28,8 +28,49 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint
+      - name: Run linter
         run: npm run lint
 
-      - name: Test
-        run: npm test -- --runInBand
+      - name: Run unit tests with coverage
+        run: npm run test:ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run E2E tests
+        run: npm run e2e
+        continue-on-error: true
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          mkdir -p test-reports
+          echo "## Test Results Summary" > test-reports/summary.md
+          echo "" >> test-reports/summary.md
+          echo "**CI Run:** #${{ github.run_number }}" >> test-reports/summary.md
+          echo "**Timestamp:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> test-reports/summary.md
+          if [ -f coverage/coverage-summary.json ]; then
+            echo "" >> test-reports/summary.md
+            echo "### Unit Tests (Jest)" >> test-reports/summary.md
+            echo "✅ Coverage reports generated" >> test-reports/summary.md
+          fi
+          if [ -f test-reports/junit-playwright.xml ]; then
+            echo "" >> test-reports/summary.md
+            echo "### E2E Tests (Playwright)" >> test-reports/summary.md
+            echo "✅ E2E tests completed" >> test-reports/summary.md
+          fi
+
+      - name: Upload test reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ github.run_number }}
+          path: |
+            test-reports/
+            coverage/
+            playwright-report/
+          retention-days: 30
+

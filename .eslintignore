@@ -1,0 +1,23 @@
+# Build and generated files
+.next/
+dist/
+build/
+out/
+node_modules/
+coverage/
+
+# Third-party code
+.git/
+
+# Build and deployment scripts (use CommonJS require())
+scripts/setup-git-hooks.js
+scripts/generate-resume-pdf.js
+scripts/regenerate-resume.js
+scripts/sync-wiki.js
+scripts/generate-wiki-test-report.js
+scripts/deploy-and-verify.js
+
+# Test artifacts
+test-reports/
+playwright-report/
+test-results/
