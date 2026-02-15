@@ -33,3 +33,4 @@ export async function GET() {
     return new NextResponse(`Error serving resume PDF: ${errorMessage}`, { status: 500 });
   }
 }
+
