@@ -64,6 +64,7 @@ export function NavBar({ links, brand }: NavBarProps) {
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-sm text-muted shadow-sm transition hover:bg-surface-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             aria-expanded={menuOpen}
             aria-label="Toggle navigation menu"
+            aria-controls="mobile-navigation"
           >
             {menuOpen ? "✕" : "☰"}
           </button>
@@ -92,6 +93,7 @@ export function NavBar({ links, brand }: NavBarProps) {
         </div>
       </nav>
       <div
+        id="mobile-navigation"
         className={`sm:hidden ${
           menuOpen ? "max-h-[420px] translate-y-0 opacity-100" : "pointer-events-none max-h-0 -translate-y-1 opacity-0"
         } transition-all duration-300 ease-in-out`}

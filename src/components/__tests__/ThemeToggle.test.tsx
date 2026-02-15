@@ -43,7 +43,7 @@ describe("ThemeToggle", () => {
 
   it("renders toggle button", () => {
     renderToggle();
-    expect(screen.getByRole("button", { name: /toggle theme/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /switch to/i })).toBeInTheDocument();
   });
 
   it("displays current theme", () => {
@@ -55,7 +55,7 @@ describe("ThemeToggle", () => {
     const user = userEvent.setup();
     renderToggle();
 
-    const button = screen.getByRole("button", { name: /toggle theme/i });
+    const button = screen.getByRole("button", { name: /switch to/i });
     const initialTheme = screen.getByText(/Light|Dark/i).textContent;
 
     await user.click(button);
@@ -70,7 +70,7 @@ describe("ThemeToggle", () => {
     const user = userEvent.setup();
     renderToggle();
 
-    const button = screen.getByRole("button", { name: /toggle theme/i });
+    const button = screen.getByRole("button", { name: /switch to/i });
     await user.click(button);
 
     await waitFor(() => {
@@ -84,7 +84,7 @@ describe("ThemeToggle", () => {
     const user = userEvent.setup();
     renderToggle();
 
-    const button = screen.getByRole("button", { name: /toggle theme/i });
+    const button = screen.getByRole("button", { name: /switch to/i });
     await user.click(button);
 
     await waitFor(() => {

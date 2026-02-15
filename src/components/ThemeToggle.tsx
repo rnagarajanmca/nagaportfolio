@@ -18,8 +18,16 @@ export function ThemeToggle({ size = "default", className = "" }: ThemeTogglePro
       : "gap-2 px-4 py-2";
   const classes = [baseClasses, sizeClasses, className].filter(Boolean).join(" ");
 
+  const nextTheme = theme === "light" ? "dark" : "light";
+
   return (
-    <button type="button" onClick={toggleTheme} className={classes} aria-label="Toggle theme">
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className={classes}
+      aria-label={`Switch to ${nextTheme} mode`}
+      title={`Current theme: ${theme}`}
+    >
       <span className={size === "compact" ? "min-w-[3rem] text-center" : "inline-block w-12 text-center"}>
         {theme === "light" ? "Light" : "Dark"}
       </span>

@@ -74,12 +74,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
+        <a href="#main-content" className="sr-only focus:not-sr-only">
+          Skip to main content
+        </a>
         <PlausibleAnalytics />
         <Analytics />
         <SpeedInsights />
         <ErrorBoundary>
           <ThemeProvider>
-            {children}
+            <main id="main-content">
+              {children}
+            </main>
           </ThemeProvider>
         </ErrorBoundary>
       </body>

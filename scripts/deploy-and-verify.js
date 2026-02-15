@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
 
 const colors = {
   reset: '\x1b[0m',
@@ -47,7 +45,6 @@ async function deployAndVerify() {
 
     // Step 2: Get current branch
     const currentBranch = execute('git rev-parse --abbrev-ref HEAD', '');
-    const baseBranch = currentBranch === 'main' ? 'main' : 'resume';
 
     // Step 3: Commit changes
     log('\nStep 2: Staging and committing changes...', 'yellow');
@@ -84,7 +81,7 @@ async function deployAndVerify() {
       try {
         execute(`gh pr create --title "Deploy: ${new Date().toLocaleDateString()}" --body "${prBody}"`, '');
         log('✓ PR created', 'green');
-      } catch (e) {
+      } catch {
         log('⚠ Could not create PR (may already exist)', 'yellow');
       }
     } else if (prNumber) {
@@ -124,7 +121,7 @@ async function deployAndVerify() {
           log(`⏳ Deployment in progress... (${attempts}/${maxAttempts})`, 'yellow');
           await new Promise(r => setTimeout(r, 10000)); // Wait 10 seconds
         }
-      } catch (error) {
+      } catch {
         log(`⏳ Waiting for deployment checks... (${attempts}/${maxAttempts})`, 'yellow');
         await new Promise(r => setTimeout(r, 10000));
       }
