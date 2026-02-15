@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 import { z } from "zod";
 import { NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 // Validation schema
 const contactSchema = z.object({
@@ -10,10 +12,16 @@ const contactSchema = z.object({
   company: z.string().max(100).optional(),
 });
 
-// Rate limiting (simple in-memory store - for production, use Redis or similar)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
-const RATE_LIMIT_MAX_REQUESTS = 3; // Max 3 requests per window
+// Rate limiting with Upstash (works in serverless environments)
+const ratelimit = process.env.UPSTASH_REDIS_REST_URL
+  ? new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(
+        parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "3"),
+        `${parseInt(process.env.RATE_LIMIT_WINDOW_MS || "900000")} ms`
+      ),
+    })
+  : null;
 
 function getRateLimitKey(req: Request): string {
   const forwarded = req.headers.get("x-forwarded-for");
@@ -21,31 +29,44 @@ function getRateLimitKey(req: Request): string {
   return `contact:${ip}`;
 }
 
-function checkRateLimit(key: string): boolean {
-  const now = Date.now();
-  const record = rateLimitMap.get(key);
-
-  if (!record || now > record.resetTime) {
-    rateLimitMap.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
-    return true;
+async function checkRateLimit(key: string): Promise<{ success: boolean; headers: Record<string, string> }> {
+  if (!ratelimit) {
+    // If Upstash is not configured, allow all requests
+    console.warn("Rate limiting not configured. Install Upstash Redis for production.");
+    return { success: true, headers: {} };
   }
 
-  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return false;
-  }
+  try {
+    const { success, limit, remaining, reset } = await ratelimit.limit(key);
 
-  record.count++;
-  return true;
+    const headers: Record<string, string> = {
+      "X-RateLimit-Limit": limit.toString(),
+      "X-RateLimit-Remaining": Math.max(0, remaining).toString(),
+      "X-RateLimit-Reset": new Date(reset).toISOString(),
+    };
+
+    if (!success) {
+      headers["Retry-After"] = Math.ceil((reset - Date.now()) / 1000).toString();
+    }
+
+    return { success, headers };
+  } catch (error) {
+    console.error("Rate limit check error:", error);
+    // On error, allow the request to prevent service outages
+    return { success: true, headers: {} };
+  }
 }
 
 export async function POST(request: Request) {
   try {
     // Rate limiting
     const rateLimitKey = getRateLimitKey(request);
-    if (!checkRateLimit(rateLimitKey)) {
+    const { success, headers: rateLimitHeaders } = await checkRateLimit(rateLimitKey);
+
+    if (!success) {
       return NextResponse.json(
         { message: "Too many requests. Please try again later.", errors: {} },
-        { status: 429 }
+        { status: 429, headers: rateLimitHeaders }
       );
     }
 
@@ -124,7 +145,7 @@ Message: ${message}
 
     return NextResponse.json(
       { message: "Thank you for your message. I'll get back to you soon!", errors: {} },
-      { status: 200 }
+      { status: 200, headers: rateLimitHeaders }
     );
   } catch (error) {
     console.error("Contact form error:", error);
@@ -133,17 +154,5 @@ Message: ${message}
       { status: 500 }
     );
   }
-}
-
-// Cleanup rate limit map periodically (every hour)
-if (typeof setInterval !== "undefined") {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, record] of rateLimitMap.entries()) {
-      if (now > record.resetTime) {
-        rateLimitMap.delete(key);
-      }
-    }
-  }, 60 * 60 * 1000); // Every hour
 }
 
