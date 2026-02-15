@@ -59,8 +59,8 @@ export const siteContent: SiteContent = {
   about: {
     heading: "Technical Manager aligning strategy and execution",
     body: [
-      "Engineering Manager with 11+ years of experience building and scaling mobile platforms end to end. I began my career as a Mobile Engineer and grew into leading and mentoring teams of 15+ engineers, while remaining grounded in strong engineering principles.",
-      "I bring deep technical expertise and strategic leadership to align mobile initiatives with business objectives, with a consistent focus on quality, security, and sustainable innovation.",
+      "Technical manager with 11+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.",
+      "Blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.",
     ],
   },
   experience: [
