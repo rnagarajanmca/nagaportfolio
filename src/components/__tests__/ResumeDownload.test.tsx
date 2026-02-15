@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { ResumeDownload } from '@/components/ResumeDownload';
 
 // Mock window.plausible

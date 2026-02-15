@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ScrollToTop } from '@/components/ScrollToTop';
 
@@ -27,7 +27,9 @@ describe('ScrollToTop', () => {
       configurable: true,
       value: 500,
     });
-    window.dispatchEvent(new Event('scroll'));
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
 
     rerender(<ScrollToTop />);
 
@@ -44,7 +46,9 @@ describe('ScrollToTop', () => {
     });
 
     const { rerender, container } = render(<ScrollToTop />);
-    window.dispatchEvent(new Event('scroll'));
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
     rerender(<ScrollToTop />);
 
     const button = container.querySelector('button');
@@ -60,7 +64,9 @@ describe('ScrollToTop', () => {
     });
 
     const { rerender } = render(<ScrollToTop />);
-    window.dispatchEvent(new Event('scroll'));
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
     rerender(<ScrollToTop />);
 
     const button = screen.getByRole('button', { name: /scroll to top/i });
@@ -79,7 +85,9 @@ describe('ScrollToTop', () => {
     });
 
     const { rerender } = render(<ScrollToTop />);
-    window.dispatchEvent(new Event('scroll'));
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
     rerender(<ScrollToTop />);
 
     const button = screen.getByRole('button', { name: /scroll to top/i });
