@@ -59,8 +59,8 @@ export const siteContent: SiteContent = {
   about: {
     heading: "Technical Manager aligning strategy and execution",
     body: [
-      "Technical manager with 11+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.",
-      "Blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.",
+      "Technical manager with 12+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.",
+      "I blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.",
     ],
   },
   experience: [
@@ -78,7 +78,7 @@ export const siteContent: SiteContent = {
         "Led code quality initiatives by driving SonarQube integration and establishing quality standards for shared frameworks and reusable UI components used across all three applications.",
         "Partnered with Security teams to enhance the organization's security posture by implementing security best practices and measures throughout the mobile application ecosystem.",
         "Launched automation initiatives for mobile frameworks to streamline development processes and reduce manual testing efforts.",
-        "Work cross functionally to identify industry best practices and reusable solutions, leading their integration into various 7-Eleven mobile apps.",
+        "Worked cross-functionally to identify industry best practices and reusable solutions, leading their integration into various 7-Eleven mobile apps.",
       ],
       badges: ["Engineering Leadership", "Mobile Strategy", "Platform Architecture"],
     },
