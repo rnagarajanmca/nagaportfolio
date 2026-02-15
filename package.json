@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prepare": "node scripts/setup-git-hooks.js",
     "dev": "next dev",
     "dev:hard": "next dev",
     "prebuild": "node scripts/generate-resume-pdf.js",
