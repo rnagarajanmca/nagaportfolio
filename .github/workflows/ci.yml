@@ -74,8 +74,18 @@ jobs:
             playwright-report/
           retention-days: 30
 
-      - name: Publish test results
+      - name: Check for test results
         if: always()
+        id: check_tests
+        run: |
+          if [ -f test-reports/junit-jest.xml ] || [ -f test-reports/junit-playwright.xml ]; then
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_tests=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish test results
+        if: always() && steps.check_tests.outputs.has_tests == 'true'
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: |
