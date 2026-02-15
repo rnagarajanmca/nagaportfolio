@@ -31,6 +31,7 @@ function execute(command, description = '') {
   }
 }
 
+
 async function deployAndVerify() {
   log('\n🚀 Starting Deploy & Verify Workflow\n', 'bright');
 
@@ -51,9 +52,7 @@ async function deployAndVerify() {
     // Step 3: Commit changes
     log('\nStep 2: Staging and committing changes...', 'yellow');
     execute('git add -A', '');
-    const commitMsg = `chore: update project
-
-Co-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>`;
+    const commitMsg = `chore: update project`;
     execute(`git commit -m "${commitMsg}"`, '');
     log('✓ Changes committed', 'green');
 
@@ -80,9 +79,7 @@ Co-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>`;
 
 ## Test Plan
 - [x] Code changes verified
-- [x] Ready for Vercel deployment check
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)`;
+- [x] Ready for Vercel deployment check`;
 
       try {
         execute(`gh pr create --title "Deploy: ${new Date().toLocaleDateString()}" --body "${prBody}"`, '');

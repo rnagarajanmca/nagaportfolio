@@ -76,7 +76,6 @@ Scans your working directory for modified or new files. If no changes are found,
 ### Step 2: Commit Changes
 - Stages all changes with `git add -A`
 - Creates a commit with standardized message format
-- Includes co-author attribution to Claude
 
 ### Step 3: Push to Remote
 - Pushes the current branch to GitHub
@@ -166,24 +165,6 @@ gh pr checks
 
 # Test endpoint
 curl -I https://www.nagarajanr.com/api/resume
-```
-
-## Integration with Claude Code
-
-To use this with Claude Code AI assistant:
-
-1. Make your code changes
-2. Request Claude to run: `npm run deploy`
-3. Claude will:
-   - Execute the deployment script
-   - Monitor the progress
-   - Report any issues
-   - Verify successful deployment
-
-Example:
-```
-You: "Deploy these changes and verify they work"
-Claude: Executes deployment workflow and confirms success
 ```
 
 ## Best Practices
