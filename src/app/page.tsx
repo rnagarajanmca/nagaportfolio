@@ -321,33 +321,9 @@ export default function Home() {
       <footer className="border-t border-border bg-surface/60 py-6 text-center text-sm text-muted">
         <div className="container mx-auto px-4">
           <p>© {new Date().getFullYear()} {hero.name}. Inspired by thoughtful, human-centered design.</p>
-          <div className="mt-2 flex flex-col items-center justify-center gap-1">
-            <div className="flex items-center justify-center gap-2">
-              <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
-              <span>Deployment status: Live on Vercel</span>
-            </div>
-            <div className="text-xs opacity-70">
-              Version: {process.env.npm_package_version} • Last updated: {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-            </div>
-            <div className="text-xs opacity-60 mt-1">
-              <a 
-                href="https://github.com/rnagarajanmca/nagaportfolio/actions" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-foreground transition-colors"
-              >
-                CI Status
-              </a>
-              {" • "}
-              <a 
-                href="https://vercel.com/rnagarajanmca/nagaportfolio" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-foreground transition-colors"
-              >
-                Vercel Dashboard
-              </a>
-            </div>
+          <div className="mt-2 flex items-center justify-center gap-2">
+            <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
+            <span>Deployment status: Live on Vercel</span>
           </div>
         </div>
       </footer>
