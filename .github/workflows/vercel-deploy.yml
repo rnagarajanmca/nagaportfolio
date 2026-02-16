@@ -5,8 +5,10 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
+  # PR Validation - Runs on pull requests
   validate-deployment:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
@@ -26,52 +28,119 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run lint check
+        run: npm run lint
+
+      - name: Run type check
+        run: npm run type-check
+
+      - name: Run unit tests
+        run: npm test
+
       - name: Run build
         run: npm run build
 
       - name: Check for AI references
         run: |
-          echo "🔍 Checking for AI-related references in code..."
+          echo "🔍 Checking for AI-related references..."
+          
           # Check commit messages in PR
-          if git log --oneline -10 | grep -iE "(ai|chatgpt|claude|openai|llm|gpt|assistant)" | grep -v "check for ai"; then
-            echo "❌ Found AI references in commit messages"
-            git log --oneline -10 | grep -iE "(ai|chatgpt|claude|openai|llm|gpt|assistant)"
+          echo "Checking commit messages..."
+          COMMIT_CHECK=$(git log --oneline -20 | grep -iE "(ai|chatgpt|claude|openai|llm|gpt|assistant|bot)" | grep -v "check for ai" || true)
+          if [ -n "$COMMIT_CHECK" ]; then
+            echo "❌ Found AI references in commit messages:"
+            echo "$COMMIT_CHECK"
             exit 1
           fi
           
           # Check branch name
-          if echo "${{ github.head_ref }}" | grep -iE "(ai|chatgpt|claude|openai|llm|gpt|assistant)"; then
-            echo "❌ Branch name contains AI references: ${{ github.head_ref }}"
+          echo "Checking branch name: ${{ github.head_ref }}"
+          if echo "${{ github.head_ref }}" | grep -iE "(ai|chatgpt|claude|openai|llm|gpt|assistant|bot)"; then
+            echo "❌ Branch name contains AI references"
+            exit 1
+          fi
+          
+          # Check for AI patterns in code (excluding comments and this script)
+          echo "Checking code for AI patterns..."
+          CODE_CHECK=$(grep -r -iE "(ai|chatgpt|claude|openai|llm|gpt|assistant|bot)" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.md" . | grep -v ".github/workflows" | grep -v "check for ai" || true)
+          if [ -n "$CODE_CHECK" ]; then
+            echo "❌ Found AI references in code:"
+            echo "$CODE_CHECK"
             exit 1
           fi
           
           echo "✅ No AI references found"
 
-      - name: Create deployment validation report
+      - name: Create comprehensive validation report
         run: |
-          echo "## Deployment Validation Report" > deployment-report.md
+          echo "# 🚀 Deployment Validation Report" > deployment-report.md
           echo "" >> deployment-report.md
-          echo "**PR:** #${{ github.event.pull_request.number }}" >> deployment-report.md
-          echo "**Branch:** ${{ github.head_ref }}" >> deployment-report.md
-          echo "**Commit:** ${{ github.sha }}" >> deployment-report.md
+          echo "## PR Information" >> deployment-report.md
+          echo "- **PR:** #${{ github.event.pull_request.number }}" >> deployment-report.md
+          echo "- **Branch:** ${{ github.head_ref }}" >> deployment-report.md
+          echo "- **Commit:** \`${{ github.sha }}\`" >> deployment-report.md
+          echo "- **Author:** ${{ github.event.pull_request.user.login }}" >> deployment-report.md
           echo "" >> deployment-report.md
-          echo "### Build Status" >> deployment-report.md
-          echo "✅ Build completed successfully" >> deployment-report.md
+          echo "## Validation Results" >> deployment-report.md
           echo "" >> deployment-report.md
-          echo "### AI Reference Check" >> deployment-report.md
-          echo "✅ No AI references found in code, commits, or branch names" >> deployment-report.md
+          echo "### ✅ Build & Test Status" >> deployment-report.md
+          echo "- Lint check: Passed" >> deployment-report.md
+          echo "- Type check: Passed" >> deployment-report.md
+          echo "- Unit tests: Passed" >> deployment-report.md
+          echo "- Build: Successful" >> deployment-report.md
           echo "" >> deployment-report.md
-          echo "### Next Steps" >> deployment-report.md
-          echo "1. Merge this PR to trigger Vercel deployment" >> deployment-report.md
-          echo "2. Check Vercel dashboard for deployment logs" >> deployment-report.md
-          echo "3. Verify deployment at: https://nagaportfolio.vercel.app" >> deployment-report.md
+          echo "### ✅ AI Reference Check" >> deployment-report.md
+          echo "- Commit messages: No AI references found" >> deployment-report.md
+          echo "- Branch name: No AI references found" >> deployment-report.md
+          echo "- Codebase: No AI references found" >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "### 📊 Deployment Readiness" >> deployment-report.md
+          echo "**Status:** READY FOR DEPLOYMENT" >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "This PR has passed all validation checks and is ready to be merged. Merging will automatically trigger a Vercel deployment." >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "## Next Steps" >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "1. **Merge this PR** to trigger Vercel deployment" >> deployment-report.md
+          echo "2. **Monitor deployment** at: https://vercel.com/rnagarajanmca/nagaportfolio" >> deployment-report.md
+          echo "3. **Verify live site** at: https://nagaportfolio.vercel.app" >> deployment-report.md
+          echo "4. **Check deployment logs** in Vercel dashboard for any issues" >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "## Validation Checklist" >> deployment-report.md
+          echo "- [x] Code compiles without errors" >> deployment-report.md
+          echo "- [x] All tests pass" >> deployment-report.md
+          echo "- [x] No AI references in code/commits" >> deployment-report.md
+          echo "- [x] Build output is valid" >> deployment-report.md
+          echo "- [ ] PR merged to main (pending)" >> deployment-report.md
+          echo "- [ ] Vercel deployment triggered (pending)" >> deployment-report.md
+          echo "- [ ] Deployment successful (pending)" >> deployment-report.md
+          echo "- [ ] Site updates visible (pending)" >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "---" >> deployment-report.md
+          echo "*Report generated: $(date -u +'%Y-%m-%d %H:%M:%S UTC')*" >> deployment-report.md
 
-      - name: Upload validation report
+      - name: Upload validation report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: deployment-validation-report
+          name: deployment-validation-report-${{ github.event.pull_request.number }}
           path: deployment-report.md
 
+      - name: Comment on PR with validation results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('deployment-report.md', 'utf8');
+            
+            // Create comment with validation results
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+
+  # Vercel Deployment - Runs when PR is merged to main
   deploy-to-vercel:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -80,11 +149,100 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Vercel
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build for verification
+        run: npm run build
+
+      - name: Deploy to Vercel (Simulated)
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          echo "🚀 Deployment to Vercel triggered"
-          echo "📊 Check deployment status at: https://vercel.com/rnagarajanmca/nagaportfolio"
-          echo "🌐 Live site: https://nagaportfolio.vercel.app"
+          echo "🚀 VERCEL DEPLOYMENT TRIGGERED"
+          echo "================================"
+          echo ""
+          echo "📊 Deployment Information:"
+          echo "- Repository: ${{ github.repository }}"
+          echo "- Branch: ${{ github.ref }}"
+          echo "- Commit: ${{ github.sha }}"
+          echo "- Trigger: ${{ github.event_name }}"
+          echo ""
+          echo "🔗 Links:"
+          echo "- Vercel Dashboard: https://vercel.com/rnagarajanmca/nagaportfolio"
+          echo "- Live Site: https://nagaportfolio.vercel.app"
+          echo "- GitHub Commit: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+          echo ""
+          echo "📋 Deployment Process:"
+          echo "1. Vercel detects push to main branch"
+          echo "2. Vercel starts building the project"
+          echo "3. Vercel deploys to production"
+          echo "4. Site becomes available at live URL"
+          echo ""
+          echo "⏱️  Expected timeline:"
+          echo "- Build start: Immediately"
+          echo "- Build completion: 2-5 minutes"
+          echo "- Deployment: 1-2 minutes"
+          echo "- DNS propagation: Instant (Vercel edge network)"
+          echo ""
+          echo "🔍 Verification Steps:"
+          echo "1. Check Vercel dashboard for build status"
+          echo "2. Visit the live site after deployment"
+          echo "3. Verify new changes are visible"
+          echo "4. Check console for any errors"
+          echo ""
+          echo "✅ Deployment simulation complete. Actual deployment handled by Vercel."
+
+      - name: Create deployment summary
+        run: |
+          echo "# 📦 Deployment Summary" > deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "## Deployment Triggered Successfully" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> deployment-summary.md
+          echo "**Commit:** \`${{ github.sha }}\`" >> deployment-summary.md
+          echo "**Branch:** ${{ github.ref }}" >> deployment-summary.md
+          echo "**Timestamp:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "## Next Steps" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "1. **Monitor build** at: https://vercel.com/rnagarajanmca/nagaportfolio" >> deployment-summary.md
+          echo "2. **Verify deployment** at: https://nagaportfolio.vercel.app" >> deployment-summary.md
+          echo "3. **Check logs** in Vercel dashboard for any issues" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "## Expected Timeline" >> deployment-summary.md
+          echo "- ✅ Build triggered: Immediately" >> deployment-summary.md
+          echo "- ⏳ Build completion: 2-5 minutes" >> deployment-summary.md
+          echo "- ⏳ Deployment: 1-2 minutes" >> deployment-summary.md
+          echo "- ✅ Site available: Instant (Vercel edge)" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "---" >> deployment-summary.md
+          echo "*Summary generated: $(date -u +'%Y-%m-%d %H:%M:%S UTC')*" >> deployment-summary.md
+
+      - name: Upload deployment summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-summary-${{ github.sha }}
+          path: deployment-summary.md
+
+  # Post-deployment validation (optional - can be enabled later)
+  validate-live-deployment:
+    runs-on: ubuntu-latest
+    needs: deploy-to-vercel
+    if: false  # Disabled for now, can be enabled for production
+    
+    steps:
+      - name: Validate live deployment
+        run: |
+          echo "🔍 Validating live deployment..."
+          # This would check if the live site is accessible
+          # and contains expected content
+          echo "Live deployment validation would run here"
+          echo "Checking: https://nagaportfolio.vercel.app"
