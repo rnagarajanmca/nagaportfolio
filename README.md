@@ -5,11 +5,14 @@
   Modern personal portfolio built with the Next.js App Router, Tailwind CSS v4 design tokens, and structured TypeScript content.
 
   [![CI](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/ci.yml)
+  [![Vercel Deployment Validation](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/vercel-deploy.yml/badge.svg)](https://github.com/rnagarajanmca/nagaportfolio/actions/workflows/vercel-deploy.yml)
   ![Node.js](https://img.shields.io/badge/node-20.x-339933?logo=node.js&logoColor=white)
   ![Next.js](https://img.shields.io/badge/next.js-16.0.1-black?logo=next.js)
   ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
   ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)
   [![Hosted on Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com/)
+  [![Vercel Deployment](https://vercelbadge.vercel.app/api/rnagarajanmca/nagaportfolio)](https://vercel.com/rnagarajanmca/nagaportfolio)
+  ![Automated PR Workflow](https://img.shields.io/badge/PR%20Workflow-Automated-blue)
   ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
 </div>
@@ -112,9 +115,30 @@ npm run dev
 
 ### Quality Gates
 - GitHub Actions workflow (`ci.yml`) runs lint + tests on all pushes and PRs
+- Vercel Deployment Validation workflow (`vercel-deploy.yml`) validates deployment readiness
 - Pre-commit linting catches issues early
 - TypeScript strict mode ensures type safety
 - See `docs/` directory for detailed testing documentation
+
+### Automated Development Loop
+The project features a complete automated development workflow:
+
+1. **Local Development**: Make changes and test with `npm run dev`
+2. **PR Automation**: Use `./scripts/automated-pr-workflow.sh` to create PRs
+3. **CI Validation**: GitHub Actions run lint, tests, and AI reference checks
+4. **Vercel Deployment**: Automatic deployment on PR merge to main
+5. **Live Verification**: Site updates at https://nagaportfolio.vercel.app
+
+**Key Automation Scripts:**
+- `scripts/automated-pr-workflow.sh` - Complete PR creation and validation
+- `scripts/create-pr-and-deploy.sh` - Simple PR creation
+- `scripts/deploy-and-verify.js` - Deployment verification
+
+**Validation Features:**
+- ✅ AI reference detection in code/commits
+- ✅ Build and test validation
+- ✅ Deployment readiness checks
+- ✅ Automated PR comments with validation reports
 
 ## Deployment
 

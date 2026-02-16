@@ -319,7 +319,13 @@ export default function Home() {
         </SectionWrapper>
       </main>
       <footer className="border-t border-border bg-surface/60 py-6 text-center text-sm text-muted">
-        © {new Date().getFullYear()} {hero.name}. Inspired by thoughtful, human-centered design.
+        <div className="container mx-auto px-4">
+          <p>© {new Date().getFullYear()} {hero.name}. Inspired by thoughtful, human-centered design.</p>
+          <div className="mt-2 flex items-center justify-center gap-2">
+            <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
+            <span>Deployment status: Live on Vercel</span>
+          </div>
+        </div>
       </footer>
       <ScrollToTop />
     </div>
