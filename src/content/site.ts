@@ -14,7 +14,7 @@ export const siteContent: SiteContent = {
     name: "Nagarajan Ravikumar",
     title: "Technical Manager · Mobile Platforms",
     summary:
-      "Guiding mobile product initiatives end-to-end: aligning strategy, architecture, and execution to deliver reliable, multi-platform experiences.",
+      "Guiding mobile product initiatives end-to-end: aligning strategy, architecture, and execution to deliver reliable, multi-platform experiences. Now managing this portfolio via OpenClaw AI assistant!",
     typingPhrases: [
       "Driving mobile strategy",
       "Architecting scalable platforms",
