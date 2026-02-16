@@ -10,6 +10,7 @@
   ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
   ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)
   [![Hosted on Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com/)
+  [![Vercel Deployment](https://vercelbadge.vercel.app/api/rnagarajanmca/nagaportfolio)](https://vercel.com/rnagarajanmca/nagaportfolio)
   ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
 </div>
