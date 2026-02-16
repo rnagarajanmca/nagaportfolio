@@ -44,7 +44,7 @@ export const siteContent: SiteContent = {
     ],
     cta: [
       {
-        label: "Download Resume",
+        label: "Resume",
         href: "/api/resume",
         download: true,
       },
