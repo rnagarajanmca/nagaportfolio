@@ -20,24 +20,24 @@ describe('ResumeDownload', () => {
   });
 
   it('renders download link', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /resume/i });
     expect(link).toBeInTheDocument();
   });
 
   it('has correct download attributes', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /resume/i });
     expect(link).toHaveAttribute('download');
     expect(link).toHaveAttribute('href', '/api/resume');
   });
 
   it('has accessible ARIA attributes', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /resume/i });
     expect(link).toHaveAttribute('aria-busy', 'false');
     expect(link).toHaveAttribute('aria-disabled', 'false');
   });
@@ -54,17 +54,17 @@ describe('ResumeDownload', () => {
 
   it('renders with loading text label', () => {
     const { container } = render(
-      <ResumeDownload>Download Resume</ResumeDownload>
+      <ResumeDownload>Resume</ResumeDownload>
     );
 
     // Should have a span with the button text
-    expect(screen.getByText('Download Resume')).toBeInTheDocument();
+    expect(screen.getByText('Resume')).toBeInTheDocument();
     expect(container.querySelector('a')).toBeInTheDocument();
   });
 
   it('renders with proper styling classes', () => {
     const { container } = render(
-      <ResumeDownload>Download Resume</ResumeDownload>
+      <ResumeDownload>Resume</ResumeDownload>
     );
 
     const link = container.querySelector('a');
@@ -73,17 +73,17 @@ describe('ResumeDownload', () => {
   });
 
   it('has proper link semantics', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /resume/i });
     expect(link.tagName.toLowerCase()).toBe('a');
     expect(link).toHaveAttribute('href');
   });
 
   it('download attribute should trigger file download', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /resume/i });
     // The download attribute tells the browser to download instead of navigate
     expect(link).toHaveAttribute('download');
   });
