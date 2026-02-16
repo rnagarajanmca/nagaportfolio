@@ -1,4 +1,16 @@
 {
   "projectId": "prj_8U40uXcs9MwBgJDrovwBuvrXMd9w",
-  "orgId": "team_xisjFadKPLMiROJ6AjlTnJs8"
+  "orgId": "team_xisjFadKPLMiROJ6AjlTnJs8",
+  "projectName": "nagaportfolio",
+  "settings": {
+    "createdAt": 1762040434673,
+    "framework": "nextjs",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "22.x"
+  }
 }
