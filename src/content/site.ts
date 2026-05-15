@@ -14,7 +14,7 @@ export const siteContent: SiteContent = {
     name: "Nagarajan Ravikumar",
     title: "Technical Manager · Mobile Platforms",
     summary:
-      "Guiding mobile product initiatives end-to-end: aligning strategy, architecture, and execution to deliver reliable, multi-platform experiences. Now managing this portfolio via OpenClaw AI assistant!",
+      "Results-driven Software Engineering Manager with extensive experience leading cross-functional teams and delivering scalable mobile applications serving millions of users. Proven track record of reducing operational expenses by $1.5M+ annually through strategic technical initiatives and efficient resource management.",
     typingPhrases: [
       "Driving mobile strategy",
       "Architecting scalable platforms",
@@ -56,10 +56,10 @@ export const siteContent: SiteContent = {
     ],
   },
   about: {
-    heading: "Technical Manager aligning strategy and execution",
+    heading: "Software Engineering Manager aligning strategy and execution",
     body: [
-      "Technical manager with 12+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.",
-      "I blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.",
+      "Results-driven Software Engineering Manager with extensive experience leading cross-functional teams and delivering scalable mobile applications serving millions of users.",
+      "Expertise in architecting unified codebases, driving cost optimization, and implementing modern development practices. Proven track record of reducing operational expenses by $1.5M+ annually through strategic technical initiatives and efficient resource management.",
     ],
   },
   experience: [
