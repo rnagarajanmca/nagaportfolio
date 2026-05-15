@@ -7,7 +7,7 @@ export function PlausibleAnalytics() {
     return null;
   }
 
-  const scriptSrc = `https://plausible.io/js/script.js`;
+  const scriptSrc = `https://plausible.io/js/script.tagged-events.js`;
 
   return (
     <Script
