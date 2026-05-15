@@ -19,16 +19,16 @@ describe('ResumeDownload', () => {
   });
 
   it('renders download link', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>View Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /view resume/i });
     expect(link).toBeInTheDocument();
   });
 
   it('has correct link attributes', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>View Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /view resume/i });
     expect(link).not.toHaveAttribute('download');
     expect(link).toHaveAttribute('href', '/resume.html');
     expect(link).toHaveAttribute('target', '_blank');
@@ -37,7 +37,7 @@ describe('ResumeDownload', () => {
 
   it('supports variant prop', () => {
     const { container } = render(
-      <ResumeDownload variant="secondary">Download</ResumeDownload>
+      <ResumeDownload variant="secondary">View</ResumeDownload>
     );
 
     const link = container.querySelector('a');
@@ -47,16 +47,16 @@ describe('ResumeDownload', () => {
 
   it('renders with correct text label', () => {
     const { container } = render(
-      <ResumeDownload>Download Resume</ResumeDownload>
+      <ResumeDownload>View Resume</ResumeDownload>
     );
 
-    expect(screen.getByText('Download Resume')).toBeInTheDocument();
+    expect(screen.getByText('View Resume')).toBeInTheDocument();
     expect(container.querySelector('a')).toBeInTheDocument();
   });
 
   it('renders with proper styling classes', () => {
     const { container } = render(
-      <ResumeDownload>Download Resume</ResumeDownload>
+      <ResumeDownload>View Resume</ResumeDownload>
     );
 
     const link = container.querySelector('a');
@@ -65,16 +65,16 @@ describe('ResumeDownload', () => {
   });
 
   it('has proper link semantics', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>View Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /view resume/i });
     expect(link.tagName.toLowerCase()).toBe('a');
     expect(link).toHaveAttribute('href');
   });
 
   it('triggers plausible event on click', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
-    const link = screen.getByRole('link', { name: /download resume/i });
+    render(<ResumeDownload>View Resume</ResumeDownload>);
+    const link = screen.getByRole('link', { name: /view resume/i });
     
     fireEvent.click(link);
     

@@ -44,7 +44,7 @@ export const siteContent: SiteContent = {
     ],
     cta: [
       {
-        label: "Download Resume",
+        label: "View Resume",
         href: "/resume.html",
       },
       { label: "View Experience", href: "#experience", variant: "secondary" },
