@@ -1,90 +1,62 @@
 import { render, screen } from '@testing-library/react';
 import { ResumeDownload } from '@/components/ResumeDownload';
 
-// Mock window.plausible
-declare global {
-  interface Window {
-    plausible?: jest.Mock;
-  }
-}
-
 describe('ResumeDownload', () => {
-  beforeEach(() => {
-    // Clear mocks
-    global.fetch = jest.fn();
-    window.plausible = jest.fn();
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('renders download link', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>View Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /view resume/i });
     expect(link).toBeInTheDocument();
   });
 
-  it('has correct download attributes', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+  it('has correct link attributes', () => {
+    render(<ResumeDownload>View Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
-    expect(link).toHaveAttribute('download');
-    expect(link).toHaveAttribute('href', '/api/resume');
-  });
-
-  it('has accessible ARIA attributes', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
-
-    const link = screen.getByRole('link', { name: /download resume/i });
-    expect(link).toHaveAttribute('aria-busy', 'false');
-    expect(link).toHaveAttribute('aria-disabled', 'false');
+    const link = screen.getByRole('link', { name: /view resume/i });
+    expect(link).not.toHaveAttribute('download');
+    expect(link).toHaveAttribute('href', '/resume.html');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    // Ensure the plausible tracking class is present
+    expect(link.className).toContain('plausible-event-name=Resume+Download');
   });
 
   it('supports variant prop', () => {
     const { container } = render(
-      <ResumeDownload variant="secondary">Download</ResumeDownload>
+      <ResumeDownload variant="secondary">View</ResumeDownload>
     );
 
     const link = container.querySelector('a');
-    // The button should be rendered (variant affects styling via parent CTAButton)
     expect(link).toBeInTheDocument();
   });
 
-  it('renders with loading text label', () => {
+  it('renders with correct text label', () => {
     const { container } = render(
-      <ResumeDownload>Download Resume</ResumeDownload>
+      <ResumeDownload>View Resume</ResumeDownload>
     );
 
-    // Should have a span with the button text
-    expect(screen.getByText('Download Resume')).toBeInTheDocument();
+    expect(screen.getByText('View Resume')).toBeInTheDocument();
     expect(container.querySelector('a')).toBeInTheDocument();
   });
 
   it('renders with proper styling classes', () => {
     const { container } = render(
-      <ResumeDownload>Download Resume</ResumeDownload>
+      <ResumeDownload>View Resume</ResumeDownload>
     );
 
     const link = container.querySelector('a');
-    // CTAButton styling should be applied
     expect(link?.className).toBeTruthy();
   });
 
   it('has proper link semantics', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
+    render(<ResumeDownload>View Resume</ResumeDownload>);
 
-    const link = screen.getByRole('link', { name: /download resume/i });
+    const link = screen.getByRole('link', { name: /view resume/i });
     expect(link.tagName.toLowerCase()).toBe('a');
     expect(link).toHaveAttribute('href');
-  });
-
-  it('download attribute should trigger file download', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
-
-    const link = screen.getByRole('link', { name: /download resume/i });
-    // The download attribute tells the browser to download instead of navigate
-    expect(link).toHaveAttribute('download');
   });
 });

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagarajan Ravikumar - Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .resume-container {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: #1a3c5e;
+            color: white;
+            padding: 50px 60px;
+        }
+
+        .name {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 400;
+            color: #d0d0d0;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 13px;
+            color: #e0e0e0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .contact-item a {
+            color: #e8e8e8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contact-item a:hover {
+            color: white;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px 60px;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #333;
+        }
+
+        /* Summary */
+        .summary {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            margin-bottom: 15px;
+        }
+
+        .skill-category-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: #f5f5f5;
+            color: #333;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Experience Section */
+        .job {
+            margin-bottom: 28px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .job-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.3px;
+        }
+
+        .job-company {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .job-location {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .job-dates {
+            font-size: 13px;
+            font-weight: 500;
+            color: #888;
+            white-space: nowrap;
+        }
+
+        .job-bullets {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .job-bullets li {
+            position: relative;
+            padding-left: 22px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .job-bullets li::before {
+            content: '•';
+            position: absolute;
+            left: 8px;
+            font-weight: bold;
+        }
+
+        .metric {
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* Education Section */
+        .education-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .education-item:last-child {
+            border-bottom: none;
+        }
+
+        .education-degree {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .education-school {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .education-year {
+            font-size: 13px;
+            font-weight: 500;
+            color: #888;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 25px;
+            }
+
+            .content {
+                padding: 30px 25px;
+            }
+
+            .name {
+                font-size: 32px;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+
+            .job-dates {
+                margin-top: 4px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .resume-container {
+                box-shadow: none;
+                border: none;
+            }
+
+            .header {
+                background: #1a1a1a;
+            }
+
+            .skill-tag {
+                border: 1px solid #000;
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="resume-container">
+    <div class="header">
+        <h1 class="name">Nagarajan Ravikumar</h1>
+        <p class="title">Software Engineering Manager</p>
+        <div class="contact-info">
+            <span class="contact-item">Plano, Texas</span>
+            <span class="contact-item">|</span>
+            <span class="contact-item">469-933-3360</span>
+            <span class="contact-item">|</span>
+            <span class="contact-item"><a href="mailto:career@nagarajanr.com">career@nagarajanr.com</a></span>
+            <span class="contact-item">|</span>
+            <span class="contact-item"><a href="https://www.nagarajanr.com">nagarajanr.com</a></span>
+            <span class="contact-item">|</span>
+            <span class="contact-item"><a href="https://linkedin.com/in/nagarajanr0">linkedin.com/in/nagarajanr0</a></span>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Summary Section -->
+        <div class="section">
+            <h2 class="section-title">Professional Summary</h2>
+            <p class="summary">
+                Results-driven Software Engineering Manager with extensive experience leading cross-functional teams and delivering scalable mobile applications serving millions of users. Expertise in architecting unified codebases, driving cost optimization, and implementing modern development practices. Proven track record of reducing operational expenses by $1.5M+ annually through strategic technical initiatives and efficient resource management.
+            </p>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="skill-category-title">Programming Languages</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Kotlin</span>
+                        <span class="skill-tag">Swift</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">C</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Frameworks & Architectures</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MVVM</span>
+                        <span class="skill-tag">MVI</span>
+                        <span class="skill-tag">MVP</span>
+                        <span class="skill-tag">Modular Architecture</span>
+                        <span class="skill-tag">GraphQL</span>
+                        <span class="skill-tag">GraphQL Federation</span>
+                        <span class="skill-tag">Module Federation</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Mobile Development</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Kotlin Coroutines</span>
+                        <span class="skill-tag">Kotlin Flows</span>
+                        <span class="skill-tag">Swift Concurrency</span>
+                        <span class="skill-tag">Dependency Injection</span>
+                        <span class="skill-tag">Hilt</span>
+                        <span class="skill-tag">Room</span>
+                        <span class="skill-tag">CoreData</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Development Tools</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">GitHub</span>
+                        <span class="skill-tag">GitLab</span>
+                        <span class="skill-tag">Jenkins</span>
+                        <span class="skill-tag">Gradle</span>
+                        <span class="skill-tag">Android Studio</span>
+                        <span class="skill-tag">Xcode</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Testing & QA</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">TDD</span>
+                        <span class="skill-tag">XCTest</span>
+                        <span class="skill-tag">MockK</span>
+                        <span class="skill-tag">Espresso</span>
+                        <span class="skill-tag">Automated Testing</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Infrastructure & DevOps</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Cloud Infrastructure</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Newrelic</span>
+                        <span class="skill-tag">SLO Monitoring</span>
+                        <span class="skill-tag">Deployment Automation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <h2 class="section-title">Professional Experience</h2>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Software Engineering Manager</div>
+                        <div class="job-company">7-Eleven, Inc.</div>
+                        <div class="job-location">Plano, Texas</div>
+                    </div>
+                    <div class="job-dates">Feb 2024 – Present</div>
+                </div>
+                <ul class="job-bullets">
+                    <li>Directly manage <span class="metric">3+ cross-functional platform squads</span> (20+ engineers), overseeing shared mobile framework for <span class="metric">10M+ Monthly Active Users</span> across 7-Eleven, Speedway, and 7Now ecosystems</li>
+                    <li>Architected unified multi-variant codebase for Speedway and 7-Eleven apps, <span class="metric">reducing maintenance overhead by 50%</span> and accelerating feature delivery by <span class="metric">35%</span></li>
+                    <li>Identified and eliminated redundant spend (Google Maps quotas, repetitive API calls, reusable codebase), creating reusable libraries that save <span class="metric">$1M+ annually</span></li>
+                    <li>Led cross-functional Imperva migration, resulting in <span class="metric">$500K+ annual OpEx savings</span> and strengthened security posture across all mobile touchpoints</li>
+                    <li>Reduced <span class="metric">P1 mobile incidents by 40% YoY</span> through automated SLO monitoring with Newrelic dashboards and alerts</li>
+                    <li>Managed offshore component squad delivering cross-platform native UI kits, <span class="metric">halving duplicate UI effort</span> for Android/iOS</li>
+                    <li>Service on architecture review board, steering patterns, performance budgets, and modernization across loyalty, financial, fuel rewards, and delivery programs</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Senior Engineer</div>
+                        <div class="job-company">Wayfair LLC</div>
+                        <div class="job-location">Boston, Massachusetts</div>
+                    </div>
+                    <div class="job-dates">May 2019 – Jan 2024</div>
+                </div>
+                <ul class="job-bullets">
+                    <li>Built Android-based framework adopted by <span class="metric">15+ teams</span>, enabling creation of <span class="metric">55+ workflows</span> for warehouse management</li>
+                    <li>Orchestrated centralized tool for accessing browser-based applications in warehouse, implementing GraphQL Federation and Module Federation for reusable components and services, streamlining onboarding and app migration for teams</li>
+                    <li>Developed frameworks and libraries for Wayfair's supply chain, facilitating migration from legacy RF devices to Android-based Zebra devices</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Android Developer</div>
+                        <div class="job-company">7-Eleven Inc.</div>
+                        <div class="job-location">Irving, Texas</div>
+                    </div>
+                    <div class="job-dates">Jun 2018 – May 2019</div>
+                </div>
+                <ul class="job-bullets">
+                    <li>Developed enhanced checkout experience for self-checkout team by integrating checkout station and iBeacon functionality</li>
+                    <li>Implemented MVVM architecture and added Kotlin language support to improve application functionality</li>
+                    <li>Maintained Google design guidelines and Android best practices for regular application updates</li>
+                    <li>Utilized development tools including Android Studio, SDK, Postman, Git, and Gradle build system</li>
+                    <li>Followed Sprint-based Agile practices using JIRA for bug tracking and GitLab pipelines for continuous delivery</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Tech Lead</div>
+                        <div class="job-company">Fusion Global Solutions Pvt Ltd.</div>
+                        <div class="job-location">USA</div>
+                    </div>
+                    <div class="job-dates">Nov 2014 – May 2018</div>
+                </div>
+                <ul class="job-bullets">
+                    <li>Led development of Container Centralen's logistics solution, the largest returnable transport item (RTI) pooling system in European and US power and pot plant industry</li>
+                    <li>Developed CC Onsite products on tablets for effective logistics tracking, including support for wheeled containers, pallets, trolleys, and crates</li>
+                    <li>Designed applications supporting both landscape and portrait modes on tablets with offline-first architecture</li>
+                    <li>Implemented RFID and Barcode readers (M220 RFID Reader, Granit Barcode Reader) for enhanced asset tracking capabilities</li>
+                    <li>Configured and maintained CI/CD pipelines using Jenkins for incremental deliveries</li>
+                    <li>Developed IVT (Indoor Vehicle Tracking) application using UWB-based technology for forklift tracking within facilities without GPS signals</li>
+                    <li>Utilized iBeacons trilateration for precise indoor positioning and Python with Raspberry Pi to manage mesh networks of anchors</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Senior Developer</div>
+                        <div class="job-company">Naso Technologies Pvt Ltd</div>
+                        <div class="job-location">Chennai, India</div>
+                    </div>
+                    <div class="job-dates">Apr 2012 – Oct 2014</div>
+                </div>
+                <ul class="job-bullets">
+                    <li>Developed healthcare application enabling case managers to diagnose, monitor, and prescribe medication while ensuring HIPAA compliance</li>
+                    <li>Built versatile framework for applications targeting mobility wearables and IoT with cloud support</li>
+                    <li>Created dynamic UI interface configurable through over-the-air updates and comprehensive content management system</li>
+                    <li>Contributed to all phases of software development life cycle ensuring timely delivery and quality standards</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            <div class="education-item">
+                <div>
+                    <div class="education-degree">Master of Computer Science</div>
+                    <div class="education-school">University of Madras, India</div>
+                </div>
+                <div class="education-year">April 2012</div>
+            </div>
+            <div class="education-item">
+                <div>
+                    <div class="education-degree">Bachelor of Computer Science</div>
+                    <div class="education-school">Thiruthangal Nadar College, Chennai, India</div>
+                </div>
+                <div class="education-year">April 2009</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
