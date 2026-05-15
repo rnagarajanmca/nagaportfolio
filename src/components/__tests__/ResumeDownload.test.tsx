@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ResumeDownload } from '@/components/ResumeDownload';
 
 // Mock window.plausible
@@ -11,7 +11,6 @@ declare global {
 describe('ResumeDownload', () => {
   beforeEach(() => {
     // Clear mocks
-    global.fetch = jest.fn();
     window.plausible = jest.fn();
   });
 
@@ -26,20 +25,14 @@ describe('ResumeDownload', () => {
     expect(link).toBeInTheDocument();
   });
 
-  it('has correct download attributes', () => {
+  it('has correct link attributes', () => {
     render(<ResumeDownload>Download Resume</ResumeDownload>);
 
     const link = screen.getByRole('link', { name: /download resume/i });
-    expect(link).toHaveAttribute('download');
-    expect(link).toHaveAttribute('href', '/api/resume');
-  });
-
-  it('has accessible ARIA attributes', () => {
-    render(<ResumeDownload>Download Resume</ResumeDownload>);
-
-    const link = screen.getByRole('link', { name: /download resume/i });
-    expect(link).toHaveAttribute('aria-busy', 'false');
-    expect(link).toHaveAttribute('aria-disabled', 'false');
+    expect(link).not.toHaveAttribute('download');
+    expect(link).toHaveAttribute('href', '/resume.html');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('supports variant prop', () => {
@@ -52,12 +45,11 @@ describe('ResumeDownload', () => {
     expect(link).toBeInTheDocument();
   });
 
-  it('renders with loading text label', () => {
+  it('renders with correct text label', () => {
     const { container } = render(
       <ResumeDownload>Download Resume</ResumeDownload>
     );
 
-    // Should have a span with the button text
     expect(screen.getByText('Download Resume')).toBeInTheDocument();
     expect(container.querySelector('a')).toBeInTheDocument();
   });
@@ -80,11 +72,12 @@ describe('ResumeDownload', () => {
     expect(link).toHaveAttribute('href');
   });
 
-  it('download attribute should trigger file download', () => {
+  it('triggers plausible event on click', () => {
     render(<ResumeDownload>Download Resume</ResumeDownload>);
-
     const link = screen.getByRole('link', { name: /download resume/i });
-    // The download attribute tells the browser to download instead of navigate
-    expect(link).toHaveAttribute('download');
+    
+    fireEvent.click(link);
+    
+    expect(window.plausible).toHaveBeenCalledWith('Resume Download', expect.any(Object));
   });
 });
