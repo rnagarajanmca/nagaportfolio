@@ -48,7 +48,7 @@ export const siteContent: SiteContent = {
     social: [
       { platform: "LinkedIn", href: "https://www.linkedin.com/in/nagarajanr0" },
       { platform: "GitHub", href: "https://github.com/rnagarajanmca" },
-      { platform: "Email", href: "mailto:naga@nagarajanr.com" },
+      { platform: "Email", href: "mailto:hello@nagarajan.dev" },
     ],
   },
   about: {
