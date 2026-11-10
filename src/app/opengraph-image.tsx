@@ -94,7 +94,7 @@ export default async function OpenGraphImage() {
               maxWidth: "760px",
             }}
           >
-            Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.
+            Software Engineering Manager, Mobile at 7-Eleven, leading 3 teams and 15+ engineers shipping the 7-Eleven, Speedway, and 7Now apps.
           </p>
 
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>

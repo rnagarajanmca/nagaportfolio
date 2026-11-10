@@ -131,19 +131,6 @@ async function deployAndVerify() {
       log('⚠ Deployment check timeout after 10 minutes', 'yellow');
     }
 
-    // Step 7: Test endpoint
-    log('\nStep 6: Testing endpoint...', 'yellow');
-    try {
-      const response = execute('curl -s -I https://www.nagarajanr.com/api/resume | head -1', '');
-      if (response.includes('200')) {
-        log('✓ Resume endpoint responding with 200 OK', 'green');
-      } else {
-        log(`⚠ Endpoint returned: ${response}`, 'yellow');
-      }
-    } catch {
-      log('⚠ Could not test endpoint (may not be deployed yet)', 'yellow');
-    }
-
     // Summary
     log('\n' + '='.repeat(50), 'bright');
     if (deploymentSuccess) {

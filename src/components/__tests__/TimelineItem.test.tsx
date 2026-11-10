@@ -16,7 +16,9 @@ describe('TimelineItem', () => {
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
         badges={mockExperience.badges}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     expect(screen.getByText('Software Engineer')).toBeInTheDocument();
@@ -28,7 +30,9 @@ describe('TimelineItem', () => {
         title={mockExperience.title}
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     expect(screen.getByText('Tech Corp')).toBeInTheDocument();
@@ -40,7 +44,9 @@ describe('TimelineItem', () => {
         title={mockExperience.title}
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     expect(screen.getByText(/San Francisco/)).toBeInTheDocument();
@@ -72,7 +78,9 @@ describe('TimelineItem', () => {
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
         badges={mockExperience.badges}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     expect(screen.getByText('React')).toBeInTheDocument();
@@ -85,7 +93,9 @@ describe('TimelineItem', () => {
         title={mockExperience.title}
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     expect(screen.getByText('Software Engineer')).toBeInTheDocument();
@@ -98,7 +108,9 @@ describe('TimelineItem', () => {
         title={mockExperience.title}
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     const article = container.querySelector('article');
@@ -111,7 +123,9 @@ describe('TimelineItem', () => {
         title={mockExperience.title}
         subtitle={mockExperience.subtitle}
         meta={mockExperience.meta}
-      />
+      >
+        Details
+      </TimelineItem>
     );
 
     // Check for the timeline dot

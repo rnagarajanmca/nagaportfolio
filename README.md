@@ -53,8 +53,7 @@ This repo powers Nagarajan Ravikumar’s portfolio. Content is strictly typed, U
 - **Accessibility:** WCAG-compliant with ARIA labels, semantic HTML, and proper color contrast
 - **Theme Support:** Light/dark modes with system preference detection and localStorage persistence
 - **Contact Form:** Accessible form with Resend email integration and Upstash Redis rate limiting (3 req/15min)
-- **Resume Download:** PDF generation with Chromium backend and download tracking
-- **Testing:** 74 unit tests (Jest + React Testing Library) + 20 E2E tests (Playwright)
+- **Testing:** Jest + React Testing Library unit tests and Playwright end-to-end tests
 - **CI/CD:** Automated GitHub Actions workflow (lint, type-check, tests on every push)
 - **Performance:** Optimized bundle with Turbopack and production-ready deployment on Vercel
 
@@ -89,7 +88,7 @@ npm run dev
 - `src/content/site.ts` – Single source of truth for portfolio data
 - `src/app/page.tsx` – Layout composition using the structured content
 - `src/components` – Reusable UI blocks (NavBar, SectionWrapper, ProjectCard, etc.)
-- `src/app/api` – API routes (`/contact`, `/resume`) for form handling and downloads
+- `src/app/api` – API route (`/contact`) for the contact form
 
 ## Styling & Theming
 
@@ -101,15 +100,14 @@ npm run dev
 
 ### Unit & Integration Tests
 - Located in `src/components/__tests__/`
-- 74 test cases across 11 test suites (~73% component coverage)
+- 66 test cases across 10 test suites
 - Run with `npm test` or watch with `npm test -- --watch`
 
 ### End-to-End Tests
 - Located in `e2e/*.spec.ts`
-- 20 passing E2E tests covering critical user flows:
+- Playwright tests covering critical user flows:
   - Homepage navigation and section visibility
   - Contact form submission
-  - Resume download functionality
   - Theme toggle and persistence
 - Run with `npm run e2e` (requires local dev server)
 

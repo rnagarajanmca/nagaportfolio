@@ -37,15 +37,13 @@ test.describe('Homepage Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for hero content
-    const heroText = page.locator('text=/Technical Manager|Full Stack/i');
+    const heroText = page.locator('#home').getByText(/Software Engineering Manager/i);
     await expect(heroText).toBeVisible({ timeout: 10000 });
 
-    // Check for CTA buttons - look for links with specific text
-    const downloadButton = page.locator('a, button').filter({ hasText: /download/i }).first();
-    const viewExperienceButton = page.locator('a, button').filter({ hasText: /experience|projects/i }).first();
-
-    await expect(downloadButton).toBeVisible({ timeout: 10000 });
+    const viewExperienceButton = page.locator('#home').getByRole('link', { name: /view experience/i });
     await expect(viewExperienceButton).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('a[href="/api/resume"], a[href="/resume.pdf"]')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: /resume/i })).toHaveCount(0);
   });
 
   test('should have sticky navigation', async ({ page }) => {
