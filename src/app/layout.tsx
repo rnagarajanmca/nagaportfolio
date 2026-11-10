@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Nagarajan Ravikumar · Portfolio",
   description:
-    "Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.",
+    "Software Engineering Manager, Mobile at 7-Eleven, leading 3 teams and 15+ engineers shipping the 7-Eleven, Speedway, and 7Now apps.",
   metadataBase: new URL("https://nagarajanr.com"),
   alternates: {
     canonical: "/",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Nagarajan Ravikumar · Portfolio",
     description:
-      "Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.",
+      "Software Engineering Manager, Mobile at 7-Eleven, leading 3 teams and 15+ engineers shipping the 7-Eleven, Speedway, and 7Now apps.",
     url: "https://nagarajanr.com",
     siteName: "Nagarajan Ravikumar · Portfolio",
     type: "website",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nagarajan Ravikumar · Portfolio",
     description:
-      "Senior Android engineer modernizing supply chains, retail checkout, and asset tracking platforms.",
+      "Software Engineering Manager, Mobile at 7-Eleven, leading 3 teams and 15+ engineers shipping the 7-Eleven, Speedway, and 7Now apps.",
     images: ["/opengraph-image"],
   },
   icons: {

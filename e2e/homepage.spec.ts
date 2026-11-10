@@ -37,7 +37,7 @@ test.describe('Homepage Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for hero content
-    const heroText = page.locator('text=/Technical Manager|Full Stack/i');
+    const heroText = page.locator('#home').getByText(/Software Engineering Manager/i);
     await expect(heroText).toBeVisible({ timeout: 10000 });
 
     // Check for CTA buttons - look for links with specific text

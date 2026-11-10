@@ -12,9 +12,9 @@ export const siteContent: SiteContent = {
   ],
   hero: {
     name: "Nagarajan Ravikumar",
-    title: "Technical Manager · Mobile Platforms",
+    title: "Software Engineering Manager · Mobile",
     summary:
-      "Guiding mobile product initiatives end-to-end: aligning strategy, architecture, and execution to deliver reliable, multi-platform experiences. Now managing this portfolio via OpenClaw AI assistant!",
+      "Software Engineering Manager, Mobile at 7-Eleven. I lead 3 teams and 15+ engineers shipping the 7-Eleven, Speedway, and 7Now apps, and led the codebase consolidation that cut development cost by 50%.",
     typingPhrases: [
       "Driving mobile strategy",
       "Architecting scalable platforms",
@@ -57,9 +57,9 @@ export const siteContent: SiteContent = {
     ],
   },
   about: {
-    heading: "Technical Manager aligning strategy and execution",
+    heading: "Engineering leader for multi-team mobile platforms",
     body: [
-      "Technical manager with 12+ years building and leading mobile platforms end-to-end—growing from Android engineer to directing teams of 15+ while maintaining uncompromising engineering rigor.",
+      "Engineering manager with 12+ years building and leading mobile platforms end-to-end, growing from Android engineer to leading 3 teams of 15+ engineers.",
       "I blend deep technical expertise with strategic focus to align mobile initiatives with business goals, keeping quality, security, and innovation at the forefront.",
     ],
   },
@@ -267,6 +267,6 @@ export const siteContent: SiteContent = {
     headline: "Let's build something together",
     description:
       "Interested in discussing mobile strategy, platform engineering, or building high-performing teams? Let's talk.",
-    email: "hello@nagarajan.dev",
+    email: "naga@nagarajanr.com",
   },
 };
