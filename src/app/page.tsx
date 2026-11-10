@@ -2,7 +2,6 @@ import { CTAButton } from "@/components/CTAButton";
 import { ContactForm } from "@/components/ContactForm";
 import { NavBar } from "@/components/NavBar";
 import { ProjectCard } from "@/components/ProjectCard";
-import { ResumeDownload } from "@/components/ResumeDownload";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { SectionWrapper } from "@/components/SectionWrapper";
 import { SkillTag } from "@/components/SkillTag";
@@ -131,23 +130,17 @@ export default function Home() {
                 {hero.summary}
               </p>
               <div className="flex flex-wrap gap-3 animate-fade-up animation-delay-3">
-                {hero.cta.map((cta) =>
-                  cta.download ? (
-                    <ResumeDownload key={cta.label} variant={cta.variant}>
-                      {cta.label}
-                    </ResumeDownload>
-                  ) : (
-                    <CTAButton
-                      key={cta.label}
-                      href={cta.href}
-                      variant={cta.variant}
-                      target={cta.target}
-                      rel={cta.rel}
-                    >
-                      {cta.label}
-                    </CTAButton>
-                  )
-                )}
+                {hero.cta.map((cta) => (
+                  <CTAButton
+                    key={cta.label}
+                    href={cta.href}
+                    variant={cta.variant}
+                    target={cta.target}
+                    rel={cta.rel}
+                  >
+                    {cta.label}
+                  </CTAButton>
+                ))}
               </div>
               {showHeroMetrics && hero.metrics?.length ? (
                 <div className="grid gap-4 rounded-3xl border border-border/60 bg-surface/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur animate-fade-up animation-delay-3 sm:grid-cols-3">

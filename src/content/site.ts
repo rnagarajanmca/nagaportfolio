@@ -43,11 +43,6 @@ export const siteContent: SiteContent = {
       },
     ],
     cta: [
-      {
-        label: "Download Resume",
-        href: "/api/resume",
-        download: true,
-      },
       { label: "View Experience", href: "#experience", variant: "secondary" },
     ],
     social: [
@@ -267,6 +262,6 @@ export const siteContent: SiteContent = {
     headline: "Let's build something together",
     description:
       "Interested in discussing mobile strategy, platform engineering, or building high-performing teams? Let's talk.",
-    email: "naga@nagarajanr.com",
+    email: "hello@nagarajan.dev",
   },
 };

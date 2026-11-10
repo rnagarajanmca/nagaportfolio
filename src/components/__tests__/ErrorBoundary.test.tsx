@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Component that throws an error for testing
-function ThrowError() {
+function ThrowError(): never {
   throw new Error('Test error');
 }
 
@@ -39,8 +39,9 @@ describe('ErrorBoundary', () => {
   });
 
   it('displays error details in development', () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'development';
+    const env = process.env as { NODE_ENV?: string };
+    const originalEnv = env.NODE_ENV;
+    env.NODE_ENV = 'development';
 
     render(
       <ErrorBoundary>
@@ -52,7 +53,7 @@ describe('ErrorBoundary', () => {
     const errorDetailsButton = screen.queryByText(/error details/i);
     expect(errorDetailsButton).toBeInTheDocument();
 
-    process.env.NODE_ENV = originalEnv;
+    env.NODE_ENV = originalEnv;
   });
 
   it('has a button to reload the page', () => {
